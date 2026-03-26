@@ -22,7 +22,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
+        const { useState, useEffect, useMemo, useRef } = React;
 
         // --- SVG Icons ---
         const SearchIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
@@ -38,6 +38,10 @@
         const SunIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>;
         const MoonIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>;
         const EditIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>;
+        const ArrowUpIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>;
+        const StarIcon = ({className, filled}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>;
+        const PrinterIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>;
+        const LinkIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>;
 
         // Statische Filter-Optionen (Fach wird jetzt dynamisch generiert)
         const FILTER_STUFE = ['Primarstufe', 'Sekundarstufe 1', 'Sekundarstufe 2'];
@@ -67,6 +71,10 @@
           // State für die animierte Zählung der Prompts
           const [animatedCount, setAnimatedCount] = useState(0);
 
+          // State und Ref für Scroll-to-Top
+          const [showScrollTop, setShowScrollTop] = useState(false);
+          const scrollContainerRef = useRef(null);
+
           // Dynamische Liste der Fächer aus der faecher.json
           const [faecherListe, setFaecherListe] = useState([]);
           
@@ -78,6 +86,13 @@
           // State für Filter (ein-/ausklappbar, automatisch zu auf Handys, offen auf Desktop)
           const [showFilters, setShowFilters] = useState(window.innerWidth >= 768);
 
+          // State für Favoriten (aus dem localStorage laden)
+          const [favorites, setFavorites] = useState(() => {
+            const savedFavorites = localStorage.getItem('telli_favorites');
+            return savedFavorites ? JSON.parse(savedFavorites) : [];
+          });
+          const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+
           // Filters-State als Arrays für Mehrfachauswahl (inklusive Tags)
           const [filters, setFilters] = useState({
             fach: [],
@@ -86,6 +101,11 @@
             tags: []
           });
           const [searchTerm, setSearchTerm] = useState('');
+
+          // Favoriten im localStorage sichern, sobald sie sich ändern
+          useEffect(() => {
+            localStorage.setItem('telli_favorites', JSON.stringify(favorites));
+          }, [favorites]);
 
           // Dark Mode Initialisierung
           useEffect(() => {
@@ -204,6 +224,53 @@
             loadData();
           }, []);
 
+          // --- DEEP-LINKING (Direktlink beim Start auswerten) ---
+          useEffect(() => {
+            if (entries.length > 0) {
+              const params = new URLSearchParams(window.location.search);
+              const promptId = params.get('prompt');
+              
+              if (promptId) {
+                // 1. Alle Filter zurücksetzen, damit die Karte sicher sichtbar ist
+                setFilters({ fach: [], stufe: [], funktion: [], tags: [] });
+                setSearchTerm('');
+                setShowFavoritesOnly(false);
+                
+                // HIER IST DIE ÄNDERUNG: Filterleiste ausblenden, damit nichts verdeckt wird
+                setShowFilters(false);
+                
+                // 2. Die verlinkte Karte aufklappen
+                setExpandedCards(prev => {
+                  const newSet = new Set(prev);
+                  newSet.add(promptId);
+                  return newSet;
+                });
+
+                // 3. Zur Karte scrollen und sie kurz hervorheben (Verzögerung für Rendering)
+                setTimeout(() => {
+                  const element = document.getElementById(`prompt-${promptId}`);
+                  if (element && scrollContainerRef.current) {
+                    // Scroll-Position berechnen
+                    const containerTop = scrollContainerRef.current.getBoundingClientRect().top;
+                    const elementTop = element.getBoundingClientRect().top;
+                    const scrollTop = scrollContainerRef.current.scrollTop;
+                    // Etwas Abstand nach oben lassen
+                    scrollContainerRef.current.scrollTo({
+                      top: scrollTop + elementTop - containerTop - 100, 
+                      behavior: 'smooth'
+                    });
+
+                    // Kurzes Aufleuchten der Karte
+                    element.classList.add('ring-4', 'ring-blue-500', 'ring-opacity-50', 'transition-all', 'duration-1000');
+                    setTimeout(() => {
+                      element.classList.remove('ring-4', 'ring-blue-500', 'ring-opacity-50');
+                    }, 2000);
+                  }
+                }, 300);
+              }
+            }
+          }, [entries.length]); // Startet sobald die Einträge geladen sind
+
           // --- ANIMATION FÜR DAS HOCHZÄHLEN DER PROMPTS ---
           useEffect(() => {
             if (entries.length === 0) {
@@ -212,21 +279,17 @@
             }
 
             let startTimestamp = null;
-            // Die Dauer wurde von 1500 auf 2000 erhöht (-25% Geschwindigkeit)
             const duration = 2000; 
             const targetCount = entries.length;
             let animationFrameId;
 
-            // Ease-Out-Funktion (bremst am Ende ab)
             const easeOutQuart = (x) => 1 - Math.pow(1 - x, 4);
 
             const step = (timestamp) => {
               if (!startTimestamp) startTimestamp = timestamp;
               const progress = timestamp - startTimestamp;
               
-              // Fortschritt zwischen 0 und 1
               const ratio = Math.min(progress / duration, 1);
-              // Fortschritt mit Easing-Funktion glätten
               const easedRatio = easeOutQuart(ratio);
               
               setAnimatedCount(Math.round(easedRatio * targetCount));
@@ -234,16 +297,35 @@
               if (progress < duration) {
                 animationFrameId = window.requestAnimationFrame(step);
               } else {
-                setAnimatedCount(targetCount); // Sicherheitshalber genau auf Endwert setzen
+                setAnimatedCount(targetCount); 
               }
             };
 
             animationFrameId = window.requestAnimationFrame(step);
 
-            // Aufräumen, falls die Komponente unmountet oder sich die Anzahl schnell ändert
             return () => window.cancelAnimationFrame(animationFrameId);
           }, [entries.length]);
           // --------------------------------------------------
+
+          // Scroll Handler
+          const handleScroll = (e) => {
+            if (e.target.scrollTop > 400) {
+              setShowScrollTop(true);
+            } else {
+              setShowScrollTop(false);
+            }
+          };
+
+          const scrollToTop = () => {
+            scrollContainerRef.current?.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+          };
+
+          const handlePrint = () => {
+            window.print();
+          };
 
           const toggleFilter = (category, value) => {
             setFilters(prev => {
@@ -259,6 +341,29 @@
           const resetFilters = () => {
             setFilters({ fach: [], stufe: [], funktion: [], tags: [] });
             setSearchTerm('');
+            setShowFavoritesOnly(false); // Auch den Favoriten-Filter zurücksetzen
+          };
+
+          const toggleFavorite = (e, id) => {
+            e.stopPropagation(); // Verhindert das Aufklappen der Karte
+            setFavorites(prev => {
+              if (prev.includes(id)) {
+                return prev.filter(f => f !== id);
+              } else {
+                return [...prev, id];
+              }
+            });
+          };
+
+          const copyDeepLink = (e, id) => {
+            e.stopPropagation();
+            const url = `${window.location.origin}${window.location.pathname}?prompt=${id}`;
+            navigator.clipboard.writeText(url).then(() => {
+              alert("Direktlink in die Zwischenablage kopiert!");
+            }).catch(err => {
+              console.error("Kopieren fehlgeschlagen", err);
+              alert("Fehler beim Kopieren des Links.");
+            });
           };
 
           const filteredEntries = useMemo(() => {
@@ -268,7 +373,6 @@
               const matchStufe = filters.stufe.length === 0 || entryStufen.some(s => filters.stufe.includes(s));
               const matchFunktion = filters.funktion.length === 0 || filters.funktion.includes(entry.funktion);
               
-              // Tag-Filterung mit Sicherheitsnetz
               const entryTags = entry.tags || [];
               const matchTags = filters.tags.length === 0 || entryTags.some(t => filters.tags.includes(t));
 
@@ -278,9 +382,16 @@
                 entry.kurzbeschreibung.toLowerCase().includes(searchLower) ||
                 entry.prompt.toLowerCase().includes(searchLower);
 
-              return matchFach && matchStufe && matchFunktion && matchTags && matchSearch;
+              // Favoriten-Filter Logik
+              const matchFavorites = !showFavoritesOnly || favorites.includes(entry.id);
+
+              return matchFach && matchStufe && matchFunktion && matchTags && matchSearch && matchFavorites;
             });
-          }, [entries, filters, searchTerm]);
+          }, [entries, filters, searchTerm, showFavoritesOnly, favorites]);
+
+          const favoriteEntriesToPrint = useMemo(() => {
+            return entries.filter(entry => favorites.includes(entry.id));
+          }, [entries, favorites]);
 
           const toggleCard = (id) => {
             setExpandedCards(prev => {
@@ -312,14 +423,17 @@
             });
           };
 
-          // Berücksichtigung der Tags
-          const hasActiveFilters = filters.fach.length > 0 || filters.stufe.length > 0 || filters.funktion.length > 0 || filters.tags.length > 0 || searchTerm !== '';
+          const hasActiveFilters = filters.fach.length > 0 || filters.stufe.length > 0 || filters.funktion.length > 0 || filters.tags.length > 0 || searchTerm !== '' || showFavoritesOnly;
 
           return (
-            <div className="min-h-screen text-slate-800 dark:text-slate-200 font-sans relative flex overflow-hidden">
+            <div className="min-h-screen text-slate-800 dark:text-slate-200 font-sans relative flex overflow-hidden print:h-auto print:overflow-visible print:bg-white print:text-black">
               
-              {/* --- HAUPTINHALT --- */}
-              <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+              {/* --- HAUPTINHALT (Wird beim Drucken ausgeblendet: print:hidden) --- */}
+              <div 
+                ref={scrollContainerRef}
+                onScroll={handleScroll}
+                className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto print:hidden"
+              >
                 
                 {/* HEADER BEREICH */}
                 <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 pt-6 pb-8 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
@@ -335,7 +449,7 @@
                         {/* Dark Mode Toggle */}
                         <button 
                           onClick={toggleDarkMode}
-                          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
+                          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
                           title={isDarkMode ? "In den hellen Modus wechseln" : "In den dunklen Modus wechseln"}
                         >
                           {isDarkMode ? <SunIcon className="w-4 h-4 text-amber-400" /> : <MoonIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
@@ -344,7 +458,7 @@
                         
                         <button 
                           onClick={() => setShowImpressum(true)}
-                          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
+                          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
                         >
                           <InfoIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                           <span className="hidden sm:inline">Impressum</span>
@@ -352,7 +466,7 @@
                       </div>
                     </div>
 
-                    {/* ANIMIERTE ZAHL (FARBIG HERVORGEHOBEN & WACKELFREI) */}
+                    {/* ANIMIERTE ZAHL */}
                     <h2 className="text-lg sm:text-xl text-blue-700 dark:text-blue-300 font-medium mb-8">
                       <span 
                         className="inline-block text-right tabular-nums text-2xl font-black text-emerald-600 dark:text-emerald-400 mr-1" 
@@ -375,16 +489,16 @@
                       
                       <div className="relative z-10 flex flex-col gap-5 text-slate-700 dark:text-slate-300 leading-relaxed">
                         <p className="text-lg">
-                          <strong className="font-extrabold text-blue-900 dark:text-blue-300 tracking-wide">telli</strong> ist der DSGVO-konforme KI-Chatbot für Schulen in Thüringen, betrieben vom <a href="https://fwu.de" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline underline-offset-4 decoration-blue-300/50 hover:decoration-blue-500 transition-all">fwu</a>.
+                          <strong className="font-extrabold text-blue-900 dark:text-blue-300 tracking-wide">telli</strong> ist der DSGVO-konforme KI-Chatbot für Schulen in Thüringen, betrieben vom <a href="https://fwu.de" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline underline-offset-4 decoration-blue-300/50 hover:decoration-blue-500 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">fwu</a>.
                         </p>
                         
                         {/* Link-Buttons anstelle von reinem Text */}
                         <div className="flex flex-col sm:flex-row gap-3 mt-1">
-                          <a href="https://www.schulportal-thueringen.de/digitale_werkzeuge/telli" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
+                          <a href="https://www.schulportal-thueringen.de/digitale_werkzeuge/telli" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">
                             <BookOpenIcon className="w-4 h-4" />
                             telli-Zugang über das Thüringer Schulportal
                           </a>
-                          <a href="https://www.schulportal-thueringen.de/digitale_werkzeuge/telli/unterstuetzungsangebot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700 text-sm font-medium rounded-lg transition-colors shadow-sm">
+                          <a href="https://www.schulportal-thueringen.de/digitale_werkzeuge/telli/unterstuetzungsangebot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700 text-sm font-medium rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">
                             <InfoIcon className="w-4 h-4" />
                             Unterstützungsangebote für telli durch das ThILLM
                           </a>
@@ -439,7 +553,7 @@
                       
                       <button 
                         onClick={() => setShowFilters(!showFilters)}
-                        className="flex items-center gap-2 text-sm px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg transition-colors font-medium border border-slate-200 dark:border-slate-600"
+                        className="flex items-center gap-2 text-sm px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg transition-colors font-medium border border-slate-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <TagIcon className="w-4 h-4" />
                         {showFilters ? 'Ausblenden' : 'Anzeigen'}
@@ -449,7 +563,7 @@
                     <div className={`${showFilters ? 'flex' : 'hidden'} flex-col gap-4`}>
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         
-                        {/* Fach Filter - Jetzt dynamisch */}
+                        {/* Fach Filter */}
                         <div>
                           <div className="flex items-center gap-1 mb-1.5">
                             <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Fach</label>
@@ -461,7 +575,7 @@
                                 <button 
                                   key={opt}
                                   onClick={() => toggleFilter('fach', opt)}
-                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
+                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
                                     isActive 
                                     ? 'bg-emerald-600 text-white border-emerald-700 dark:bg-emerald-500 dark:border-emerald-500 shadow-sm' 
                                     : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800/50 dark:hover:bg-emerald-900/50'
@@ -486,7 +600,7 @@
                                 <button 
                                   key={opt}
                                   onClick={() => toggleFilter('funktion', opt)}
-                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
+                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
                                     isActive 
                                     ? 'bg-amber-500 text-white border-amber-600 dark:bg-amber-500 dark:border-amber-500 shadow-sm' 
                                     : 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800/50 dark:hover:bg-amber-900/50'
@@ -511,7 +625,7 @@
                                 <button 
                                   key={opt}
                                   onClick={() => toggleFilter('stufe', opt)}
-                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
+                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
                                     isActive 
                                     ? 'bg-purple-600 text-white border-purple-700 dark:bg-purple-500 dark:border-purple-500 shadow-sm' 
                                     : 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800/50 dark:hover:bg-purple-900/50'
@@ -536,7 +650,7 @@
                                 <button 
                                   key={opt}
                                   onClick={() => toggleFilter('tags', opt)}
-                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
+                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
                                     isActive 
                                     ? 'bg-rose-500 text-white border-rose-600 dark:bg-rose-500 dark:border-rose-500 shadow-sm' 
                                     : 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-300 dark:border-rose-800/50 dark:hover:bg-rose-900/50'
@@ -551,29 +665,56 @@
 
                       </div>
 
-                      {/* Suche & Reset */}
+                      {/* Suche, Favoriten-Filter & Reset & Drucken */}
                       <div className="flex flex-col md:flex-row gap-3 items-center justify-between border-t border-slate-200 dark:border-slate-700 pt-3">
-                        <div className="w-full md:w-96">
-                          <div className="relative">
+                        <div className="w-full md:w-auto flex flex-col sm:flex-row gap-3">
+                          <div className="relative w-full sm:w-80">
                             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
                               <SearchIcon />
                             </div>
                             <input 
                               type="text" 
-                              className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 shadow-sm transition-shadow placeholder-slate-400 dark:placeholder-slate-500" 
-                              placeholder="Stichwort suchen (z.B. Gedicht, Assistent)..." 
+                              className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 shadow-sm transition-shadow placeholder-slate-400 dark:placeholder-slate-500" 
+                              placeholder="Stichwort suchen..." 
                               value={searchTerm}
                               onChange={(e) => setSearchTerm(e.target.value)}
                             />
+                          </div>
+                          
+                          <div className="flex gap-2">
+                            {/* Favoriten Toggle Button */}
+                            <button
+                              onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                              className={`flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
+                                showFavoritesOnly 
+                                ? 'bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700' 
+                                : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700'
+                              }`}
+                            >
+                              <StarIcon className="w-4 h-4" filled={showFavoritesOnly} />
+                              <span className="hidden sm:inline">Favoriten</span> {favorites.length > 0 && `(${favorites.length})`}
+                            </button>
+
+                            {/* Druck-Button (nur anzeigen wenn es Favoriten gibt) */}
+                            {favorites.length > 0 && (
+                              <button
+                                onClick={handlePrint}
+                                className="flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
+                                title="Markierte Favoriten als PDF speichern oder drucken"
+                              >
+                                <PrinterIcon className="w-4 h-4" />
+                                <span className="hidden sm:inline">Favoriten Drucken / PDF</span>
+                              </button>
+                            )}
                           </div>
                         </div>
                         
                         {hasActiveFilters && (
                           <button 
                             onClick={resetFilters}
-                            className="text-sm px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors"
+                            className="w-full md:w-auto text-sm px-4 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800"
                           >
-                            Alle Filter zurücksetzen
+                            Filter zurücksetzen
                           </button>
                         )}
                       </div>
@@ -596,12 +737,22 @@
                         {filteredEntries.length > 0 ? (
                           filteredEntries.map((entry) => {
                             const isExpanded = expandedCards.has(entry.id);
+                            const isFavorite = favorites.includes(entry.id);
                             
                             return (
-                              <div key={entry.id} className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-200 hover:shadow-md dark:hover:shadow-slate-900/50">
+                              <div id={`prompt-${entry.id}`} key={entry.id} className={`bg-white dark:bg-slate-800 rounded-xl shadow-sm border overflow-hidden transition-all duration-200 hover:shadow-md dark:hover:shadow-slate-900/50 ${isFavorite ? 'border-amber-300 dark:border-amber-700' : 'border-slate-200 dark:border-slate-700'}`}>
                                 <div 
-                                  className="p-5 cursor-pointer flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center"
+                                  className="p-5 cursor-pointer flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center focus:outline-none focus:bg-slate-50 dark:focus:bg-slate-700/50 transition-colors"
                                   onClick={() => toggleCard(entry.id)}
+                                  tabIndex="0"
+                                  role="button"
+                                  aria-expanded={isExpanded}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                      e.preventDefault();
+                                      toggleCard(entry.id);
+                                    }
+                                  }}
                                 >
                                   <div className="flex-1">
                                     <div className="flex items-center gap-3 mb-2">
@@ -635,18 +786,37 @@
                                     </div>
                                   </div>
                                   
-                                  <div className="flex items-center gap-1">
+                                  <div className="flex items-center gap-1 mt-4 sm:mt-0">
+                                    {/* Link Teilen Button */}
+                                    <button 
+                                      onClick={(e) => copyDeepLink(e, entry.id)}
+                                      className="p-2 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                                      title="Direktlink kopieren"
+                                    >
+                                      <LinkIcon className="w-5 h-5" />
+                                    </button>
+
                                     {/* Der Editor-Button (nur sichtbar, wenn Modus aktiv) */}
                                     {showEditorMode && (
                                       <a 
                                         href={`prompt-editor.html?file=${entry.fach.toLowerCase()}.json&id=${entry.id}`}
-                                        className="p-2 text-slate-400 hover:text-amber-600 dark:text-slate-500 dark:hover:text-amber-400 transition-colors"
+                                        className="p-2 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
                                         title="Im Editor bearbeiten"
                                         onClick={(e) => e.stopPropagation()}
                                       >
                                         <EditIcon className="w-5 h-5" />
                                       </a>
                                     )}
+                                    
+                                    {/* Favoriten Button */}
+                                    <button 
+                                      onClick={(e) => toggleFavorite(e, entry.id)}
+                                      className={`p-2 transition-colors rounded focus:outline-none focus:ring-2 focus:ring-amber-500 ${isFavorite ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 dark:text-slate-600 hover:text-amber-400'}`}
+                                      title={isFavorite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
+                                    >
+                                      <StarIcon className="w-6 h-6" filled={isFavorite} />
+                                    </button>
+
                                     {/* Der normale Aufklapp-Pfeil */}
                                     <div className="flex items-center justify-center p-2 text-slate-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-400">
                                       {isExpanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
@@ -663,7 +833,7 @@
                                           e.stopPropagation();
                                           copyToClipboard(entry.prompt);
                                         }}
-                                        className="text-xs bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium py-1 px-3 rounded shadow-sm transition-colors"
+                                        className="text-xs bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium py-1 px-3 rounded shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
                                       >
                                         Kopieren
                                       </button>
@@ -695,7 +865,7 @@
                         href="https://creativecommons.org/licenses/by/4.0/deed.de" 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="text-blue-600 dark:text-blue-400 hover:underline font-medium inline-flex items-center gap-1"
+                        className="text-blue-600 dark:text-blue-400 hover:underline font-medium inline-flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
                       >
                         Creative Commons Namensnennung 4.0 International Lizenz
                       </a>.
@@ -703,7 +873,7 @@
                     <div className="flex items-center gap-4">
                       <button 
                         onClick={() => setShowImpressum(true)}
-                        className="text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-400 transition-colors font-medium flex items-center gap-1"
+                        className="text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-400 transition-colors font-medium flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2"
                       >
                         <InfoIcon className="w-4 h-4" />
                         Impressum
@@ -713,21 +883,68 @@
                 </footer>
               </div>
 
+              {/* === DRUCK-ANSICHT (Wird nur auf dem Drucker / im PDF angezeigt) === */}
+              <div className="hidden print:block w-full max-w-4xl mx-auto p-8 bg-white text-black font-sans">
+                <div className="mb-10 border-b-2 border-slate-800 pb-4">
+                  <h1 className="text-4xl font-extrabold text-slate-900 mb-2">Meine telli Favoriten</h1>
+                  <p className="text-lg text-slate-600">telli in Thüringen – Generierte Praxisbeispiele</p>
+                </div>
+
+                {favoriteEntriesToPrint.length === 0 ? (
+                  <p>Es wurden keine Favoriten markiert.</p>
+                ) : (
+                  <div className="space-y-8">
+                    {favoriteEntriesToPrint.map((entry) => (
+                      <div key={entry.id} className="break-inside-avoid border border-slate-300 rounded-lg p-6">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span className="bg-slate-200 text-slate-800 text-xs font-bold px-2 py-1 rounded">
+                            #{entry.id}
+                          </span>
+                          <h2 className="text-xl font-bold text-slate-900">{entry.titel}</h2>
+                        </div>
+                        
+                        <div className="flex flex-wrap gap-2 mb-4 text-sm">
+                          <span className="font-semibold">{entry.fach}</span>
+                          <span className="text-slate-400">•</span>
+                          <span>{entry.funktion}</span>
+                          <span className="text-slate-400">•</span>
+                          <span>{Array.isArray(entry.stufe) ? entry.stufe.join(', ') : entry.stufe}</span>
+                        </div>
+                        
+                        <p className="text-slate-700 italic mb-4">
+                          {entry.kurzbeschreibung}
+                        </p>
+                        
+                        <div className="mt-4">
+                          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wide mb-2">Prompt / Eingabe:</h3>
+                          <div className="bg-slate-50 border border-slate-200 rounded p-4 font-mono text-sm text-slate-900 whitespace-pre-wrap">
+                            {entry.prompt}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div className="mt-12 pt-4 border-t border-slate-300 text-center text-xs text-slate-500">
+                  Gedruckt am: {new Date().toLocaleDateString('de-DE')}
+                </div>
+              </div>
+
               {/* MODALS */}
               
               {/* Impressum Modal */}
               {showImpressum && (
-                <div className="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 z-50 flex items-center justify-center p-4 print:hidden">
                   <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full p-6">
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Impressum</h3>
-                      <button onClick={() => setShowImpressum(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"><CloseIcon className="w-6 h-6"/></button>
+                      <button onClick={() => setShowImpressum(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"><CloseIcon className="w-6 h-6"/></button>
                     </div>
                     <div className="text-sm text-slate-700 dark:text-slate-300 space-y-4">
                       
-                      <p><strong className="dark:text-slate-250">telli in Thüringen</strong></p>
+                      <p><strong className="dark:text-slate-200">telli in Thüringen</strong></p>
                       <p>erstellt von Tobias Lochner, <br/>Dr. Sulzberger-Gymnasium, Bad Salzungen, 2026</p>
-                      <p>basierend auf einer Idee von <br/> Martin Kurz, Hessische Lehrkräfteakademie, 2026, <a href="https://mgkurz.github.io/-telli-deutsch-ideen/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline"> https://mgkurz.github.io/-telli-deutsch-ideen/
+                      <p>basierend auf einer Idee von <br/> Martin Kurz, Hessische Lehrkräfteakademie, 2026, <a href="https://mgkurz.github.io/-telli-deutsch-ideen/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"> https://mgkurz.github.io/-telli-deutsch-ideen/
                         </a>
                       </p>
                       
@@ -737,8 +954,11 @@
                           <li>- Erweiterung der Prompt-Datenbank um die Ebene Fächer</li>
                           <li>- Promptssammlung in json-Dateien ausgelagert (1x json-Datei / Fach)</li>
                           <li>- dynamisches Einlesen der Fächer via Inhaltsverzeichnis (faecher.json)</li>
-						  <li>- Darkmode ergänzt</li>
-						  <li>- thüringenspezifische Anpassungen</li>
+                          <li>- Darkmode ergänzt</li>
+						  <li>- "Scroll-to-Top"-Button ergänzt</li>
+						  <li>- Favoritensystem ergänzt</li>
+						  <li>- Funktion, um Favoriten auszudrucken / als PDF zu speichern ergänzt</li>
+                          <li>- thüringenspezifische Anpassungen</li>
                         </ul>
                       </div>
 
@@ -750,7 +970,7 @@
                             href="https://creativecommons.org/licenses/by/4.0/deed.de" 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                            className="text-blue-600 dark:text-blue-400 hover:underline font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
                           >
                             Creative Commons Namensnennung 4.0 International Lizenz (CC BY 4.0)
                           </a>.
@@ -759,10 +979,22 @@
 
                     </div>
                     <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 flex justify-end">
-                      <button onClick={() => setShowImpressum(false)} className="px-4 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors">Schließen</button>
+                      <button onClick={() => setShowImpressum(false)} className="px-4 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">Schließen</button>
                     </div>
                   </div>
                 </div>
+              )}
+
+              {/* SCROLL TO TOP BUTTON */}
+              {showScrollTop && (
+                <button
+                  onClick={scrollToTop}
+                  className="fixed bottom-6 right-6 p-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-full shadow-lg transition-all duration-300 z-50 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-slate-900 animate-fade-in print:hidden"
+                  aria-label="Nach oben scrollen"
+                  title="Nach oben scrollen"
+                >
+                  <ArrowUpIcon className="w-6 h-6" />
+                </button>
               )}
 
             </div>
@@ -772,5 +1004,24 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
+
+    <style>
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.3s ease-out forwards;
+      }
+
+      /* Verhindert, dass Web-Apps mit Scroll-Containern nur die 1. Seite drucken */
+      @media print {
+        body, html, #root {
+          height: auto !important;
+          overflow: visible !important;
+          background-color: white !important;
+        }
+      }
+    </style>
 </body>
 </html>
