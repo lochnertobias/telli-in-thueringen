@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Prompt Editor</title>
+    <title>Prompteditor</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom Scrollbar for textareas */
@@ -34,7 +34,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap gap-4 items-center justify-between">
             <div class="flex items-center gap-2">
                 <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-                <h1 class="text-xl font-bold text-slate-800">Prompt Editor</h1>
+                <h1 class="text-xl font-bold text-slate-800 flex items-center gap-3">
+                    Prompteditor
+                    <span id="file-name-display" class="text-sm font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md hidden border border-slate-200 truncate max-w-[200px] md:max-w-xs" title="Aktuelle Datei"></span>
+                </h1>
             </div>
             
             <div class="flex flex-wrap items-center gap-3">
@@ -137,7 +140,7 @@
     <script>
         // Haupt-Datenstruktur
         let promptsData = [];
-        let currentFileName = 'prompts_export.json';
+        let currentFileName = '';
         
         let availableSubjects = ['Deutsch', 'Mathematik', 'Geografie', 'Informatik', 'Biologie'];
         let availableTags = ['Unterrichtsmaterial', 'Muster', 'Thüringen'];
@@ -164,6 +167,16 @@
             if (Array.isArray(val)) return val.join(', ');
             if (val === null || val === undefined) return '';
             return String(val);
+        }
+
+        function updateFileNameDisplay() {
+            const displayEl = document.getElementById('file-name-display');
+            if (currentFileName) {
+                displayEl.innerText = currentFileName;
+                displayEl.classList.remove('hidden');
+            } else {
+                displayEl.classList.add('hidden');
+            }
         }
 
         // --- JSON VERARBEITUNG ---
@@ -219,6 +232,7 @@
                 });
                 
                 currentFileName = filename;
+                updateFileNameDisplay();
                 renderAll();
                 showToast(`"${filename}" erfolgreich geladen!`);
                 
@@ -329,16 +343,17 @@
             showInputModal(
                 'JSON Speichern', 
                 'Bitte gib einen Dateinamen für den Export ein:', 
-                currentFileName, 
+                currentFileName || 'prompts_export.json', 
                 (filename) => {
                     if (!filename || filename.trim() === '') {
-                        filename = currentFileName;
+                        filename = currentFileName || 'prompts_export.json';
                     }
                     if (!filename.toLowerCase().endsWith('.json')) {
                         filename += '.json';
                     }
 
                     currentFileName = filename; 
+                    updateFileNameDisplay();
 
                     const jsonString = JSON.stringify(promptsData, null, 2);
                     const blob = new Blob([jsonString], { type: "application/json" });
@@ -389,6 +404,7 @@
             const createNew = () => {
                 promptsData = [];
                 currentFileName = 'neue_liste.json';
+                updateFileNameDisplay();
                 
                 if (withSample) {
                     promptsData.push({
@@ -666,6 +682,7 @@
         }
 
         // Init
+        updateFileNameDisplay();
         renderAll();
         document.addEventListener('DOMContentLoaded', loadFileFromUrl);
 
