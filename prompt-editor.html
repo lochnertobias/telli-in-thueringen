@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Prompt Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Scrollbar for textareas */
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Smooth transitions for highlight effect */
+        .highlight-card {
+            transition: all 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Navbar / Toolbar -->
+    <header class="bg-white shadow-sm sticky top-0 z-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap gap-4 items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                <h1 class="text-xl font-bold text-slate-800">Prompt Editor</h1>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- 1. Einlesen -->
+                <button onclick="document.getElementById('file-upload').click()" class="flex items-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    JSON Laden
+                </button>
+                <input type="file" id="file-upload" class="hidden" accept=".json" onchange="handleFileUpload(event)">
+
+                <!-- 2. Speichern -->
+                <button onclick="saveJSON()" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                    JSON Speichern
+                </button>
+
+                <div class="h-6 w-px bg-slate-300 mx-1"></div>
+
+                <!-- 3. Komplett neue Datei (Leer) -->
+                <button onclick="requestNewFile(false)" class="flex items-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all" title="Erstellt eine komplett leere Liste">
+                    Neu (Leer)
+                </button>
+
+                <!-- 4. Neue Datei (mit Muster) -->
+                <button onclick="requestNewFile(true)" class="flex items-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all" title="Erstellt eine neue Liste mit einem Beispiel-Eintrag">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Neu (Muster)
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 py-8">
+        <!-- Status / Counter -->
+        <div class="mb-6 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-700">Einträge (<span id="entry-count">0</span>)</h2>
+        </div>
+
+        <!-- Entries Container -->
+        <div id="entries-container" class="space-y-6"></div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden text-center py-16 bg-white rounded-xl border border-dashed border-slate-300 shadow-sm mt-6">
+            <svg class="w-12 h-12 text-slate-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <h3 class="text-lg font-medium text-slate-900">Keine Einträge vorhanden</h3>
+            <p class="text-slate-500 mt-1 mb-6">Lade eine bestehende JSON-Datei oder erstelle einen neuen Eintrag.</p>
+            <div class="flex justify-center gap-3">
+                <button onclick="addNewEntry()" class="inline-flex items-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-lg text-sm font-medium transition-all shadow-sm">
+                    Leeren Eintrag anlegen
+                </button>
+                <button onclick="requestNewFile(true)" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-all shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    Mustereintrag erstellen
+                </button>
+            </div>
+        </div>
+
+        <!-- Add Button (Bottom) -->
+        <div id="add-bottom-container" class="mt-8 text-center hidden">
+            <button onclick="addNewEntry()" class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 px-6 py-3 rounded-xl text-sm font-medium transition-all shadow-sm">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Weiteren Eintrag hinzufügen
+            </button>
+        </div>
+    </main>
+
+    <!-- Custom Modal Dialog -->
+    <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 relative z-10 p-6">
+            <div class="flex items-start gap-4 mb-2">
+                <div id="modal-icon-container" class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center mt-1">
+                    <!-- Icon wird per JS gesetzt -->
+                </div>
+                <div class="w-full">
+                    <h3 id="modal-title" class="text-lg font-bold text-slate-900 leading-tight">Bestätigen</h3>
+                    <p id="modal-message" class="text-slate-600 text-sm mt-2 leading-relaxed">Möchten Sie diese Aktion wirklich ausführen?</p>
+                    
+                    <!-- Optionales Eingabefeld für Dateinamen etc. -->
+                    <div id="modal-input-wrapper" class="hidden mt-4">
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Dateiname</label>
+                        <input type="text" id="modal-input-field" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all text-slate-900 font-medium">
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6">
+                <button id="modal-cancel-btn" onclick="closeModal()" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-all">Abbrechen</button>
+                <button id="modal-confirm-btn" class="px-4 py-2 rounded-lg text-white font-medium transition-all shadow-sm">Bestätigen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Toast -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-slate-800 text-white px-4 py-3 rounded-lg shadow-lg transform transition-all translate-y-20 opacity-0 z-50 flex items-center gap-3">
+        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <span id="toast-message" class="font-medium text-sm">Aktion erfolgreich.</span>
+    </div>
+
+    <script>
+        // Haupt-Datenstruktur
+        let promptsData = [];
+        let currentFileName = 'prompts_export.json';
+        
+        let availableSubjects = ['Deutsch', 'Mathematik', 'Geografie', 'Informatik', 'Biologie'];
+        let availableTags = ['Unterrichtsmaterial', 'Muster', 'Thüringen'];
+        let currentConfirmCallback = null;
+
+        const container = document.getElementById('entries-container');
+        const emptyState = document.getElementById('empty-state');
+        const addBottomContainer = document.getElementById('add-bottom-container');
+        const countDisplay = document.getElementById('entry-count');
+
+        document.getElementById('modal-input-field').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('modal-confirm-btn').click();
+            }
+        });
+
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        function safeString(val) {
+            if (Array.isArray(val)) return val.join(', ');
+            if (val === null || val === undefined) return '';
+            return String(val);
+        }
+
+        // --- JSON VERARBEITUNG ---
+        function processFileContent(fileContent, filename) {
+            let parsedData;
+
+            try {
+                parsedData = JSON.parse(fileContent);
+            } catch (err1) {
+                try {
+                    let fixedContent = fileContent.replace(/,\s*([\]}])/g, '$1');
+                    parsedData = JSON.parse(fixedContent);
+                } catch (err2) {
+                    try {
+                        let fixedContent = fileContent.replace(/,\s*([\]}])/g, '$1');
+                        let arrayWrapped = '[' + fixedContent + ']';
+                        parsedData = JSON.parse(arrayWrapped);
+                    } catch (err3) {
+                        showModal('Datei fehlerhaft', `Die Datei "${filename}" konnte nicht gelesen werden. Bitte prüfe sie auf Syntaxfehler.`, null, 'error');
+                        return;
+                    }
+                }
+            }
+
+            try {
+                let dataArray = [];
+                if (Array.isArray(parsedData)) dataArray = parsedData;
+                else if (parsedData && Array.isArray(parsedData.prompts)) dataArray = parsedData.prompts;
+                else if (typeof parsedData === 'object' && parsedData !== null) dataArray = [parsedData];
+                else throw new Error("UNSUPPORTED_FORMAT");
+
+                promptsData = dataArray.map(item => {
+                    let parsedTags = [];
+                    if (item.tags !== undefined && item.tags !== null) {
+                        if (Array.isArray(item.tags)) parsedTags = item.tags.map(t => safeString(t));
+                        else if (typeof item.tags === 'string') parsedTags = item.tags.split(',').map(s => s.trim()).filter(s => s !== '');
+                        else parsedTags = [safeString(item.tags)];
+                    }
+
+                    // Sicherstellen, dass die ID ordentlich ausgelesen und getrimmt wird
+                    let itemId = item.id || item.ID || item.Id || '';
+
+                    return {
+                        id: safeString(itemId).trim(),
+                        titel: safeString(item.titel),
+                        fach: safeString(item.fach),
+                        funktion: safeString(item.funktion),
+                        stufe: safeString(item.stufe),
+                        kurzbeschreibung: safeString(item.kurzbeschreibung),
+                        prompt: safeString(item.prompt),
+                        tags: parsedTags 
+                    };
+                });
+                
+                currentFileName = filename;
+                renderAll();
+                showToast(`"${filename}" erfolgreich geladen!`);
+                
+            } catch (error) {
+                showModal('Formatierungsfehler', 'Beim Verarbeiten der Daten ist ein Fehler aufgetreten: ' + error.message, null, 'error');
+            }
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let fileContent = e.target.result.trim();
+                processFileContent(fileContent, file.name);
+                event.target.value = '';
+            };
+            
+            reader.readAsText(file);
+        }
+
+        // --- URL PARAMETER & SCROLLING ---
+        function loadFileFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const fileName = urlParams.get('file');
+            const targetId = urlParams.get('id');
+
+            if (fileName) {
+                fetch(fileName)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(text => {
+                        processFileContent(text.trim(), fileName);
+                        
+                        if (targetId) {
+                            scrollToEntry(targetId);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Fehler beim Laden der Datei:", error);
+                        showModal(
+                            'Datei nicht gefunden', 
+                            `Die über die URL angeforderte Datei <b>"${escapeHTML(fileName)}"</b> konnte nicht geladen werden.<br><br>Fehler: ${error.message}`, 
+                            null, 
+                            'error'
+                        );
+                    });
+            } else if (targetId && promptsData.length > 0) {
+                // Fallback, falls nur ID ohne File übergeben wurde, aber Daten da sind
+                scrollToEntry(targetId);
+            }
+        }
+
+        function scrollToEntry(targetId) {
+            if (!targetId) return;
+            
+            // Sicheres Bereinigen der ID (Leerzeichen entfernen, falls in der URL übergeben)
+            const cleanId = targetId.trim();
+            
+            let attempts = 0;
+            const maxAttempts = 20; // Maximal 2 Sekunden warten (20 * 100ms)
+            
+            // Interval "pollt" die Seite, bis das DOM-Element durch das Rendering existiert
+            const checkExist = setInterval(function() {
+                // Wir suchen exakt die ID, die im HTML vergeben wurde: prompt-entry-[id]
+                const element = document.getElementById(`prompt-entry-${cleanId}`);
+                
+                if (element) {
+                    clearInterval(checkExist); // Element gefunden, aufhören zu suchen
+                    
+                    // Kurze extra Pause, damit der Browser Layout und Bilder berechnen kann
+                    setTimeout(() => {
+                        // Scrollt so, dass das Element in der Mitte des Bildschirms ist (umgeht den sticky header)
+                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        // Hervorheben
+                        element.classList.add('ring-4', 'ring-indigo-400', 'border-indigo-400', 'bg-indigo-50/50', 'scale-[1.01]');
+                        
+                        // Nach 2,5 Sekunden Effekt entfernen
+                        setTimeout(() => {
+                            element.classList.remove('ring-4', 'ring-indigo-400', 'border-indigo-400', 'bg-indigo-50/50', 'scale-[1.01]');
+                        }, 2500);
+                        
+                    }, 50);
+                    
+                } else {
+                    attempts++;
+                    if (attempts >= maxAttempts) {
+                        clearInterval(checkExist);
+                        showToast(`Eintrag mit der ID "${cleanId}" wurde in der JSON-Datei nicht gefunden.`, true);
+                    }
+                }
+            }, 100);
+        }
+
+        // --- SPEICHERN ---
+        function saveJSON() {
+            if (promptsData.length === 0) {
+                showToast("Keine Daten zum Speichern vorhanden.", true);
+                return;
+            }
+
+            showInputModal(
+                'JSON Speichern', 
+                'Bitte gib einen Dateinamen für den Export ein:', 
+                currentFileName, 
+                (filename) => {
+                    if (!filename || filename.trim() === '') {
+                        filename = currentFileName;
+                    }
+                    if (!filename.toLowerCase().endsWith('.json')) {
+                        filename += '.json';
+                    }
+
+                    currentFileName = filename; 
+
+                    const jsonString = JSON.stringify(promptsData, null, 2);
+                    const blob = new Blob([jsonString], { type: "application/json" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    showToast(`Datei "${filename}" gespeichert!`);
+                }
+            );
+        }
+
+        // --- NEU & LÖSCHEN ---
+        function addNewEntry() {
+            let nextId = "1001";
+            if (promptsData.length > 0) {
+                const ids = promptsData.map(item => parseInt(item.id) || 0);
+                nextId = (Math.max(...ids) + 1).toString();
+            }
+
+            promptsData.push({
+                id: nextId, titel: "", fach: "", funktion: "", stufe: "", tags: [], kurzbeschreibung: "", prompt: ""
+            });
+            renderAll();
+            setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 100);
+        }
+
+        function deleteEntry(index) {
+            showModal(
+                'Eintrag löschen?', 
+                `Möchten Sie den Eintrag "${escapeHTML(promptsData[index].titel) || 'Ohne Titel'}" löschen?`, 
+                () => {
+                    promptsData.splice(index, 1);
+                    renderAll();
+                    showToast("Eintrag gelöscht.");
+                },
+                'danger'
+            );
+        }
+
+        function requestNewFile(withSample = false) {
+            const createNew = () => {
+                promptsData = [];
+                currentFileName = 'neue_liste.json';
+                
+                if (withSample) {
+                    promptsData.push({
+                        id: "1001",
+                        titel: "Beispiel-Prompt: Text Zusammenfassung",
+                        fach: "Deutsch",
+                        funktion: "Assistent",
+                        stufe: "Sekundarstufe 1",
+                        tags: ["Muster", "Unterrichtsmaterial"],
+                        kurzbeschreibung: "Ein einfacher Prompt, um lange Texte für Schüler zusammenzufassen.",
+                        prompt: "Du bist ein hilfreicher Lernassistent für Schüler der 8. Klasse. Fasse den folgenden Text in 3 einfachen, verständlichen Sätzen zusammen und erkläre das wichtigste Fachwort daraus.\n\n[Hier Text einfügen]"
+                    });
+                }
+                
+                renderAll();
+                showToast(withSample ? "Neue Liste mit Mustereintrag erstellt." : "Neue, leere Datei erstellt.");
+            };
+
+            if (promptsData.length > 0) {
+                showModal('Neue Datei beginnen?', 'Alle nicht gespeicherten Änderungen in der aktuellen Ansicht gehen verloren.', createNew, 'warning');
+            } else {
+                createNew();
+            }
+        }
+
+        // --- ECHTZEIT-UPDATES ---
+        function updateData(index, field, value) {
+            if (promptsData[index]) {
+                promptsData[index][field] = value;
+            }
+        }
+
+        function updateTagsFromSelect(index, selectElement) {
+            if (promptsData[index]) {
+                promptsData[index].tags = Array.from(selectElement.selectedOptions).map(opt => opt.value);
+            }
+        }
+
+        function clearTags(index) {
+            if (promptsData[index]) {
+                promptsData[index].tags = [];
+                renderAll();
+            }
+        }
+
+        // --- RENDERING ---
+        function renderAll() {
+            countDisplay.innerText = promptsData.length;
+            
+            if (promptsData.length === 0) {
+                emptyState.classList.remove('hidden');
+                addBottomContainer.classList.add('hidden');
+                container.innerHTML = '';
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+                addBottomContainer.classList.remove('hidden');
+            }
+
+            let htmlString = '';
+            
+            promptsData.forEach((item, index) => {
+                // HIER: WICHTIG! Das Container-Div hat genau diese ID: prompt-entry-[id-aus-json]
+                htmlString += `
+                <div id="prompt-entry-${escapeHTML(item.id)}" class="highlight-card bg-white p-5 md:p-6 rounded-xl shadow-sm border border-slate-200 relative group hover:border-indigo-300">
+                    
+                    <div class="absolute top-4 right-4">
+                        <button onclick="deleteEntry(${index})" title="Eintrag löschen" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all focus:outline-none">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-5 mb-5 pr-10">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">ID</label>
+                            <input type="text" oninput="updateData(${index}, 'id', this.value)" value="${escapeHTML(item.id)}" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all">
+                        </div>
+                        
+                        <div class="md:col-span-10">
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Titel</label>
+                            <input type="text" oninput="updateData(${index}, 'titel', this.value)" value="${escapeHTML(item.titel)}" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all font-medium text-slate-900">
+                        </div>
+
+                        <div class="md:col-span-4">
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Fach</label>
+                            <select onchange="updateData(${index}, 'fach', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all">
+                                <option value="">-- Bitte wählen --</option>
+                                ${(() => {
+                                    let options = '';
+                                    let fachFound = false;
+                                    availableSubjects.forEach(subject => {
+                                        const isSelected = item.fach && subject.toLowerCase() === item.fach.toLowerCase();
+                                        if (isSelected) fachFound = true;
+                                        options += `<option value="${escapeHTML(subject)}" ${isSelected ? 'selected' : ''}>${escapeHTML(subject)}</option>`;
+                                    });
+                                    if (item.fach && !fachFound) options += `<option value="${escapeHTML(item.fach)}" selected>${escapeHTML(item.fach)} (aus Datei)</option>`;
+                                    return options;
+                                })()}
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-4">
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Funktion</label>
+                            <select onchange="updateData(${index}, 'funktion', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all">
+                                <option value="">-- Bitte wählen --</option>
+                                ${(() => {
+                                    const functions = ['Prompt', 'Bildgenerierung', 'Assistent', 'Lernszenarium', 'Dialogpartner'];
+                                    let options = '';
+                                    let found = false;
+                                    functions.forEach(func => {
+                                        const isSelected = item.funktion && func.toLowerCase() === item.funktion.toLowerCase();
+                                        if (isSelected) found = true;
+                                        options += `<option value="${escapeHTML(func)}" ${isSelected ? 'selected' : ''}>${escapeHTML(func)}</option>`;
+                                    });
+                                    if (item.funktion && !found) options += `<option value="${escapeHTML(item.funktion)}" selected>${escapeHTML(item.funktion)} (aus Datei)</option>`;
+                                    return options;
+                                })()}
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-4">
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Stufe</label>
+                            <select onchange="updateData(${index}, 'stufe', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all">
+                                <option value="">-- Bitte wählen --</option>
+                                ${(() => {
+                                    const levels = ['Primarstufe', 'Sekundarstufe 1', 'Sekundarstufe 2'];
+                                    let options = '';
+                                    let found = false;
+                                    levels.forEach(level => {
+                                        const isSelected = item.stufe && level.toLowerCase() === item.stufe.toLowerCase();
+                                        if (isSelected) found = true;
+                                        options += `<option value="${escapeHTML(level)}" ${isSelected ? 'selected' : ''}>${escapeHTML(level)}</option>`;
+                                    });
+                                    if (item.stufe && !found) options += `<option value="${escapeHTML(item.stufe)}" selected>${escapeHTML(item.stufe)} (aus Datei)</option>`;
+                                    return options;
+                                })()}
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-12">
+                            <div class="flex justify-between items-end mb-1">
+                                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Tags (Mehrfachauswahl mit Strg/Cmd)</label>
+                                <button type="button" onclick="clearTags(${index})" class="text-xs font-medium text-indigo-500 hover:text-indigo-700 transition-all focus:outline-none" title="Alle gewählten Tags entfernen">
+                                    Alle abwählen
+                                </button>
+                            </div>
+                            <select multiple size="3" onchange="updateTagsFromSelect(${index}, this)" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all">
+                                ${(() => {
+                                    let options = '';
+                                    const itemTags = Array.isArray(item.tags) ? item.tags.map(t => String(t).toLowerCase()) : [];
+                                    availableTags.forEach(tag => {
+                                        const isSelected = itemTags.includes(tag.toLowerCase());
+                                        options += `<option value="${escapeHTML(tag)}" ${isSelected ? 'selected' : ''}>${escapeHTML(tag)}</option>`;
+                                    });
+                                    if (Array.isArray(item.tags)) {
+                                        item.tags.forEach(tag => {
+                                            if (tag && !availableTags.some(at => at.toLowerCase() === String(tag).toLowerCase())) {
+                                                options += `<option value="${escapeHTML(tag)}" selected>${escapeHTML(tag)} (aus Datei)</option>`;
+                                            }
+                                        });
+                                    }
+                                    return options;
+                                })()}
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-12">
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Kurzbeschreibung</label>
+                            <input type="text" oninput="updateData(${index}, 'kurzbeschreibung', this.value)" value="${escapeHTML(item.kurzbeschreibung)}" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-1">Prompt</label>
+                        <textarea oninput="updateData(${index}, 'prompt', this.value)" rows="5" class="w-full bg-indigo-50/30 border border-indigo-200 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all resize-y text-slate-800 leading-relaxed">${escapeHTML(item.prompt)}</textarea>
+                    </div>
+                </div>
+                `;
+            });
+
+            container.innerHTML = htmlString;
+        }
+
+        // --- UI HILFSFUNKTIONEN ---
+        function showModal(title, message, onConfirm, type = 'danger') {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerHTML = message.replace(/\n/g, '<br>');
+            
+            document.getElementById('modal-input-wrapper').classList.add('hidden');
+            currentConfirmCallback = onConfirm;
+
+            const btnEl = document.getElementById('modal-confirm-btn');
+            const cancelBtn = document.getElementById('modal-cancel-btn');
+            const iconContainer = document.getElementById('modal-icon-container');
+
+            cancelBtn.classList.remove('hidden');
+
+            if (type === 'danger') {
+                btnEl.className = 'px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white font-medium transition-all shadow-sm';
+                btnEl.innerText = 'Löschen';
+                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-red-100 text-red-600 mt-1';
+                iconContainer.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+            } else if (type === 'warning') {
+                btnEl.className = 'px-4 py-2 bg-amber-500 hover:bg-amber-600 rounded-lg text-white font-medium transition-all shadow-sm';
+                btnEl.innerText = 'Fortfahren';
+                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 text-amber-600 mt-1';
+                iconContainer.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+            } else if (type === 'error') {
+                btnEl.className = 'px-4 py-2 bg-slate-800 hover:bg-slate-900 rounded-lg text-white font-medium transition-all shadow-sm';
+                btnEl.innerText = 'Verstanden';
+                cancelBtn.classList.add('hidden');
+                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-red-100 text-red-600 mt-1';
+                iconContainer.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+                if(!onConfirm) currentConfirmCallback = () => {};
+            }
+
+            btnEl.onclick = () => {
+                if (currentConfirmCallback) currentConfirmCallback();
+                closeModal();
+            };
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        function showInputModal(title, message, defaultText, onConfirm) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerHTML = message;
+            
+            const inputWrapper = document.getElementById('modal-input-wrapper');
+            const inputField = document.getElementById('modal-input-field');
+            
+            inputWrapper.classList.remove('hidden');
+            inputField.value = defaultText;
+
+            const btnEl = document.getElementById('modal-confirm-btn');
+            const cancelBtn = document.getElementById('modal-cancel-btn');
+            const iconContainer = document.getElementById('modal-icon-container');
+
+            cancelBtn.classList.remove('hidden');
+
+            btnEl.className = 'px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-medium transition-all shadow-sm';
+            btnEl.innerText = 'Speichern';
+            
+            iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-indigo-100 text-indigo-600 mt-1';
+            iconContainer.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>';
+
+            currentConfirmCallback = () => {
+                onConfirm(inputField.value);
+            };
+
+            btnEl.onclick = () => {
+                if (currentConfirmCallback) currentConfirmCallback();
+                closeModal();
+            };
+
+            document.getElementById('custom-modal').classList.remove('hidden');
+            
+            setTimeout(() => {
+                inputField.focus();
+                inputField.select(); 
+            }, 100);
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+            currentConfirmCallback = null;
+        }
+
+        let toastTimeout;
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = message;
+            toast.className = `fixed bottom-4 right-4 ${isError ? 'bg-red-600' : 'bg-slate-800'} text-white px-4 py-3 rounded-lg shadow-lg transform transition-all z-50 flex items-center gap-3`;
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+
+        // Init
+        renderAll();
+        document.addEventListener('DOMContentLoaded', loadFileFromUrl);
+
+    </script>
+</body>
+</html>
