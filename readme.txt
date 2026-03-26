@@ -2,6 +2,8 @@
 I. TELLI IN THÜRINGEN
 ===========================================================================
 
+https://lochnertobias.github.io/telli-in-thueringen/
+
 1) ZIELE DER SEITE
 ---------------------------------------------------------------------------
 - liefert Informationen und Anregungen über den KI-Chatbot „telli“ im schulischen Kontext
