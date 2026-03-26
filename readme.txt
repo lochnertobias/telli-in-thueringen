@@ -22,7 +22,8 @@ erstellt von Tobias Lochner,
 Dr. Sulzberger-Gymnasium, Bad Salzungen, 2026
 
 basierend auf einer Idee von
-Martin Kurz, Hessische Lehrkräfteakademie, 2026,  https://mgkurz.github.io/-telli-deutsch-ideen/
+Martin Kurz, Hessische Lehrkräfteakademie, 2026 
+https://mgkurz.github.io/-telli-deutsch-ideen/
 
 Neue Funktionen im Vergleich zur hessischen Vorlage:
 Erweiterung der Prompt-Datenbank um die Ebene Fächer
