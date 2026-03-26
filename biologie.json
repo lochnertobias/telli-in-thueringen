@@ -1,0 +1,182 @@
+[
+  {
+    "id": "1001",
+    "titel": "Fotosynthese-Märchen",
+    "fach": "Biologie",
+    "funktion": "Prompt",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Erklärt die Fotosynthese als kindgerechte Geschichte.",
+    "prompt": "Schreibe eine Geschichte über ein Blatt namens 'Grünli', das Sonnenlicht in Zucker verwandelt. Nutze einfache Begriffe wie Sonnen-Energie, Wasser und Luft-Nahrung. Maximal 150 Wörter."
+  },
+  {
+    "id": "1002",
+    "titel": "Mikroskopier-Assistent",
+    "fach": "Biologie",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Schritt-für-Schritt-Anleitung zur Erstellung eines Frischpräparats.",
+    "prompt": "Du begleitest Schüler beim Mikroskopieren einer Zwiebelhaut. Frage nach dem aktuellen Schritt (Schneiden, Färben, Abdecken) und gib Sicherheitshinweise sowie Tipps für ein scharfes Bild."
+  },
+  {
+    "id": "1003",
+    "titel": "Charles Darwin im Interview",
+    "fach": "Biologie",
+    "funktion": "Dialogpartner",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Interaktives Gespräch über die Evolutionstheorie.",
+    "prompt": "Du bist Charles Darwin auf der HMS Beagle. Antworte in der Ich-Perspektive und erkläre deine Beobachtungen zu den Finken auf den Galapagos-Inseln. Diskutiere den Begriff 'Selektion' auf dem Wissensstand von 1859."
+  },
+  {
+    "id": "1004",
+    "titel": "Zell-Arena: Pflanzen vs. Tiere",
+    "fach": "Biologie",
+    "funktion": "Bildgenerierung",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Visualisierung der Unterschiede zwischen Pflanzen- und Tierzellen.",
+    "prompt": "Generiere eine Infografik im Comic-Stil: Eine Pflanzenzelle mit grünen Chloroplasten und großer Vakuole tritt gegen eine Tierzelle an. Die Unterschiede (Zellwand vs. nur Membran) sollen deutlich erkennbar sein."
+  },
+  {
+    "id": "1005",
+    "titel": "Ökosystem See: Nahrungsnetz",
+    "fach": "Biologie",
+    "funktion": "Lernszenarium",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Interaktives Spiel zum Aufbau von Nahrungsketten.",
+    "prompt": "Wir bauen ein Nahrungsnetz im See. Ich nenne ein Lebewesen (z.B. Hecht), und du fragst mich, wer dessen Fressfeind ist oder was es frisst. Gib Feedback zur biologischen Richtigkeit."
+  },
+  {
+    "id": "1006",
+    "titel": "Genetik-Detektiv: Mendel-Regeln",
+    "fach": "Biologie",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Hilfe bei der Analyse von Erbgängen und Kreuzungsschemata.",
+    "prompt": "Ich gebe dir ein Kreuzungsexperiment (z.B. Erbsen: gelb/rund x grün/kantig). Analysiere Schritt für Schritt die F1- und F2-Generation nach den Mendelschen Regeln und erstelle ein Punnett-Quadrat in Textform."
+  },
+  {
+    "id": "1007",
+    "titel": "Erich das Eichhörnchen",
+    "fach": "Biologie",
+    "funktion": "Dialogpartner",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Ein Tier erklärt seine Strategien für den Winter.",
+    "prompt": "Du bist Erich das Eichhörnchen. Kinder fragen dich, wie du dich auf den Winter vorbereitest. Erkläre den Unterschied zwischen Winterschlaf und Winterruhe in lustigen Sätzen."
+  },
+  {
+    "id": "1008",
+    "titel": "Visualisierung: DNS-Doppelhelix",
+    "fach": "Biologie",
+    "funktion": "Bildgenerierung",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Detailreiche Darstellung der Molekularstruktur.",
+    "prompt": "Erstelle ein hochauflösendes, wissenschaftliches Bild einer DNA-Doppelhelix. Die Basenpaare (A-T, G-C) sollen farblich differenziert und die Zucker-Phosphat-Ketten deutlich sichtbar sein. Stil: Modernes 3D-Rendering."
+  },
+  {
+    "id": "1009",
+    "titel": "Verdauungs-Reise",
+    "fach": "Biologie",
+    "funktion": "Lernszenarium",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Simulation des Weges der Nahrung durch den Körper.",
+    "prompt": "Stell dir vor, ich bin ein Apfelstück. Begleite mich auf dem Weg durch den Mund, Magen und Darm. Erkläre mir an jeder Station, welche Enzyme mich gerade 'angreifen' und was dort passiert."
+  },
+  {
+    "id": "1010",
+    "titel": "Insekten-Bestimmungshilfe",
+    "fach": "Biologie",
+    "funktion": "Assistent",
+    "stufe": ["Primarstufe", "Sekundarstufe 1"],
+    "kurzbeschreibung": "Klassifizierung von Insekten anhand von Merkmalen.",
+    "prompt": "Du bist ein Bestimmungsbuch. Ich beschreibe ein Insekt (Anzahl Beine, Flügel, Körperbau), und du führst mich mit Ja/Nein-Fragen zur richtigen Ordnung oder Familie."
+  },
+  {
+    "id": "1011",
+    "titel": "Enzymkinetik-Coach",
+    "fach": "Biologie",
+    "funktion": "Prompt",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Erstellung von Übungsaufgaben zur Michaelis-Menten-Kinetik.",
+    "prompt": "Erstelle drei Rechenaufgaben zur Enzymkinetik. Inkludiere Graphen-Beschreibungen (Vmax, Km) und frage nach dem Einfluss von Inhibitoren. Liefere einen separaten Lösungsschlüssel mit Rechenweg."
+  },
+  {
+    "id": "1012",
+    "titel": "Der Wald im Wandel",
+    "fach": "Biologie",
+    "funktion": "Bildgenerierung",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Vier Bilder zu den Jahreszeiten im Mischwald.",
+    "prompt": "Generiere eine Bildsequenz mit vier Bildern derselben Eiche im Wald: Frühling (Knospen), Sommer (dichtes Laub), Herbst (bunt), Winter (kahl, Schnee). Klarer, freundlicher Illustrationsstil."
+  },
+  {
+    "id": "1013",
+    "titel": "Immunsystem-Krimi",
+    "fach": "Biologie",
+    "funktion": "Prompt",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Abwehrreaktion gegen Viren als spannende Geschichte.",
+    "prompt": "Schreibe eine Kurzgeschichte über den 'Angriff der Influenza-Viren' auf eine Körperzelle. Beschreibe die Rolle der Fresszellen, T-Zellen und Antikörper wie Agenten in einem Krimi."
+  },
+  {
+    "id": "1014",
+    "titel": "Ethik-Debatte: CRISPR",
+    "fach": "Biologie",
+    "funktion": "Dialogpartner",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Diskussion über Chancen und Risiken der Genschere.",
+    "prompt": "Du nimmst eine kritische Position zur Gen-Editierung beim Menschen (CRISPR-Cas9) ein. Ich argumentiere für den medizinischen Nutzen. Fordere mich mit ethischen Bedenken und ökologischen Risiken heraus."
+  },
+  {
+    "id": "1015",
+    "titel": "Blüten-Baukasten",
+    "fach": "Biologie",
+    "funktion": "Lernszenarium",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Aufbau einer Blüte spielerisch lernen.",
+    "prompt": "Wir bauen eine Blume. Ich nenne dir ein Bauteil (z.B. Stempel), und du erklärst mir, wofür es da ist. Wenn wir alle Teile (Kelchblatt, Kronblatt, Staubblatt) haben, beschreibe uns die fertige Blume."
+  },
+  {
+    "id": "1016",
+    "titel": "Hormonsystem-Check",
+    "fach": "Biologie",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Überprüfung des Wissens über Drüsen und Botenstoffe.",
+    "prompt": "Erstelle ein Quiz zu den Hormondrüsen des Menschen. Frage nach Schilddrüse, Bauchspeicheldrüse und Nebenniere. Gib nach jeder Antwort eine kurze Erklärung zum jeweiligen Hormon (Insulin, Adrenalin)."
+  },
+  {
+    "id": "1017",
+    "titel": "Stammbaum-Analysator",
+    "fach": "Biologie",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Bestimmung von Erbgängen (autosomal/gonosomal).",
+    "prompt": "Ich beschreibe dir einen Familienstammbaum über drei Generationen hinweg. Deine Aufgabe ist es, zu begründen, ob der Erbgang dominant/rezessiv oder autosomal/gonosomal ist."
+  },
+  {
+    "id": "1018",
+    "titel": "Bodenlebewesen-Makro",
+    "fach": "Biologie",
+    "funktion": "Bildgenerierung",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Nahaufnahme von Tieren in der Laubstreu.",
+    "prompt": "Generiere ein realistisches Bild eines Regenwurms und einer Assel unter einer Lupe auf Waldboden. Man soll die Segmente des Wurms und die Panzerung der Assel genau sehen können."
+  },
+  {
+    "id": "1019",
+    "titel": "Atmungskette-Simulator",
+    "fach": "Biologie",
+    "funktion": "Lernszenarium",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Interaktive Simulation des Elektronentransports.",
+    "prompt": "Wir simulieren die Atmungskette im Mitochondrium. Ich bin ein Elektron. Führe mich durch die Proteinkomplexe I bis IV. Erkläre bei jedem Schritt, was mit den Protonen passiert und wie am Ende ATP entsteht."
+  },
+  {
+    "id": "1020",
+    "titel": "Ökologischer Fußabdruck",
+    "fach": "Biologie",
+    "funktion": "Assistent",
+    "stufe": ["Sekundarstufe 1", "Sekundarstufe 2"],
+    "kurzbeschreibung": "Berechnung und Beratung zur Nachhaltigkeit.",
+    "prompt": "Hilf mir, meinen ökologischen Fußabdruck zu schätzen. Stelle mir 5 gezielte Fragen zu Ernährung, Wohnen und Mobilität. Berechne grob die Auswirkung auf die Biodiversität und schlage drei biologische Maßnahmen zur Kompensation vor."
+  }
+]

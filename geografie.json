@@ -1,0 +1,182 @@
+[
+  {
+    "id": "3001",
+    "titel": "Reise eines Wassertropfens",
+    "fach": "Geografie",
+    "funktion": "Dialogpartner",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Schüler begleiten einen Wassertropfen durch den Wasserkreislauf.",
+    "prompt": "Du bist 'Tröpfchen', ein kleiner Wassertropfen. Erkläre einem Kind der 3. Klasse, wie du vom Meer in die Wolken und als Regen wieder zurück gelangst. Lass das Kind entscheiden, wo du als nächstes hinfließt (z.B. in einen Fluss oder ins Grundwasser) und beschreibe, was du dort erlebst."
+  },
+  {
+    "id": "3002",
+    "titel": "Vulkantypen-Visualisierung",
+    "fach": "Geografie",
+    "funktion": "Bildgenerierung",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Erstellung eines Vergleichsbildes zwischen Schicht- und Schildvulkanen.",
+    "prompt": "Generiere eine wissenschaftliche Illustration, die einen Schichtvulkan (spitz, explosiv) und einen Schildvulkan (flach, dünnflüssige Lava) nebeneinander zeigt. Beschrifte die Grafik im Bild nicht, aber achte auf die deutliche Darstellung der Magmakammer und der unterschiedlichen Hangneigungen."
+  },
+  {
+    "id": "3003",
+    "titel": "Demografischer Wandel Analyst",
+    "fach": "Geografie",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Unterstützung bei der Analyse von Bevölkerungspyramiden.",
+    "prompt": "Du bist ein Experte für Demografie. Ich beschreibe dir die Form einer Bevölkerungspyramide (z.B. Urnenform oder Bienenkorbform). Analysiere die gesellschaftlichen Ursachen für diese Form und prognostiziere die Herausforderungen für das Renten- und Gesundheitssystem dieses Landes."
+  },
+  {
+    "id": "3004",
+    "titel": "Überleben in der Megacity",
+    "fach": "Geografie",
+    "funktion": "Lernszenarium",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Interaktive Simulation über das Leben und die Probleme in einer Megastadt (z.B. Mumbai).",
+    "prompt": "Wir simulieren den Alltag in Mumbai. Du bist ein Stadtplaner und ich ein Bewohner eines informellen Sektors (Slum). Wir diskutieren über den Zugang zu sauberem Wasser, Strom und Bildung. Schlage Lösungen vor, die sowohl ökologisch als auch sozial verträglich sind."
+  },
+  {
+    "id": "3005",
+    "titel": "Anpassung an die Wüste",
+    "fach": "Geografie",
+    "funktion": "Prompt",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Erklärung der Überlebensstrategien von Tieren und Pflanzen in der Trockenwüste.",
+    "prompt": "Schreibe einen kurzen, spannenden Sachtext für 10-Jährige darüber, wie das Kamel und der Kaktus in der Wüste überleben. Nutze Vergleiche aus der Alltagswelt der Kinder (z.B. Trinkflasche, Sonnenschutz) und stelle am Ende drei Quizfragen."
+  },
+  {
+    "id": "3006",
+    "titel": "Klimakonferenz-Simulation",
+    "fach": "Geografie",
+    "funktion": "Dialogpartner",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Rollenspiel als Vertreter eines Inselstaates vs. Industrienation.",
+    "prompt": "Du bist der Umweltminister der Malediven auf einer UN-Klimakonferenz. Ich bin der Vertreter eines großen Industrielandes. Argumentiere leidenschaftlich und faktenbasiert für strengere CO2-Ziele und erkläre mir die geografischen Folgen des Meeresspiegelanstiegs für deine Heimat."
+  },
+  {
+    "id": "3007",
+    "titel": "Stadt der Zukunft 2050",
+    "fach": "Geografie",
+    "funktion": "Bildgenerierung",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Visualisierung einer nachhaltigen, klimaresilienten Stadt (Schwammstadt-Konzept).",
+    "prompt": "Erstelle ein fotorealistisches Bild einer europäischen Großstadt im Jahr 2050, die nach dem Schwammstadt-Prinzip umgebaut wurde. Zeige begrünte Fassaden, offene Wasserkanäle zur Kühlung, vertikale Gärten und autofreie Zonen mit viel Photovoltaik."
+  },
+  {
+    "id": "3008",
+    "titel": "Plattentektonik-Checker",
+    "fach": "Geografie",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Bestimmung von Plattenrändern und deren geologischen Folgen.",
+    "prompt": "Ich nenne dir eine Region der Erde (z.B. Island oder die Anden). Erkläre mir, welche tektonischen Platten dort aufeinandertreffen, ob es sich um eine divergierende, konvergierende oder konservierende Grenze handelt und welche Phänomene (Erdbeben, Grabenbruch, Gebirge) dort entstehen."
+  },
+  {
+    "id": "3009",
+    "titel": "Orientierung mit Karte und Kompass",
+    "fach": "Geografie",
+    "funktion": "Lernszenarium",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Virtuelle Schatzsuche zur Einführung von Legende und Maßstab.",
+    "prompt": "Wir spielen 'Schatzsuche auf der Landkarte'. Du beschreibst mir eine einfache Karte mit Symbolen (Kirche, Wald, See). Ich sage dir, in welche Himmelsrichtung ich gehe. Nutze Begriffe wie 'Maßstab' (1cm = 100m), um mir zu sagen, wie weit ich noch vom Ziel entfernt bin."
+  },
+  {
+    "id": "3010",
+    "titel": "Weg eines T-Shirts",
+    "fach": "Geografie",
+    "funktion": "Prompt",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Analyse der globalen Lieferkette und ökologischer Fußabdruck.",
+    "prompt": "Erstelle eine detaillierte Tabelle, die den Weg eines Baumwoll-T-Shirts von der Plantage in Usbekistan bis zum Altkleidercontainer in Deutschland nachzeichnet. Berücksichtige Produktionsschritte, Transportwege (km), Arbeitsbedingungen und die CO2-Bilanz pro Station."
+  },
+  {
+    "id": "3011",
+    "titel": "Farmer in der Sahelzone",
+    "fach": "Geografie",
+    "funktion": "Dialogpartner",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Gespräch über Desertifikation und nachhaltige Landwirtschaft.",
+    "prompt": "Du bist Amadou, ein Kleinbauer im Sahel. Ich bin ein Journalist. Erzähle mir, wie sich das Klima in den letzten 20 Jahren verändert hat, wie der Boden unfruchtbarer wird und welche Methoden (z.B. Steinwälle, Baumpflanzungen) du nutzt, um die Wüste aufzuhalten."
+  },
+  {
+    "id": "3012",
+    "titel": "Stockwerkbau des Regenwaldes",
+    "fach": "Geografie",
+    "funktion": "Bildgenerierung",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Didaktische Zeichnung der verschiedenen Schichten des tropischen Regenwaldes.",
+    "prompt": "Generiere eine farbenfrohe, leicht verständliche Illustration des Stockwerkbaus im Regenwald. Man soll deutlich die Krautschicht, Strauchschicht, das Blätterdach und die Urwaldriesen erkennen. Füge typische Tiere in die jeweiligen Schichten ein (z.B. Faultier oben, Jaguar unten)."
+  },
+  {
+    "id": "3013",
+    "titel": "Klimadiagramm-Coach",
+    "fach": "Geografie",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Schritt-für-Schritt-Anleitung zur Auswertung von Klimadaten.",
+    "prompt": "Ich gebe dir Temperatur- und Niederschlagswerte einer Stadt. Leite mich schrittweise an, wie ich daraus ein Klimadiagramm zeichne. Stelle mir Fragen, damit ich selbst herausfinde, ob es sich um ein humides oder arides Klima handelt und in welcher Klimazone die Stadt liegt."
+  },
+  {
+    "id": "3014",
+    "titel": "Energie-Manager",
+    "fach": "Geografie",
+    "funktion": "Lernszenarium",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Planung des Energiemixes einer Region unter Berücksichtigung geografischer Faktoren.",
+    "prompt": "Du bist der Energieplaner eines Bundeslandes. Ich präsentiere dir geografische Gegebenheiten (viel Küste, wenig Sonne, Gebirge). Diskutiere mit mir die Vor- und Nachteile von Windkraft, Photovoltaik und Pumpspeicherkraftwerken für diese spezifische Region."
+  },
+  {
+    "id": "3015",
+    "titel": "Massentourismus in den Alpen",
+    "fach": "Geografie",
+    "funktion": "Prompt",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Pro- und Contra-Debatte über den Skitourismus.",
+    "prompt": "Erstelle eine Gegenüberstellung der wirtschaftlichen Vorteile des Skitourismus in den Alpen (Arbeitsplätze, Einnahmen) und der ökologischen Nachteile (Pistenbau, Wasserverbrauch für Kunstschnee, Verkehr). Formuliere daraus eine Diskussionsfrage für die Klasse."
+  },
+  {
+    "id": "3016",
+    "titel": "Eisbär auf Scholle",
+    "fach": "Geografie",
+    "funktion": "Dialogpartner",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Sensibilisierung für die Eisschmelze in der Arktis.",
+    "prompt": "Du bist 'Nanuk', ein Eisbär in der Arktis. Erzähle mir kindgerecht, warum es für dich immer schwieriger wird, Robben zu jagen, weil das Eis schmilzt. Erkläre kurz den Unterschied zwischen Nord- und Südpol, damit ich nicht verwirrt bin."
+  },
+  {
+    "id": "3017",
+    "titel": "Der Schalenbau der Erde",
+    "fach": "Geografie",
+    "funktion": "Bildgenerierung",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Querschnitt durch die Erde mit Erdkruste, Mantel und Kern.",
+    "prompt": "Erzeuge eine 3D-Grafik eines Erdausschnitts (wie ein Tortenstück), die den Schalenbau zeigt: Erdkruste, oberer/unterer Erdmantel, äußerer und innerer Erdkern. Verwende unterschiedliche Farben für die Hitzezonen (von Gelb zu Dunkelrot)."
+  },
+  {
+    "id": "3018",
+    "titel": "GIS-Experte für Einsteiger",
+    "fach": "Geografie",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Einführung in Geoinformationssysteme und Layer-Strukturen.",
+    "prompt": "Erkläre mir das Prinzip von GIS anhand des Beispiels 'Standortsuche für einen neuen Supermarkt'. Welche Datenebenen (Layer) brauche ich (Bevölkerungsdichte, Verkehrsnetz, Konkurrenz) und wie werden diese übereinandergelegt, um eine Entscheidung zu treffen?"
+  },
+  {
+    "id": "3019",
+    "titel": "Fair-Trade-Simulator",
+    "fach": "Geografie",
+    "funktion": "Lernszenarium",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Simulation der Preisbildung bei konventionellem vs. fairem Handel.",
+    "prompt": "Wir vergleichen den Preis einer Banane. Du spielst den Zwischenhändler und ich den Bauern. Erkläre mir, warum ich bei konventionellem Handel so wenig verdiene und wie das Fair-Trade-Siegel die Verteilung der Gewinne und meine Lebensbedingungen verändern würde."
+  },
+  {
+    "id": "3020",
+    "titel": "Arktis: Wettlauf um Ressourcen",
+    "fach": "Geografie",
+    "funktion": "Prompt",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Geopolitische Analyse der Gebietsansprüche am Nordpol.",
+    "prompt": "Analysiere die geopolitischen Interessen von Russland, den USA und Dänemark in der Arktis. Gehe auf die schmelzenden Seewege (Nordostpassage) und die vermuteten Rohstoffvorkommen ein. Erstelle dazu ein Thesenpapier mit fünf Punkten."
+  }
+]

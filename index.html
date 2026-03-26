@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="de" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>telli in Thüringen</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 transition-colors duration-200">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // --- SVG Icons ---
+        const SearchIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
+        const ChevronDownIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>;
+        const ChevronUpIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>;
+        const TagIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>;
+        const BookOpenIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>;
+        const LayersIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>;
+        const ZapIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>;
+        const InfoIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>;
+        const CloseIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>;
+        const ImageIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>;
+        const DownloadIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>;
+        const SunIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>;
+        const MoonIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>;
+
+        // Statische Filter-Optionen (Fach wird jetzt dynamisch generiert)
+        const FILTER_STUFE = ['Primarstufe', 'Sekundarstufe 1', 'Sekundarstufe 2'];
+        const FILTER_FUNKTION = ['Prompt', 'Bildgenerierung', 'Assistent', 'Lernszenarium', 'Dialogpartner'];
+
+        // Fallback-Daten
+        const FALLBACK_DATA = [
+          {
+            "id": "1",
+            "titel": "Differenzierte Lesetexte generieren",
+            "fach": "Deutsch",
+            "funktion": "Prompt",
+            "stufe": "Primarstufe",
+            "kurzbeschreibung": "Sachtext in drei Niveaustufen für eine 2. Klasse generieren lassen. (FALLBACK DATEN)",
+            "prompt": "Schreibe einen kurzen Sachtext über Igel im Winter für eine 2. Klasse. Maximal 60 Wörter, nur einfache Hauptsätze, Silbentrennung durch Bindestriche markieren. Erstelle denselben Text in einer Version für leseschwache Kinder (40 Wörter, Druckschrift-Stil) und einer Version für lesestarke Kinder (80 Wörter, mit einem Nebensatz pro Absatz)."
+          }
+        ];
+
+        function App() {
+          const [entries, setEntries] = useState([]);
+          const [loading, setLoading] = useState(true);
+          const [expandedCards, setExpandedCards] = useState(new Set());
+          const [fileError, setFileError] = useState(false);
+          const [showImpressum, setShowImpressum] = useState(false);
+          const [showExportModal, setShowExportModal] = useState(false);
+          
+          // Dynamische Liste der Fächer aus der faecher.json
+          const [faecherListe, setFaecherListe] = useState([]);
+          
+          // Dark Mode State
+          const [isDarkMode, setIsDarkMode] = useState(false);
+
+          // Filters-State als Arrays für Mehrfachauswahl
+          const [filters, setFilters] = useState({
+            fach: [],
+            stufe: [],
+            funktion: []
+          });
+          const [searchTerm, setSearchTerm] = useState('');
+
+          const [exportFilters, setExportFilters] = useState({
+            fach: [],
+            stufe: [],
+            funktion: []
+          });
+
+          // Dark Mode Initialisierung
+          useEffect(() => {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+              setIsDarkMode(true);
+              document.documentElement.classList.add('dark');
+            } else {
+              setIsDarkMode(false);
+              document.documentElement.classList.remove('dark');
+            }
+          }, []);
+
+          const toggleDarkMode = () => {
+            if (isDarkMode) {
+              document.documentElement.classList.remove('dark');
+              localStorage.setItem('theme', 'light');
+              setIsDarkMode(false);
+            } else {
+              document.documentElement.classList.add('dark');
+              localStorage.setItem('theme', 'dark');
+              setIsDarkMode(true);
+            }
+          };
+
+          // NEU: Dynamisches Laden über faecher.json
+          useEffect(() => {
+            const loadData = async () => {
+              try {
+                setLoading(true);
+                let faecherNamen = [];
+                
+                // 1. Lade das Inhaltsverzeichnis (faecher.json)
+                try {
+                  const faecherRes = await fetch('faecher.json');
+                  if (!faecherRes.ok) throw new Error("faecher.json nicht gefunden");
+                  faecherNamen = await faecherRes.json();
+                } catch (e) {
+                  console.warn("Konnte faecher.json nicht laden, nutze Fallback.", e);
+                  setFileError(true);
+                  setEntries(FALLBACK_DATA);
+                  setFaecherListe(['Deutsch']); // Fallback für die Buttons
+                  setLoading(false);
+                  return;
+                }
+
+                // 2. Fächerliste für die UI aufbereiten (erster Buchstabe groß)
+                const formatierteFaecher = faecherNamen.map(f => f.charAt(0).toUpperCase() + f.slice(1));
+                setFaecherListe(formatierteFaecher);
+
+                // 3. Lade nun alle im Array gelisteten JSON-Dateien
+                const fetchPromises = faecherNamen.map(async (fach) => {
+                  try {
+                    const res = await fetch(`${fach}.json`);
+                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                    const data = await res.json();
+                    
+                    // Wir überschreiben/setzen hier das "fach" dynamisch anhand des Dateinamens
+                    const formatiertesFach = fach.charAt(0).toUpperCase() + fach.slice(1);
+                    return data.map(entry => ({...entry, fach: formatiertesFach}));
+                  } catch (err) {
+                    console.warn(`Warnung: Datei ${fach}.json konnte nicht geladen werden.`, err);
+                    return []; 
+                  }
+                });
+                
+                const results = await Promise.all(fetchPromises);
+                let allData = results.flat();
+
+                if (allData.length === 0) {
+                  setFileError(true);
+                  allData = FALLBACK_DATA;
+                } else {
+                  setFileError(false);
+                }
+
+                setEntries(allData);
+              } catch (error) {
+                console.error("Genereller Fehler beim Laden der Daten:", error);
+                setFileError(true);
+                setEntries(FALLBACK_DATA);
+                setFaecherListe(['Deutsch']);
+              } finally {
+                setLoading(false);
+              }
+            };
+
+            loadData();
+          }, []);
+
+          const toggleFilter = (category, value) => {
+            setFilters(prev => {
+              const currentFilters = prev[category];
+              if (currentFilters.includes(value)) {
+                return { ...prev, [category]: currentFilters.filter(item => item !== value) };
+              } else {
+                return { ...prev, [category]: [...currentFilters, value] };
+              }
+            });
+          };
+
+          const resetFilters = () => {
+            setFilters({ fach: [], stufe: [], funktion: [] });
+            setSearchTerm('');
+          };
+
+          const toggleExportFilter = (category, value) => {
+            setExportFilters(prev => {
+              const currentFilters = prev[category];
+              if (currentFilters.includes(value)) {
+                return { ...prev, [category]: currentFilters.filter(item => item !== value) };
+              } else {
+                return { ...prev, [category]: [...currentFilters, value] };
+              }
+            });
+          };
+
+          const exportCount = useMemo(() => {
+            return entries.filter(entry => {
+              const matchFach = exportFilters.fach.length === 0 || exportFilters.fach.includes(entry.fach);
+              const entryStufen = Array.isArray(entry.stufe) ? entry.stufe : [entry.stufe];
+              const matchStufe = exportFilters.stufe.length === 0 || entryStufen.some(s => exportFilters.stufe.includes(s));
+              const matchFunktion = exportFilters.funktion.length === 0 || exportFilters.funktion.includes(entry.funktion);
+              return matchFach && matchStufe && matchFunktion;
+            }).length;
+          }, [entries, exportFilters]);
+
+          const handleExport = () => {
+            const dataToExport = entries.filter(entry => {
+              const matchFach = exportFilters.fach.length === 0 || exportFilters.fach.includes(entry.fach);
+              const entryStufen = Array.isArray(entry.stufe) ? entry.stufe : [entry.stufe];
+              const matchStufe = exportFilters.stufe.length === 0 || entryStufen.some(s => exportFilters.stufe.includes(s));
+              const matchFunktion = exportFilters.funktion.length === 0 || exportFilters.funktion.includes(entry.funktion);
+              return matchFach && matchStufe && matchFunktion;
+            });
+
+            if (dataToExport.length === 0) {
+              alert("Keine Einträge für diese Auswahl gefunden.");
+              return;
+            }
+
+            const jsonString = JSON.stringify(dataToExport, null, 2);
+            const blob = new Blob([jsonString], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `telli-prompts-export-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            setShowExportModal(false);
+          };
+
+          const filteredEntries = useMemo(() => {
+            return entries.filter(entry => {
+              const matchFach = filters.fach.length === 0 || filters.fach.includes(entry.fach);
+              const entryStufen = Array.isArray(entry.stufe) ? entry.stufe : [entry.stufe];
+              const matchStufe = filters.stufe.length === 0 || entryStufen.some(s => filters.stufe.includes(s));
+              const matchFunktion = filters.funktion.length === 0 || filters.funktion.includes(entry.funktion);
+              
+              const searchLower = searchTerm.toLowerCase();
+              const matchSearch = searchTerm === '' || 
+                entry.titel.toLowerCase().includes(searchLower) ||
+                entry.kurzbeschreibung.toLowerCase().includes(searchLower) ||
+                entry.prompt.toLowerCase().includes(searchLower);
+
+              return matchFach && matchStufe && matchFunktion && matchSearch;
+            });
+          }, [entries, filters, searchTerm]);
+
+          const toggleCard = (id) => {
+            setExpandedCards(prev => {
+              const newSet = new Set(prev);
+              if (newSet.has(id)) {
+                newSet.delete(id);
+              } else {
+                newSet.add(id);
+              }
+              return newSet;
+            });
+          };
+
+          const copyToClipboard = (text) => {
+            navigator.clipboard.writeText(text).then(() => {
+              alert("Prompt in die Zwischenablage kopiert!");
+            }).catch(err => {
+              const textArea = document.createElement("textarea");
+              textArea.value = text;
+              document.body.appendChild(textArea);
+              textArea.select();
+              try {
+                document.execCommand('copy');
+                alert("Prompt in die Zwischenablage kopiert!");
+              } catch (e) {
+                console.error("Kopieren fehlgeschlagen", e);
+              }
+              document.body.removeChild(textArea);
+            });
+          };
+
+          const hasActiveFilters = filters.fach.length > 0 || filters.stufe.length > 0 || filters.funktion.length > 0 || searchTerm !== '';
+
+          return (
+            <div className="min-h-screen text-slate-800 dark:text-slate-200 font-sans relative flex overflow-hidden">
+              
+              {/* --- HAUPTINHALT --- */}
+              <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+                
+                {/* HEADER BEREICH */}
+                <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 pt-6 pb-8 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+                  <div className="max-w-5xl mx-auto">
+                    
+                    {/* Titel und Buttons Container */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
+                      <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-900 dark:text-blue-400 leading-tight">telli in Thüringen</h1>
+                      
+                      {/* Navigations-Buttons */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        
+                        {/* Dark Mode Toggle */}
+                        <button 
+                          onClick={toggleDarkMode}
+                          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
+                          title={isDarkMode ? "In den hellen Modus wechseln" : "In den dunklen Modus wechseln"}
+                        >
+                          {isDarkMode ? <SunIcon className="w-4 h-4 text-amber-400" /> : <MoonIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+                          <span className="hidden sm:inline">{isDarkMode ? 'Hell' : 'Dunkel'}</span>
+                        </button>
+
+                        <button 
+                          onClick={() => setShowExportModal(true)}
+                          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
+                        >
+                          <DownloadIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                          <span className="hidden sm:inline">Datenexport</span>
+                        </button>
+                        
+                        <button 
+                          onClick={() => setShowImpressum(true)}
+                          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
+                        >
+                          <InfoIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                          <span className="hidden sm:inline">Impressum</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <h2 className="text-lg sm:text-xl text-blue-700 dark:text-blue-300 font-medium mb-8">Praxisbeispiele für den Einsatz von telli im schulischen Kontext</h2>
+                    
+                    {fileError && (
+                      <div className="bg-amber-50 dark:bg-amber-900/30 border-l-4 border-amber-500 p-4 mb-8 text-amber-800 dark:text-amber-200 text-sm">
+                        <p className="font-bold">Hinweis zum lokalen Modus</p>
+                        <p>Sie haben die Datei lokal ohne Server geöffnet oder die faecher.json fehlt. Aus Sicherheitsgründen blockiert Ihr Browser das Einlesen der Dateien oder sie wurden nicht gefunden. Es werden daher nur die Fallback-Daten angezeigt.</p>
+                      </div>
+                    )}
+
+                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800/50 shadow-sm mb-8 transition-colors duration-200">
+                      <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                        <strong className="font-semibold text-blue-900 dark:text-blue-400">telli</strong> ist der DSGVO-konforme KI-Chatbot für Schulen in Thüringen. Betrieben wird er von der fwu. <br/> <br/> Sie erhalten Zugang zu telli über Ihren Login in das Thüringer Schulportal.<br/><br/> Diese Sammlung zeigt Einsatzideen für verschiedene Fächer, gegliedert nach telli-Funktion und Schulstufen. Die Beispiele sind als Anregung zur Erstellung eigener telli-Funktionen gedacht.
+						<br/> 
+					  </p>
+                    </div>
+
+                    <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center">
+                      <InfoIcon className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
+                      Diese Funktionen stellt telli bereit:
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-white dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm transition-colors duration-200">
+                        <h4 className="font-bold text-blue-800 dark:text-blue-300 flex items-center mb-2"><ZapIcon className="w-4 h-4 mr-2" /> Prompts für Lehrkräfte</h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-300">Direkte Eingaben an telli zur Unterrichtsvorbereitung. Die Lehrkraft tippt, telli liefert Material, Aufgaben oder Ideen.</p>
+                      </div>
+                      <div className="bg-white dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm transition-colors duration-200">
+                        <h4 className="font-bold text-blue-800 dark:text-blue-300 flex items-center mb-2"><ImageIcon className="w-4 h-4 mr-2" /> Bildgenerierung</h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-300">telli erzeugt Bilder als Schreibanlass, Visualisierung oder Gegenstand für Medienkritik.</p>
+                      </div>
+                      <div className="bg-white dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm transition-colors duration-200">
+                        <h4 className="font-bold text-blue-800 dark:text-blue-300 flex items-center mb-2"><LayersIcon className="w-4 h-4 mr-2" /> Assistenten</h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-300">Von Lehrkräften konfigurierte KI-Helfer mit hinterlegtem Fachwissen.</p>
+                      </div>
+                      <div className="bg-white dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm transition-colors duration-200">
+                        <h4 className="font-bold text-blue-800 dark:text-blue-300 flex items-center mb-2"><BookOpenIcon className="w-4 h-4 mr-2" /> Lernszenarien</h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-300">Aufgabenbasierte Settings für Schülerinnen und Schüler.</p>
+                      </div>
+                      <div className="bg-white dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm transition-colors duration-200">
+                        <h4 className="font-bold text-blue-800 dark:text-blue-300 flex items-center mb-2"><TagIcon className="w-4 h-4 mr-2" /> Dialogpartner</h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-300">Virtuelle Personen mit eigenem Charakter. SuS chatten mit einer fiktiven Figur.</p>
+                      </div>
+                    </div>
+                  </div>
+                </header>
+
+                {/* STICKY FILTER BEREICH */}
+                <div className="sticky top-0 z-20 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 shadow-sm py-3 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+                  <div className="max-w-5xl mx-auto flex flex-col gap-4">
+                    
+                    <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center">
+                      Liste der Beispiel-Prompts für telli:
+                    </h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      
+                      {/* Fach Filter - Jetzt dynamisch */}
+                      <div>
+                        <div className="flex items-center gap-1 mb-1.5">
+                          <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Fach</label>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {faecherListe.map(opt => {
+                            const isActive = filters.fach.includes(opt);
+                            return (
+                              <button 
+                                key={opt}
+                                onClick={() => toggleFilter('fach', opt)}
+                                className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
+                                  isActive 
+                                  ? 'bg-emerald-600 text-white border-emerald-700 dark:bg-emerald-500 dark:border-emerald-500 shadow-sm' 
+                                  : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800/50 dark:hover:bg-emerald-900/50'
+                                }`}
+                              >
+                                <BookOpenIcon className="w-3 h-3" /> {opt}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Funktion Filter */}
+                      <div>
+                        <div className="flex items-center gap-1 mb-1.5">
+                          <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Funktion</label>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {FILTER_FUNKTION.map(opt => {
+                            const isActive = filters.funktion.includes(opt);
+                            return (
+                              <button 
+                                key={opt}
+                                onClick={() => toggleFilter('funktion', opt)}
+                                className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
+                                  isActive 
+                                  ? 'bg-amber-500 text-white border-amber-600 dark:bg-amber-500 dark:border-amber-500 shadow-sm' 
+                                  : 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800/50 dark:hover:bg-amber-900/50'
+                                }`}
+                              >
+                                <ZapIcon className="w-3 h-3" /> {opt}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Stufe Filter */}
+                      <div>
+                        <div className="flex items-center gap-1 mb-1.5">
+                          <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Stufe</label>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {FILTER_STUFE.map(opt => {
+                            const isActive = filters.stufe.includes(opt);
+                            return (
+                              <button 
+                                key={opt}
+                                onClick={() => toggleFilter('stufe', opt)}
+                                className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
+                                  isActive 
+                                  ? 'bg-purple-600 text-white border-purple-700 dark:bg-purple-500 dark:border-purple-500 shadow-sm' 
+                                  : 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800/50 dark:hover:bg-purple-900/50'
+                                }`}
+                              >
+                                <LayersIcon className="w-3 h-3" /> {opt}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                    </div>
+
+                    {/* Suche & Reset */}
+                    <div className="flex flex-col md:flex-row gap-3 items-center justify-between border-t border-slate-200 dark:border-slate-700 pt-3">
+                      <div className="w-full md:w-96">
+                        <div className="relative">
+                          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
+                            <SearchIcon />
+                          </div>
+                          <input 
+                            type="text" 
+                            className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 shadow-sm transition-shadow placeholder-slate-400 dark:placeholder-slate-500" 
+                            placeholder="Stichwort suchen (z.B. Gedicht, Assistent)..." 
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      
+                      {hasActiveFilters && (
+                        <button 
+                          onClick={resetFilters}
+                          className="text-sm px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors"
+                        >
+                          Alle Filter zurücksetzen
+                        </button>
+                      )}
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* CONTENT BEREICH */}
+                <main className="flex-1 max-w-5xl w-full mx-auto py-8 px-4 sm:px-6 lg:px-8">
+                  {loading ? (
+                    <div className="text-center py-12 text-slate-500 dark:text-slate-400">Daten werden geladen...</div>
+                  ) : (
+                    <>
+                      <div className="mb-6 text-sm text-slate-500 dark:text-slate-400 font-medium">
+                        Zeige {filteredEntries.length} {filteredEntries.length === 1 ? 'Eintrag' : 'Einträge'}
+                      </div>
+
+                      <div className="grid gap-6 mb-12">
+                        {filteredEntries.length > 0 ? (
+                          filteredEntries.map((entry) => {
+                            const isExpanded = expandedCards.has(entry.id);
+                            
+                            return (
+                              <div key={entry.id} className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-200 hover:shadow-md dark:hover:shadow-slate-900/50">
+                                <div 
+                                  className="p-5 cursor-pointer flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center"
+                                  onClick={() => toggleCard(entry.id)}
+                                >
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-3 mb-2">
+                                      <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 text-xs font-bold px-2.5 py-0.5 rounded">
+                                        #{entry.id}
+                                      </span>
+                                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">{entry.titel}</h3>
+                                    </div>
+                                    
+                                    <p className="text-slate-600 dark:text-slate-400 text-sm mb-3">
+                                      {entry.kurzbeschreibung}
+                                    </p>
+
+                                    <div className="flex flex-wrap gap-2">
+                                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50">
+                                        <BookOpenIcon className="w-3 h-3" /> {entry.fach}
+                                      </span>
+                                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50">
+                                        <ZapIcon className="w-3 h-3" /> {entry.funktion}
+                                      </span>
+                                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50">
+                                        <LayersIcon className="w-3 h-3" /> {Array.isArray(entry.stufe) ? entry.stufe.join(', ') : entry.stufe}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="flex items-center justify-center p-2 text-slate-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-400">
+                                    {isExpanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                                  </div>
+                                </div>
+
+                                {isExpanded && (
+                                  <div className="border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-5">
+                                    <div className="flex justify-between items-center mb-3">
+                                      <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Prompt / Eingabe</h4>
+                                      <button 
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          copyToClipboard(entry.prompt);
+                                        }}
+                                        className="text-xs bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium py-1 px-3 rounded shadow-sm transition-colors"
+                                      >
+                                        Kopieren
+                                      </button>
+                                    </div>
+                                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-4 font-mono text-sm text-slate-800 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">
+                                      {entry.prompt}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })
+                        ) : (
+                          <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <p className="text-slate-500 dark:text-slate-400">Keine Einträge für diese Filter gefunden.</p>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </main>
+
+                {/* FOOTER BEREICH */}
+                <footer className="mt-auto bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-6 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+                  <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+                    <div className="text-center md:text-left">
+                      <span>Dieses Werk ist lizenziert unter einer </span>
+                      <a 
+                        href="https://creativecommons.org/licenses/by/4.0/deed.de" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-blue-600 dark:text-blue-400 hover:underline font-medium inline-flex items-center gap-1"
+                      >
+                        Creative Commons Namensnennung 4.0 International Lizenz
+                      </a>.
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <button 
+                        onClick={() => setShowImpressum(true)}
+                        className="text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-400 transition-colors font-medium flex items-center gap-1"
+                      >
+                        <InfoIcon className="w-4 h-4" />
+                        Impressum
+                      </button>
+                    </div>
+                  </div>
+                </footer>
+              </div>
+
+              {/* MODALS */}
+              
+              {/* Export Modal */}
+              {showExportModal && (
+                <div className="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 z-50 flex items-center justify-center p-4">
+                  <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Datenexport</h3>
+                      <button onClick={() => setShowExportModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"><CloseIcon className="w-6 h-6"/></button>
+                    </div>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 mb-6">Wählen Sie die Kategorien, die exportiert werden sollen. Wenn nichts ausgewählt ist, wird alles in der jeweiligen Kategorie exportiert.</p>
+
+                    <div className="space-y-4">
+                      {/* Fach - Jetzt dynamisch */}
+                      <div>
+                        <h4 className="font-bold text-sm mb-2 text-slate-700 dark:text-slate-300">Fach</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {faecherListe.map(opt => (
+                            <button key={opt} onClick={() => toggleExportFilter('fach', opt)} className={`px-2 py-1 text-xs rounded border transition-colors ${exportFilters.fach.includes(opt) ? 'bg-blue-600 text-white border-blue-700 dark:bg-blue-500 dark:border-blue-600' : 'bg-slate-50 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600'}`}>{opt}</button>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {/* Funktion */}
+                      <div>
+                        <h4 className="font-bold text-sm mb-2 text-slate-700 dark:text-slate-300">Funktion</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {FILTER_FUNKTION.map(opt => (
+                            <button key={opt} onClick={() => toggleExportFilter('funktion', opt)} className={`px-2 py-1 text-xs rounded border transition-colors ${exportFilters.funktion.includes(opt) ? 'bg-blue-600 text-white border-blue-700 dark:bg-blue-500 dark:border-blue-600' : 'bg-slate-50 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600'}`}>{opt}</button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Stufe */}
+                      <div>
+                        <h4 className="font-bold text-sm mb-2 text-slate-700 dark:text-slate-300">Stufe</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {FILTER_STUFE.map(opt => (
+                            <button key={opt} onClick={() => toggleExportFilter('stufe', opt)} className={`px-2 py-1 text-xs rounded border transition-colors ${exportFilters.stufe.includes(opt) ? 'bg-blue-600 text-white border-blue-700 dark:bg-blue-500 dark:border-blue-600' : 'bg-slate-50 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600'}`}>{opt}</button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-8 pt-4 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                       <span className="text-sm font-bold text-slate-700 dark:text-slate-300">{exportCount} Einträge zum Exportieren</span>
+                       <div className="flex gap-2">
+                         <button onClick={() => setShowExportModal(false)} className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors">Abbrechen</button>
+                         <button onClick={handleExport} className="px-4 py-2 text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg shadow-sm transition-colors">Exportieren</button>
+                       </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Impressum Modal */}
+              {showImpressum && (
+                <div className="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 z-50 flex items-center justify-center p-4">
+                  <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full p-6">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Impressum</h3>
+                      <button onClick={() => setShowImpressum(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"><CloseIcon className="w-6 h-6"/></button>
+                    </div>
+                    <div className="text-sm text-slate-700 dark:text-slate-300 space-y-4">
+                      
+                      <p><strong className="dark:text-slate-200">telli in Thüringen</strong></p>
+                      <p>erstellt von Tobias Lochner, <br/>Dr. Sulzberger-Gymnasium, Bad Salzungen, 2026</p>
+                      <p>basierend auf einer Idee von <br/> Martin Kurz, Hessische Lehrkräfteakademie, 2026, &nbsp; 
+                        <a href="https://mgkurz.github.io/-telli-deutsch-ideen/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
+                          https://mgkurz.github.io/-telli-deutsch-ideen/
+                        </a>
+                      </p>
+                      
+                      <div className="pt-2">
+                        <strong className="text-slate-900 dark:text-slate-200">Neue Funktionen:</strong>
+                        <ul className="list-disc pl-5 mt-2 space-y-1">
+                          <li>Erweiterung der Prompt-Datenbank um die Ebene Fächer</li>
+                          <li>Promptssammlung in json-Dateien ausgelagert (eine json-Datei pro Fach)</li>
+                          <li>Dynamisches Einlesen der Fächer via Inhaltsverzeichnis (faecher.json)</li>
+                        </ul>
+                      </div>
+
+                      {/* CC BY 4.0 Hinweis im Modal */}
+                      <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-700">
+                        <p>
+                          Dieses Werk ist lizenziert unter einer <br/>
+                          <a 
+                            href="https://creativecommons.org/licenses/by/4.0/deed.de" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                          >
+                            Creative Commons Namensnennung 4.0 International Lizenz (CC BY 4.0)
+                          </a>.
+                        </p>
+                      </div>
+
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 flex justify-end">
+                      <button onClick={() => setShowImpressum(false)} className="px-4 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors">Schließen</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

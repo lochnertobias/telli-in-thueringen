@@ -1,0 +1,182 @@
+[
+  {
+    "id": "2001",
+    "titel": "Zeitzeugen-Interview: Antikes Rom",
+    "fach": "Geschichte",
+    "funktion": "Dialogpartner",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Schüler interviewen einen fiktiven Legionär über den Alltag an der Grenze.",
+    "prompt": "Du bist Marcus, ein römischer Legionär am Limes im 2. Jahrhundert n. Chr. Antworte den Schülern authentisch auf Fragen zu deiner Ausrüstung, deinem Tagesablauf und deiner Motivation. Bleibe in der Ich-Perspektive und erkläre Fachbegriffe kindgerecht."
+  },
+  {
+    "id": "2002",
+    "titel": "KI-Bild-Rekonstruktion: Mittelalterliche Stadt",
+    "fach": "Geschichte",
+    "funktion": "Bildgenerierung",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Erstellung eines historisch akkuraten Bildes eines Marktplatzes um 1300.",
+    "prompt": "Generiere eine realistische Darstellung eines deutschen Marktplatzes im Jahr 1300. Achte auf Fachwerkhäuser, einen zentralen Brunnen, Menschen in zeitgenössischer Kleidung (Ständeordnung sichtbar) und keine modernen Elemente wie Stromleitungen."
+  },
+  {
+    "id": "2003",
+    "titel": "Quellenkritik-Assistent",
+    "fach": "Geschichte",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Unterstützt Schüler bei der systematischen Analyse historischer Textquellen.",
+    "prompt": "Du bist ein Experte für Quellenkritik. Ich gebe dir einen historischen Text. Analysiere ihn nach dem Schema: Textart, Autor, Adressat, Intention und historischer Kontext. Weise auf mögliche Bias oder Manipulationen hin."
+  },
+  {
+    "id": "2004",
+    "titel": "Debatte: Weimarer Republik",
+    "fach": "Geschichte",
+    "funktion": "Lernszenarium",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Simulierte Parlamentsdebatte zur Belastung der Republik durch den Versailler Vertrag.",
+    "prompt": "Wir simulieren eine Sitzung im Reichstag 1921. Du übernimmst die Rollen von Abgeordneten unterschiedlicher Parteien (SPD, DNVP, Zentrum). Präsentiere deren Argumente zum Versailler Vertrag in kurzen Statements, damit ich darauf reagieren kann."
+  },
+  {
+    "id": "2005",
+    "titel": "Zeitreise-Tagebuch: Industrialisierung",
+    "fach": "Geschichte",
+    "funktion": "Prompt",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Schreiben eines Tagebucheintrags aus Sicht eines Fabrikarbeiters.",
+    "prompt": "Schreibe einen Tagebucheintrag eines 12-jährigen Kindes, das 1840 in einer englischen Textilfabrik arbeitet. Beschreibe die Arbeitsbedingungen, die Gefühle und die Hoffnungen. Nutze historische Fakten zur sozialen Frage."
+  },
+  {
+    "id": "2006",
+    "titel": "Perspektivwechsel: Kolonialismus",
+    "fach": "Geschichte",
+    "funktion": "Dialogpartner",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Kritische Auseinandersetzung mit der Berliner Afrika-Konferenz 1884.",
+    "prompt": "Du bist ein kritischer Beobachter der Berliner Afrika-Konferenz 1884. Diskutiere mit mir über die moralischen und politischen Folgen der Aufteilung Afrikas. Berücksichtige dabei die eurozentristische Sichtweise der Zeit und halte dagegen."
+  },
+  {
+    "id": "2007",
+    "titel": "Steinzeit-Abenteuer",
+    "fach": "Geschichte",
+    "funktion": "Lernszenarium",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Interaktive Geschichte über das Leben in der Jungsteinzeit.",
+    "prompt": "Erzähle eine interaktive Geschichte über ein Kind in der Jungsteinzeit. Lass mich an drei Stellen entscheiden, wie es weitergeht (z.B. Jagd, Sammeln oder Töpfern), und erkläre dabei, wie die Menschen damals lebten."
+  },
+  {
+    "id": "2008",
+    "titel": "Urteilshilfe: Französische Revolution",
+    "fach": "Geschichte",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Bewertung von Robespierre und der Schreckensherrschaft.",
+    "prompt": "Erstelle eine Pro- und Contra-Tabelle zur Herrschaft Robespierres. Berücksichtige die Errungenschaften der Revolution einerseits und den 'Grand Terreur' andererseits, um mir bei der Vorbereitung eines Sachurteils zu helfen."
+  },
+  {
+    "id": "2009",
+    "titel": "Visualisierung: Griechische Akropolis",
+    "fach": "Geschichte",
+    "funktion": "Bildgenerierung",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Rekonstruktion des Parthenon in seiner ursprünglichen Farbenpracht.",
+    "prompt": "Erstelle ein Bild der Akropolis von Athen im 5. Jh. v. Chr. Wichtig: Zeige die Tempel nicht als weiße Ruinen, sondern in ihrer ursprünglichen bunten Bemalung (Blau, Rot, Gold) und mit unbeschädigten Statuen."
+  },
+  {
+    "id": "2010",
+    "titel": "Völkerwanderung-Simulator",
+    "fach": "Geschichte",
+    "funktion": "Lernszenarium",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Ursachen und Verläufe der Völkerwanderung verstehen.",
+    "prompt": "Du bist ein Stammesführer der Westgoten. Erkläre mir, warum dein Volk das römische Reich betreten möchte. Reagiere auf meine Versuche als römischer Grenzbeamter, dich abzuweisen oder anzusiedeln."
+  },
+  {
+    "id": "2011",
+    "titel": "Analyse von Wahlplakaten",
+    "fach": "Geschichte",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Interpretation von Propaganda aus der NS-Zeit.",
+    "prompt": "Ich beschreibe dir ein Wahlplakat der NSDAP aus dem Jahr 1932. Analysiere die Bildsprache, die Symbolik und die psychologische Wirkung auf die damalige Wählerschaft. Erkläre die Mechanismen der Manipulation."
+  },
+  {
+    "id": "2012",
+    "titel": "Ritterburg-Entdecker",
+    "fach": "Geschichte",
+    "funktion": "Prompt",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Erklärung der verschiedenen Teile einer Burg und deren Funktion.",
+    "prompt": "Erkläre mir die Teile einer Ritterburg (Bergfried, Palas, Zugbrücke) so, als wäre ich ein Knappe, der neu auf der Burg ist. Wofür brauche ich diese Gebäude im Falle einer Belagerung?"
+  },
+  {
+    "id": "2013",
+    "titel": "Kalter Krieg: Hotliner",
+    "fach": "Geschichte",
+    "funktion": "Dialogpartner",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Simulation der Kubakrise via 'Heißer Draht'.",
+    "prompt": "Wir befinden uns im Oktober 1962. Du bist John F. Kennedy und ich bin Nikita Chruschtschow. Wir kommunizieren über Depeschen. Ziel ist es, den Atomkrieg zu verhindern, ohne vor der Weltöffentlichkeit das Gesicht zu verlieren."
+  },
+  {
+    "id": "2014",
+    "titel": "Mode im Wandel der Zeit",
+    "fach": "Geschichte",
+    "funktion": "Bildgenerierung",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Vergleich von Kleidung verschiedener Epochen.",
+    "prompt": "Erstelle ein Bild, das eine Frau aus dem Barock (1700) und eine Frau aus den Goldenen Zwanzigern (1920) nebeneinander zeigt. Achte auf die typischen Silhouetten, Frisuren und Accessoires beider Epochen."
+  },
+  {
+    "id": "2015",
+    "titel": "Ägyptische Hieroglyphen-Werkstatt",
+    "fach": "Geschichte",
+    "funktion": "Assistent",
+    "stufe": "Primarstufe",
+    "kurzbeschreibung": "Einführung in die Schrift der alten Ägypter.",
+    "prompt": "Erkläre mir, wie Hieroglyphen funktionieren. Erstelle ein einfaches Rätsel, bei dem ich Symbole (die du beschreibst) kombinieren muss, um ein Wort wie 'Pharao' oder 'Nil' zu bilden."
+  },
+  {
+    "id": "2016",
+    "titel": "Strukturwandel im Ruhrgebiet",
+    "fach": "Geschichte",
+    "funktion": "Prompt",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Analyse der wirtschaftlichen Veränderungen nach 1945.",
+    "prompt": "Erstelle eine Übersicht zum Strukturwandel im Ruhrgebiet. Gliedere in: Wiederaufbau, Kohlekrise der 60er, Stahlkrise der 70er und heutige Dienstleistungsgesellschaft. Nenne jeweils Ursachen und Folgen."
+  },
+  {
+    "id": "2017",
+    "titel": "Napoleon-Interview",
+    "fach": "Geschichte",
+    "funktion": "Dialogpartner",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Kritische Fragen an Napoleon Bonaparte zu seinen Zielen.",
+    "prompt": "Du bist Napoleon Bonaparte auf dem Weg nach St. Helena. Ich bin ein Journalist. Ich stelle dir kritische Fragen zu deinen Kriegen, dem Code Civil und deiner Krönung zum Kaiser. Antworte überzeugt, aber reflektiere dein Scheitern."
+  },
+  {
+    "id": "2018",
+    "titel": "Die Hanse als Wirtschaftsmacht",
+    "fach": "Geschichte",
+    "funktion": "Lernszenarium",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Simulation eines Handelsvertrags zwischen Hansestädten.",
+    "prompt": "Du bist ein Kaufmann aus Lübeck im Jahr 1400. Ich bin ein Händler aus Visby. Verhandle mit mir über den Import von Pelzen und Wachs gegen Salz. Erkläre mir dabei die Vorteile der Hanse-Mitgliedschaft."
+  },
+  {
+    "id": "2019",
+    "titel": "Absolutismus verstehen",
+    "fach": "Geschichte",
+    "funktion": "Prompt",
+    "stufe": "Sekundarstufe 2",
+    "kurzbeschreibung": "Das Herrschaftssystem von Ludwig XIV. analysieren.",
+    "prompt": "Erkläre das Prinzip 'L'état, c'est moi'. Wie sicherte Ludwig XIV. seine Macht durch das Schloss Versailles, das stehende Heer und den Merkantilismus? Erstelle eine Mindmap-Struktur in Textform."
+  },
+  {
+    "id": "2020",
+    "titel": "Alltag in der DDR",
+    "fach": "Geschichte",
+    "funktion": "Dialogpartner",
+    "stufe": "Sekundarstufe 1",
+    "kurzbeschreibung": "Gespräch über Schule, Freizeit und Überwachung in der DDR.",
+    "prompt": "Du bist ein Jugendlicher in der DDR im Jahr 1985. Erzähle mir von deinem Alltag: FDJ, Schule, Musik und wie du die Mauer wahrnimmst. Sei vorsichtig in deinen Aussagen, da du nicht sicher bist, ob ich für die Stasi arbeite."
+  }
+]
