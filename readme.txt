@@ -26,11 +26,12 @@ Martin Kurz, Hessische Lehrkräfteakademie, 2026
 https://mgkurz.github.io/-telli-deutsch-ideen/
 
 Neue Funktionen im Vergleich zur hessischen Vorlage:
-Erweiterung der Prompt-Datenbank um die Ebene Fächer
-Promptssammlung in json-Dateien ausgelagert (eine json-Datei pro Fach)
-Dynamisches Einlesen der Fächer via Inhaltsverzeichnis (faecher.json)
-
-
+---------------------------------------------------------------------------
+- Erweiterung der Prompt-Datenbank um die Ebene Fächer
+- Promptssammlung in json-Dateien ausgelagert (eine json-Datei pro Fach)
+- Dynamisches Einlesen der Fächer via Inhaltsverzeichnis (faecher.json)
+- Möglichkeit zum geilterntern Datenexport als json-Datei
+- Darkmode ergänzt
 
 ===========================================================================
 III.PROMPT-DATENFORMAT DOKUMENTATION
