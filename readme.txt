@@ -80,5 +80,18 @@ Hier ein Muster für einen korrekten JSON-Datensatz:
 - Das Feld 'fach' sollte identisch mit dem Dateinamen sein.
 - Alle Felder sind Pflichtfelder (dürfen nicht fehlen).
 
+5. FAQ
+---------------------------------------------------------------------------
+
+5.1 
+Q: Wie füge ich ein neues Fach hinzu?
+A: 1.) json-Datei mit dem Fachnamen anlegen (z.B. religion.json) und mit Inhalten nach Vorgabe befüllen
+   2.) faecher.json Datei um den Eintrag des Faches erweitern
+
+5.2 
+Q: Wie kann ich Prompts hinzufügen oder anpassen?
+A: Die json-Datei mit dem passenden Fachnamen (z.B. mathematik.json) mit einem Texteditor bearbeiten oder erweitern, dabei die Vorgaben zum Datei-Aufbau (siehe oben) einhalten
+   
+
 ===========================================================================
 Ende der Dokumentation
