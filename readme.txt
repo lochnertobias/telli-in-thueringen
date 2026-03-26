@@ -1,5 +1,38 @@
 ===========================================================================
-PROMPT-DATENFORMAT DOKUMENTATION
+I. TELLI IN THÜRINGEN
+===========================================================================
+
+1) ZIELE DER SEITE
+---------------------------------------------------------------------------
+- liefert Informationen und Anregungen über den KI-Chatbot „telli“ im schulischen Kontext
+- Unterstützung von Lehrkräften durch Promptbeispiele
+
+2) FUNKTIONEN DER SEITE
+---------------------------------------------------------------------------
+- Bereitstellung von Informationen zu „telli“
+- Orientierungshilfen für Lehrkräfte
+- Beispiel für Prompts die nach Fächern, telli-Funktionen und Schulstufen gefiltert werden können
+
+
+
+===========================================================================
+II. IMPRESSUM UND CHANGELOG
+===========================================================================
+erstellt von Tobias Lochner,
+Dr. Sulzberger-Gymnasium, Bad Salzungen, 2026
+
+basierend auf einer Idee von
+Martin Kurz, Hessische Lehrkräfteakademie, 2026,  https://mgkurz.github.io/-telli-deutsch-ideen/
+
+Neue Funktionen im Vergleich zur hessischen Vorlage:
+Erweiterung der Prompt-Datenbank um die Ebene Fächer
+Promptssammlung in json-Dateien ausgelagert (eine json-Datei pro Fach)
+Dynamisches Einlesen der Fächer via Inhaltsverzeichnis (faecher.json)
+
+
+
+===========================================================================
+III.PROMPT-DATENFORMAT DOKUMENTATION
 ===========================================================================
 
 Dieses Dokument beschreibt die Struktur zur Speicherung von KI-Prompts 
