@@ -41,7 +41,7 @@
 
         // Statische Filter-Optionen (Fach wird jetzt dynamisch generiert)
         const FILTER_STUFE = ['Primarstufe', 'Sekundarstufe 1', 'Sekundarstufe 2'];
-        const FILTER_FUNKTION = ['Prompt', 'Bildgenerierung', 'Assistent', 'Lernszenarium', 'Dialogpartner'];
+        const FILTER_FUNKTION = ['Prompt', 'Bildgenerierung', 'Assistent', 'Lernszenario', 'Dialogpartner'];
         const FILTER_TAGS = ['Thüringen'];
 
         // Fallback-Daten
@@ -71,6 +71,8 @@
           const [isDarkMode, setIsDarkMode] = useState(false);
           // State für den geheimen Editor-Modus
           const [showEditorMode, setShowEditorMode] = useState(false);
+          // State für mobile Filter
+          const [showMobileFilters, setShowMobileFilters] = useState(false);
 
           // Filters-State als Arrays für Mehrfachauswahl (inklusive Tags)
           const [filters, setFilters] = useState({
@@ -377,139 +379,151 @@
                 <div className="sticky top-0 z-20 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 shadow-sm py-3 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
                   <div className="max-w-5xl mx-auto flex flex-col gap-4">
                     
-                    <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center">
-                      Filter für die unten angezeigten Prompts:
-                    </h3>
-
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center">
+                        Filter für die unten angezeigten Prompts:
+                      </h3>
                       
-                      {/* Fach Filter - Jetzt dynamisch */}
-                      <div>
-                        <div className="flex items-center gap-1 mb-1.5">
-                          <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Fach</label>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {faecherListe.map(opt => {
-                            const isActive = filters.fach.includes(opt);
-                            return (
-                              <button 
-                                key={opt}
-                                onClick={() => toggleFilter('fach', opt)}
-                                className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
-                                  isActive 
-                                  ? 'bg-emerald-600 text-white border-emerald-700 dark:bg-emerald-500 dark:border-emerald-500 shadow-sm' 
-                                  : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800/50 dark:hover:bg-emerald-900/50'
-                                }`}
-                              >
-                                <BookOpenIcon className="w-3 h-3" /> {opt}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      {/* Funktion Filter */}
-                      <div>
-                        <div className="flex items-center gap-1 mb-1.5">
-                          <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Funktion</label>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {FILTER_FUNKTION.map(opt => {
-                            const isActive = filters.funktion.includes(opt);
-                            return (
-                              <button 
-                                key={opt}
-                                onClick={() => toggleFilter('funktion', opt)}
-                                className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
-                                  isActive 
-                                  ? 'bg-amber-500 text-white border-amber-600 dark:bg-amber-500 dark:border-amber-500 shadow-sm' 
-                                  : 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800/50 dark:hover:bg-amber-900/50'
-                                }`}
-                              >
-                                <ZapIcon className="w-3 h-3" /> {opt}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      {/* Stufe Filter */}
-                      <div>
-                        <div className="flex items-center gap-1 mb-1.5">
-                          <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Stufe</label>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {FILTER_STUFE.map(opt => {
-                            const isActive = filters.stufe.includes(opt);
-                            return (
-                              <button 
-                                key={opt}
-                                onClick={() => toggleFilter('stufe', opt)}
-                                className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
-                                  isActive 
-                                  ? 'bg-purple-600 text-white border-purple-700 dark:bg-purple-500 dark:border-purple-500 shadow-sm' 
-                                  : 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800/50 dark:hover:bg-purple-900/50'
-                                }`}
-                              >
-                                <LayersIcon className="w-3 h-3" /> {opt}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      {/* Tags Filter */}
-                      <div>
-                        <div className="flex items-center gap-1 mb-1.5">
-                          <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tags</label>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {FILTER_TAGS.map(opt => {
-                            const isActive = filters.tags.includes(opt);
-                            return (
-                              <button 
-                                key={opt}
-                                onClick={() => toggleFilter('tags', opt)}
-                                className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
-                                  isActive 
-                                  ? 'bg-rose-500 text-white border-rose-600 dark:bg-rose-500 dark:border-rose-500 shadow-sm' 
-                                  : 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-300 dark:border-rose-800/50 dark:hover:bg-rose-900/50'
-                                }`}
-                              >
-                                <TagIcon className="w-3 h-3" /> {opt}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-
+                      <button 
+                        onClick={() => setShowMobileFilters(!showMobileFilters)}
+                        className="md:hidden flex items-center gap-2 text-sm px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg transition-colors font-medium border border-slate-200 dark:border-slate-600"
+                      >
+                        <TagIcon className="w-4 h-4" />
+                        {showMobileFilters ? 'Ausblenden' : 'Anzeigen'}
+                      </button>
                     </div>
 
-                    {/* Suche & Reset */}
-                    <div className="flex flex-col md:flex-row gap-3 items-center justify-between border-t border-slate-200 dark:border-slate-700 pt-3">
-                      <div className="w-full md:w-96">
-                        <div className="relative">
-                          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
-                            <SearchIcon />
+                    <div className={`${showMobileFilters ? 'flex' : 'hidden'} md:flex flex-col gap-4`}>
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        
+                        {/* Fach Filter - Jetzt dynamisch */}
+                        <div>
+                          <div className="flex items-center gap-1 mb-1.5">
+                            <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Fach</label>
                           </div>
-                          <input 
-                            type="text" 
-                            className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 shadow-sm transition-shadow placeholder-slate-400 dark:placeholder-slate-500" 
-                            placeholder="Stichwort suchen (z.B. Gedicht, Assistent)..." 
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                          />
+                          <div className="flex flex-wrap gap-1.5">
+                            {faecherListe.map(opt => {
+                              const isActive = filters.fach.includes(opt);
+                              return (
+                                <button 
+                                  key={opt}
+                                  onClick={() => toggleFilter('fach', opt)}
+                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
+                                    isActive 
+                                    ? 'bg-emerald-600 text-white border-emerald-700 dark:bg-emerald-500 dark:border-emerald-500 shadow-sm' 
+                                    : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800/50 dark:hover:bg-emerald-900/50'
+                                  }`}
+                                >
+                                  <BookOpenIcon className="w-3 h-3" /> {opt}
+                                </button>
+                              );
+                            })}
+                          </div>
                         </div>
+
+                        {/* Funktion Filter */}
+                        <div>
+                          <div className="flex items-center gap-1 mb-1.5">
+                            <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Funktion</label>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {FILTER_FUNKTION.map(opt => {
+                              const isActive = filters.funktion.includes(opt);
+                              return (
+                                <button 
+                                  key={opt}
+                                  onClick={() => toggleFilter('funktion', opt)}
+                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
+                                    isActive 
+                                    ? 'bg-amber-500 text-white border-amber-600 dark:bg-amber-500 dark:border-amber-500 shadow-sm' 
+                                    : 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800/50 dark:hover:bg-amber-900/50'
+                                  }`}
+                                >
+                                  <ZapIcon className="w-3 h-3" /> {opt}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Stufe Filter */}
+                        <div>
+                          <div className="flex items-center gap-1 mb-1.5">
+                            <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Stufe</label>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {FILTER_STUFE.map(opt => {
+                              const isActive = filters.stufe.includes(opt);
+                              return (
+                                <button 
+                                  key={opt}
+                                  onClick={() => toggleFilter('stufe', opt)}
+                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
+                                    isActive 
+                                    ? 'bg-purple-600 text-white border-purple-700 dark:bg-purple-500 dark:border-purple-500 shadow-sm' 
+                                    : 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800/50 dark:hover:bg-purple-900/50'
+                                  }`}
+                                >
+                                  <LayersIcon className="w-3 h-3" /> {opt}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Tags Filter */}
+                        <div>
+                          <div className="flex items-center gap-1 mb-1.5">
+                            <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tags</label>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {FILTER_TAGS.map(opt => {
+                              const isActive = filters.tags.includes(opt);
+                              return (
+                                <button 
+                                  key={opt}
+                                  onClick={() => toggleFilter('tags', opt)}
+                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors cursor-pointer ${
+                                    isActive 
+                                    ? 'bg-rose-500 text-white border-rose-600 dark:bg-rose-500 dark:border-rose-500 shadow-sm' 
+                                    : 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100 dark:bg-rose-900/30 dark:text-rose-300 dark:border-rose-800/50 dark:hover:bg-rose-900/50'
+                                  }`}
+                                >
+                                  <TagIcon className="w-3 h-3" /> {opt}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
                       </div>
-                      
-                      {hasActiveFilters && (
-                        <button 
-                          onClick={resetFilters}
-                          className="text-sm px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors"
-                        >
-                          Alle Filter zurücksetzen
-                        </button>
-                      )}
+
+                      {/* Suche & Reset */}
+                      <div className="flex flex-col md:flex-row gap-3 items-center justify-between border-t border-slate-200 dark:border-slate-700 pt-3">
+                        <div className="w-full md:w-96">
+                          <div className="relative">
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
+                              <SearchIcon />
+                            </div>
+                            <input 
+                              type="text" 
+                              className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 shadow-sm transition-shadow placeholder-slate-400 dark:placeholder-slate-500" 
+                              placeholder="Stichwort suchen (z.B. Gedicht, Assistent)..." 
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        
+                        {hasActiveFilters && (
+                          <button 
+                            onClick={resetFilters}
+                            className="text-sm px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors"
+                          >
+                            Alle Filter zurücksetzen
+                          </button>
+                        )}
+                      </div>
                     </div>
 
                   </div>
@@ -669,7 +683,7 @@
                       <div className="pt-2">
                         <strong className="text-slate-900 dark:text-slate-200">Neue Funktionen:</strong>
                         <ul className="list-disc pl-5 mt-2 space-y-1">
-                          <li>- Erweiterung der Prompt-Datenbank um die Ebenen "Fächer" und "Tags"</li>
+                          <li>- Erweiterung der Prompt-Datenbank um die Ebene Fächer</li>
                           <li>- Promptssammlung in json-Dateien ausgelagert (eine json-Datei pro Fach)</li>
                           <li>- Dynamisches Einlesen der Fächer via Inhaltsverzeichnis (faecher.json)</li>
 						  <li>- Darkmode ergänzt</li>
