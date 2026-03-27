@@ -44,7 +44,7 @@
             
             <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                 
-                <select id="server-file-select" onchange="loadFromServer(this.value)" class="w-[200px] sm:w-[220px] bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 px-3 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm truncate">
+                <select id="server-file-select" onchange="handleDropdownChange(this)" class="w-[200px] sm:w-[220px] bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 px-3 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm truncate">
                     <option value="">📋 Fach aus Liste laden...</option>
                 </select>
 
@@ -61,11 +61,16 @@
                     Promptliste speichern
                 </button>
 
-                <div class="h-6 w-px bg-slate-300 mx-1 hidden lg:block"></div>
-
                 <button onclick="requestNewFile()" class="flex items-center justify-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap" title="Erstellt eine neue, leere Promptliste">
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Neue Promptliste erstellen
+                </button>
+
+                <div class="h-6 w-px bg-slate-300 mx-1 hidden lg:block"></div>
+
+                <button onclick="openHelpModal()" class="flex items-center justify-center gap-2 bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap" title="Hilfe & Anleitung">
+                    <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Hilfe
                 </button>
             </div>
         </div>
@@ -115,9 +120,79 @@
         </div>
     </main>
 
+    <footer class="bg-white border-t border-slate-200 mt-auto py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm font-medium text-slate-600">
+                Erstellt 2026 von Tobias Lochner, Dr. Sulzberger-Gymnasium Bad Salzungen
+            </p>
+            <p class="text-xs text-slate-500 mt-1.5">
+                Dieses Werk ist lizenziert unter einer 
+                <a href="https://creativecommons.org/licenses/by/4.0/deed.de" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">Creative Commons Namensnennung 4.0 International (CC BY 4.0) Lizenz</a>.
+            </p>
+        </div>
+    </footer>
+
+    <div id="help-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeHelpModal()"></div>
+        <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full mx-4 relative z-10 p-6 md:p-8 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start mb-5">
+                <h3 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                    <div class="bg-indigo-100 text-indigo-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    So funktioniert der Editor
+                </h3>
+                <button onclick="closeHelpModal()" class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 p-1.5 rounded-lg transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="text-slate-700 space-y-5 leading-relaxed">
+                <p>Mit diesem Editor können Sie ganz einfach Sammlungen von Arbeitsanweisungen (sogenannte "Prompts") für KI-Modelle erstellen, anpassen und verwalten. Die Bedienung ist unkompliziert und erfordert keine Programmierkenntnisse.</p>
+
+                <div>
+                    <h4 class="font-bold text-slate-900 text-base mb-2">1. Listen laden oder neu erstellen</h4>
+                    <p class="mb-2">Sie haben drei Möglichkeiten, um zu starten:</p>
+                    <ul class="list-disc pl-5 space-y-1.5 marker:text-indigo-400">
+                        <li><strong>Fach aus Liste laden:</strong> Wählen Sie eine bereits bestehende Promptliste aus dem Dropdown-Menü aus, um sie anzusehen oder zu bearbeiten.</li>
+                        <li><strong>Lokale Promptliste laden:</strong> Öffnen Sie eine Prompt-Datei (Endung <code>.json</code>), die Sie zuvor auf Ihrem eigenen Computer gespeichert haben.</li>
+                        <li><strong>Neue Promptliste erstellen:</strong> Beginnen Sie mit einem komplett leeren Dokument, für das Sie selbst ein Fach festlegen können.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-slate-900 text-base mb-2">2. Prompts bearbeiten</h4>
+                    <p>Sobald eine Liste geöffnet ist, können Sie die einzelnen "Kärtchen" bearbeiten. Sie können Titel, Zielgruppe (Stufe) und Tags anpassen oder den eigentlichen Text des Prompts verändern. Über die Buttons am unteren Bildschirmrand lassen sich jederzeit neue, leere Kärtchen oder vorgefertigte Mustereinträge hinzufügen.</p>
+                </div>
+
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 mt-6 shadow-sm">
+                    <h4 class="font-bold text-amber-900 text-base flex items-center gap-2 mb-3">
+                        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        WICHTIGER HINWEIS zum Speichern
+                    </h4>
+                    <p class="text-amber-800 text-sm mb-3">Dieser Editor arbeitet zu Ihrem Schutz und für höchste Datensicherheit <strong>ausschließlich lokal</strong> in Ihrem Internetbrowser. Das bedeutet:</p>
+                    <ul class="list-disc pl-5 space-y-1.5 text-amber-800 text-sm marker:text-amber-500">
+                        <li>Wenn Sie auf <strong>"Promptliste speichern"</strong> klicken, wird Ihre Arbeit als Datei direkt <strong>auf Ihren Computer heruntergeladen</strong> (in der Regel in Ihren "Downloads"-Ordner).</li>
+                        <li>Es findet <strong>keine automatische Speicherung im Internet</strong> oder auf dieser Webseite statt.</li>
+                        <li>Ihre Änderungen sind für andere Nutzer erst sichtbar, wenn Sie Ihre gespeicherte Datei an den Webseiten-Administrator weiterleiten, damit dieser die neuen Daten in das System einpflegt.</li>
+                    </ul>
+                    <p class="text-amber-900 font-semibold mt-4 text-sm bg-amber-200/50 p-3 rounded-lg">
+                        Bitte denken Sie also immer daran, Ihre fertige Arbeit über den Speichern-Button auf Ihrem eigenen PC zu sichern, bevor Sie das Browserfenster schließen!
+                    </p>
+                </div>
+            </div>
+            
+            <div class="flex justify-end mt-8">
+                <button onclick="closeHelpModal()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-medium transition-all shadow-sm focus:ring-4 focus:ring-indigo-100">
+                    Schließen
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
         <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 relative z-10 p-6">
+        <div class="bg-white rounded-xl shadow-xl max-w-lg w-full mx-4 relative z-10 p-6">
             <div class="flex items-start gap-4 mb-2">
                 <div id="modal-icon-container" class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center mt-1">
                     </div>
@@ -131,9 +206,10 @@
                     </div>
                 </div>
             </div>
-            <div class="flex justify-end gap-3 mt-6">
-                <button id="modal-cancel-btn" onclick="closeModal()" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-all">Abbrechen</button>
-                <button id="modal-confirm-btn" class="px-4 py-2 rounded-lg text-white font-medium transition-all shadow-sm">Bestätigen</button>
+            <div class="flex flex-col sm:flex-row justify-end items-center gap-3 mt-8">
+                <button id="modal-alt-btn" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-red-600 font-medium hover:bg-red-50 transition-all hidden w-full sm:w-auto sm:mr-auto">Verwerfen</button>
+                <button id="modal-cancel-btn" onclick="closeModal()" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-all w-full sm:w-auto">Abbrechen</button>
+                <button id="modal-confirm-btn" class="px-4 py-2 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto">Bestätigen</button>
             </div>
         </div>
     </div>
@@ -153,7 +229,9 @@
         let globalFach = '';
         
         let availableTags = ['Unterrichtsmaterial', 'Muster', 'Thüringen'];
+        
         let currentConfirmCallback = null;
+        let currentAltCallback = null;
 
         const container = document.getElementById('entries-container');
         const emptyState = document.getElementById('empty-state');
@@ -193,24 +271,46 @@
 
         // --- Fach-Eingabe (Ohne Leerzeichen) ---
         function handleGlobalFachInput(inputElement) {
-            // Alle Leerzeichen entfernen
             let val = inputElement.value.replace(/\s+/g, '');
-            
-            // Textfeld aktualisieren, falls Leerzeichen getippt wurden
             if (inputElement.value !== val) {
                 inputElement.value = val;
             }
-            
             globalFach = val;
-            
-            // Datenstruktur aktualisieren
             promptsData.forEach(item => item.fach = globalFach);
             
-            // DOM in Echtzeit aktualisieren (ohne renderAll() aufzurufen, damit Fokus erhalten bleibt)
             const fachDisplays = document.querySelectorAll('.global-fach-display');
             fachDisplays.forEach(el => {
                 el.innerText = globalFach || 'Noch nicht festgelegt';
             });
+        }
+
+        // --- INTERCEPT DROPDOOWN ---
+        function handleDropdownChange(selectElement) {
+            const filename = selectElement.value;
+            if (!filename) return;
+
+            if (promptsData.length > 0) {
+                showModal(
+                    'Ungespeicherte Änderungen',
+                    'Wenn Sie eine neue Liste laden, gehen alle nicht gespeicherten Einträge in der aktuellen Ansicht verloren. Möchten Sie die aktuelle Liste vorher abspeichern?',
+                    () => { 
+                        // Speichern & dann Laden
+                        saveJSON(() => {
+                            loadFromServer(filename);
+                        });
+                    },
+                    'warning_save',
+                    () => { 
+                        // Ohne Speichern fortfahren
+                        loadFromServer(filename);
+                    },
+                    'Verwerfen & Laden'
+                );
+                // Optisches Zurücksetzen des Dropdowns, falls der Nutzer auf Abbrechen klickt
+                selectElement.value = '';
+            } else {
+                loadFromServer(filename);
+            }
         }
 
         // --- JSON SERVER LOAD LOGIK ---
@@ -254,12 +354,12 @@
                 })
                 .then(text => {
                     processFileContent(text.trim(), filename);
-                    document.getElementById('server-file-select').value = ''; // Dropdown zurücksetzen
+                    document.getElementById('server-file-select').value = ''; 
                 })
                 .catch(error => {
                     console.error("Fehler beim Laden der Datei:", error);
                     showModal('Fehler', `Die Datei "${filename}" konnte nicht geladen werden. Möglicherweise existiert sie auf dem Server noch nicht.`, null, 'error');
-                    document.getElementById('server-file-select').value = ''; // Dropdown zurücksetzen
+                    document.getElementById('server-file-select').value = ''; 
                 });
         }
 
@@ -329,18 +429,39 @@
             }
         }
 
+        // --- INTERCEPT FILE UPLOAD ---
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                let fileContent = e.target.result.trim();
-                processFileContent(fileContent, file.name);
-                event.target.value = '';
+            const processFile = () => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    let fileContent = e.target.result.trim();
+                    processFileContent(fileContent, file.name);
+                    event.target.value = ''; // Reset Input
+                };
+                reader.readAsText(file);
             };
-            
-            reader.readAsText(file);
+
+            if (promptsData.length > 0) {
+                showModal(
+                    'Ungespeicherte Änderungen',
+                    'Wenn Sie eine neue Datei laden, gehen alle ungespeicherten Änderungen in der aktuellen Ansicht verloren. Möchten Sie Ihre bisherige Liste vorher abspeichern?',
+                    () => { 
+                        saveJSON(() => {
+                            processFile();
+                        });
+                    },
+                    'warning_save',
+                    () => { 
+                        processFile();
+                    },
+                    'Verwerfen & Laden'
+                );
+            } else {
+                processFile();
+            }
         }
 
         // --- URL PARAMETER & SCROLLING ---
@@ -405,10 +526,11 @@
             }, 100);
         }
 
-        // --- SPEICHERN ---
-        function saveJSON() {
+        // --- SPEICHERN MIT OPTIONALEM CALLBACK ---
+        function saveJSON(onSaveComplete = null) {
             if (promptsData.length === 0) {
                 showToast("Keine Daten zum Speichern vorhanden.", true);
+                if (onSaveComplete && typeof onSaveComplete === 'function') onSaveComplete();
                 return;
             }
 
@@ -427,7 +549,6 @@
                     currentFileName = filename; 
                     updateFileNameDisplay();
 
-                    // Nach dem Speichern ist die Datei "festgelegt"
                     globalFach = filename.replace(/\.json$/i, '');
                     isNewFile = false;
                     promptsData.forEach(item => item.fach = globalFach);
@@ -444,8 +565,12 @@
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
                     
-                    renderAll(); // Aktualisiert die UI auf den "gesperrt"-Status
+                    renderAll(); 
                     showToast(`Datei "${filename}" gespeichert!`);
+                    
+                    if (onSaveComplete && typeof onSaveComplete === 'function') {
+                        setTimeout(onSaveComplete, 300); // Kurze Pause für flüssigeren Übergang
+                    }
                 }
             );
         }
@@ -472,7 +597,6 @@
                 nextId = (Math.max(...ids) + 1).toString();
             }
             
-            // Falls das Feld bisher leer war, Fallback setzen:
             if (!globalFach) globalFach = 'Deutsch';
 
             promptsData.push({
@@ -508,7 +632,7 @@
                 promptsData = [];
                 currentFileName = 'neue_liste.json';
                 isNewFile = true;
-                globalFach = ''; // Fach-Auswahl zurücksetzen
+                globalFach = ''; 
                 
                 updateFileNameDisplay();
                 renderAll();
@@ -516,7 +640,20 @@
             };
 
             if (promptsData.length > 0) {
-                showModal('Neue Datei beginnen?', 'Alle nicht gespeicherten Änderungen in der aktuellen Ansicht gehen verloren.', createNew, 'warning');
+                showModal(
+                    'Neue Liste beginnen?', 
+                    'Alle ungespeicherten Einträge in der aktuellen Ansicht gehen verloren. Möchten Sie Ihre bisherige Liste vorher abspeichern?', 
+                    () => { 
+                        saveJSON(() => {
+                            createNew();
+                        });
+                    }, 
+                    'warning_save',
+                    () => {
+                        createNew();
+                    },
+                    'Verwerfen & Neu'
+                );
             } else {
                 createNew();
             }
@@ -565,9 +702,7 @@
                 globalHeader.classList.add('flex');
             }
 
-            // Global Fach UI aktualisieren
             if (isNewFile) {
-                // Freitext-Eingabe statt Dropdown
                 globalFachUi.innerHTML = `
                     <div class="flex flex-col">
                         <input type="text" 
@@ -579,7 +714,6 @@
                     </div>
                 `;
             } else {
-                // Lese-Modus
                 globalFachUi.innerHTML = `
                     <div class="flex items-center">
                         <span class="inline-flex items-center px-3 py-1.5 rounded-md bg-slate-100 border border-slate-200 text-sm font-semibold text-slate-700 shadow-inner" title="Wird durch den Dateinamen festgelegt">
@@ -703,32 +837,62 @@
             container.innerHTML = htmlString;
         }
 
-        // --- UI HILFSFUNKTIONEN ---
-        function showModal(title, message, onConfirm, type = 'danger') {
+        // --- HILFE MODAL ---
+        function openHelpModal() {
+            document.getElementById('help-modal').classList.remove('hidden');
+        }
+
+        function closeHelpModal() {
+            document.getElementById('help-modal').classList.add('hidden');
+        }
+
+        // --- UI HILFSFUNKTIONEN (Erweitert um dritten Button) ---
+        function showModal(title, message, onConfirm, type = 'danger', onAlt = null, altText = '') {
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-message').innerHTML = message.replace(/\n/g, '<br>');
             
             document.getElementById('modal-input-wrapper').classList.add('hidden');
+            
             currentConfirmCallback = onConfirm;
+            currentAltCallback = onAlt;
 
             const btnEl = document.getElementById('modal-confirm-btn');
             const cancelBtn = document.getElementById('modal-cancel-btn');
+            const altBtn = document.getElementById('modal-alt-btn');
             const iconContainer = document.getElementById('modal-icon-container');
 
             cancelBtn.classList.remove('hidden');
 
+            // Alt Button (Verwerfen)
+            if (onAlt) {
+                altBtn.classList.remove('hidden');
+                altBtn.innerText = altText;
+                altBtn.onclick = () => {
+                    let cb = currentAltCallback;
+                    closeModal(); // Erst Modal schließen, damit neue Modals sauber öffnen können
+                    if (cb) cb();
+                };
+            } else {
+                altBtn.classList.add('hidden');
+            }
+
             if (type === 'danger') {
-                btnEl.className = 'px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white font-medium transition-all shadow-sm';
+                btnEl.className = 'px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
                 btnEl.innerText = 'Löschen';
                 iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-red-100 text-red-600 mt-1';
                 iconContainer.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
             } else if (type === 'warning') {
-                btnEl.className = 'px-4 py-2 bg-amber-500 hover:bg-amber-600 rounded-lg text-white font-medium transition-all shadow-sm';
+                btnEl.className = 'px-4 py-2 bg-amber-500 hover:bg-amber-600 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
                 btnEl.innerText = 'Fortfahren';
                 iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 text-amber-600 mt-1';
                 iconContainer.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+            } else if (type === 'warning_save') {
+                btnEl.className = 'px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
+                btnEl.innerText = 'Liste speichern';
+                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 text-amber-600 mt-1';
+                iconContainer.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>';
             } else if (type === 'error') {
-                btnEl.className = 'px-4 py-2 bg-slate-800 hover:bg-slate-900 rounded-lg text-white font-medium transition-all shadow-sm';
+                btnEl.className = 'px-4 py-2 bg-slate-800 hover:bg-slate-900 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
                 btnEl.innerText = 'Verstanden';
                 cancelBtn.classList.add('hidden');
                 iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-red-100 text-red-600 mt-1';
@@ -737,8 +901,9 @@
             }
 
             btnEl.onclick = () => {
-                if (currentConfirmCallback) currentConfirmCallback();
+                let cb = currentConfirmCallback;
                 closeModal();
+                if (cb) cb();
             };
             document.getElementById('custom-modal').classList.remove('hidden');
         }
@@ -758,8 +923,10 @@
             const iconContainer = document.getElementById('modal-icon-container');
 
             cancelBtn.classList.remove('hidden');
+            // Bei reiner Texteingabe keinen "Verwerfen" Button anzeigen
+            document.getElementById('modal-alt-btn').classList.add('hidden');
 
-            btnEl.className = 'px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-medium transition-all shadow-sm';
+            btnEl.className = 'px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
             btnEl.innerText = 'Speichern';
             
             iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-indigo-100 text-indigo-600 mt-1';
@@ -770,8 +937,9 @@
             };
 
             btnEl.onclick = () => {
-                if (currentConfirmCallback) currentConfirmCallback();
+                let cb = currentConfirmCallback;
                 closeModal();
+                if (cb) cb();
             };
 
             document.getElementById('custom-modal').classList.remove('hidden');
@@ -785,6 +953,7 @@
         function closeModal() {
             document.getElementById('custom-modal').classList.add('hidden');
             currentConfirmCallback = null;
+            currentAltCallback = null;
         }
 
         let toastTimeout;
