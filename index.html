@@ -299,17 +299,6 @@
             });
           };
 
-          const copyDeepLink = (e, id) => {
-            e.stopPropagation();
-            const url = `${window.location.origin}${window.location.pathname}?prompt=${id}`;
-            navigator.clipboard.writeText(url).then(() => {
-              alert("Direktlink in die Zwischenablage kopiert!");
-            }).catch(err => {
-              console.error("Kopieren fehlgeschlagen", err);
-              alert("Fehler beim Kopieren des Links.");
-            });
-          };
-
           const filteredEntries = useMemo(() => {
             return entries.filter(entry => {
               const matchFach = filters.fach.length === 0 || filters.fach.includes(entry.fach);
@@ -716,15 +705,6 @@
                                       <QrCodeIcon className="w-5 h-5" />
                                     </button>
 
-                                    {/* Link Teilen Button */}
-                                    <button 
-                                      onClick={(e) => copyDeepLink(e, entry.id)}
-                                      className="p-2 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
-                                      title="Direktlink kopieren"
-                                    >
-                                      <LinkIcon className="w-5 h-5" />
-                                    </button>
-
                                     {/* Der Editor-Button */}
                                     {showEditorMode && (
                                       <a 
@@ -847,7 +827,7 @@
                               </div>
                             </div>
 
-                            {/* Der QR-Code für den Ausdruck (NEU) */}
+                            {/* Der QR-Code für den Ausdruck */}
                             <div className="flex flex-col items-center flex-shrink-0">
                               <img 
                                 src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(qrUrl)}`} 
@@ -880,20 +860,42 @@
 
               {/* MODALS */}
               
-              {/* QR Code Modal */}
+              {/* QR Code Modal (NEU: vergrößert & mit Kopier-Button) */}
               {qrModal.isOpen && (
                 <div className="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 z-50 flex items-center justify-center p-4 print:hidden" onClick={() => setQrModal({ isOpen: false, url: '', titel: '' })}>
-                  <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-sm w-full p-6 text-center" onClick={e => e.stopPropagation()}>
+                  <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full p-6 text-center" onClick={e => e.stopPropagation()}>
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 truncate pr-4">{qrModal.titel}</h3>
                       <button onClick={() => setQrModal({ isOpen: false, url: '', titel: '' })} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"><CloseIcon className="w-6 h-6"/></button>
                     </div>
+                    
                     <div className="flex justify-center bg-white p-4 rounded-lg border border-slate-200 dark:border-slate-700 mb-4">
-                      <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrModal.url)}`} alt="QR Code" className="w-48 h-48" />
+                      {/* Größe in API auf 500x500 und per Tailwind auf w-96 h-96 verdoppelt */}
+                      <img src={`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(qrModal.url)}`} alt="QR Code" className="w-96 h-96" />
                     </div>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4 break-all">
-                      {qrModal.url}
-                    </p>
+                    
+                    <div className="mb-6 flex flex-col items-center gap-3">
+                      <p className="text-sm text-slate-500 dark:text-slate-400 break-all">
+                        {qrModal.url}
+                      </p>
+                      
+                      {/* Neuer Button zum Kopieren des Direktlinks direkt unter der Anzeige */}
+                      <button 
+                        onClick={() => {
+                          navigator.clipboard.writeText(qrModal.url).then(() => {
+                            alert("Direktlink in die Zwischenablage kopiert!");
+                          }).catch(err => {
+                            console.error("Kopieren fehlgeschlagen", err);
+                            alert("Fehler beim Kopieren des Links.");
+                          });
+                        }}
+                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-lg border border-blue-200 dark:border-blue-800/50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <LinkIcon className="w-4 h-4" />
+                        Direktlink kopieren
+                      </button>
+                    </div>
+
                     <button onClick={() => setQrModal({ isOpen: false, url: '', titel: '' })} className="w-full px-4 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">Schließen</button>
                   </div>
                 </div>
