@@ -42,8 +42,9 @@
         const StarIcon = ({className, filled}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>;
         const PrinterIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>;
         const LinkIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>;
+        const QrCodeIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="15" y1="15" x2="15.01" y2="15"></line><line x1="9" y1="15" x2="9.01" y2="15"></line></svg>;
 
-        // Statische Filter-Optionen (Fach wird jetzt dynamisch generiert)
+        // Statische Filter-Optionen
         const FILTER_STUFE = ['Primarstufe', 'Sekundarstufe 1', 'Sekundarstufe 2'];
         const FILTER_FUNKTION = ['Prompt', 'Bildgenerierung', 'Assistent', 'Lernszenarium', 'Dialogpartner'];
         const FILTER_TAGS = ['Thüringen'];
@@ -67,33 +68,23 @@
           const [expandedCards, setExpandedCards] = useState(new Set());
           const [fileError, setFileError] = useState(false);
           const [showImpressum, setShowImpressum] = useState(false);
+          const [qrModal, setQrModal] = useState({ isOpen: false, url: '', titel: '' });
           
-          // State für die animierte Zählung der Prompts
           const [animatedCount, setAnimatedCount] = useState(0);
-
-          // State und Ref für Scroll-to-Top
           const [showScrollTop, setShowScrollTop] = useState(false);
           const scrollContainerRef = useRef(null);
-
-          // Dynamische Liste der Fächer aus der faecher.json
           const [faecherListe, setFaecherListe] = useState([]);
           
-          // Dark Mode State
           const [isDarkMode, setIsDarkMode] = useState(false);
-          // State für den geheimen Editor-Modus
           const [showEditorMode, setShowEditorMode] = useState(false);
-          
-          // State für Filter (ein-/ausklappbar, automatisch zu auf Handys, offen auf Desktop)
           const [showFilters, setShowFilters] = useState(window.innerWidth >= 768);
 
-          // State für Favoriten (aus dem localStorage laden)
           const [favorites, setFavorites] = useState(() => {
             const savedFavorites = localStorage.getItem('telli_favorites');
             return savedFavorites ? JSON.parse(savedFavorites) : [];
           });
           const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
-          // Filters-State als Arrays für Mehrfachauswahl (inklusive Tags)
           const [filters, setFilters] = useState({
             fach: [],
             stufe: [],
@@ -102,12 +93,10 @@
           });
           const [searchTerm, setSearchTerm] = useState('');
 
-          // Favoriten im localStorage sichern, sobald sie sich ändern
           useEffect(() => {
             localStorage.setItem('telli_favorites', JSON.stringify(favorites));
           }, [favorites]);
 
-          // Dark Mode Initialisierung
           useEffect(() => {
             const savedTheme = localStorage.getItem('theme');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -133,40 +122,31 @@
             }
           };
 
-          // Versteckter Zuhörer für das Wort "tellieditor"
           useEffect(() => {
             let typedKeys = '';
             const secret = 'tellieditor';
-
             const handleKeyDown = (e) => {
-              // Nur normale Buchstaben-Eingaben berücksichtigen
               if (e.key.length === 1) {
                 typedKeys += e.key.toLowerCase();
-                // Behalte immer nur die letzten 11 Zeichen im Speicher
                 if (typedKeys.length > secret.length) {
                   typedKeys = typedKeys.slice(-secret.length);
                 }
-                // Wenn das Wort vollständig getippt wurde:
                 if (typedKeys === secret) {
                   setShowEditorMode(true);
                   alert('Geheimer Editor-Modus aktiviert!');
-                  typedKeys = ''; // Speicher zurücksetzen
+                  typedKeys = '';
                 }
               }
             };
-
             window.addEventListener('keydown', handleKeyDown);
             return () => window.removeEventListener('keydown', handleKeyDown);
           }, []);
 
-          // Dynamisches Laden über faecher.json
           useEffect(() => {
             const loadData = async () => {
               try {
                 setLoading(true);
                 let faecherNamen = [];
-                
-                // 1. Lade das Inhaltsverzeichnis (faecher.json)
                 try {
                   const faecherRes = await fetch('faecher.json');
                   if (!faecherRes.ok) throw new Error("faecher.json nicht gefunden");
@@ -175,23 +155,19 @@
                   console.warn("Konnte faecher.json nicht laden, nutze Fallback.", e);
                   setFileError(true);
                   setEntries(FALLBACK_DATA);
-                  setFaecherListe(['Deutsch']); // Fallback für die Buttons
+                  setFaecherListe(['Deutsch']);
                   setLoading(false);
                   return;
                 }
 
-                // 2. Fächerliste für die UI aufbereiten (erster Buchstabe groß)
                 const formatierteFaecher = faecherNamen.map(f => f.charAt(0).toUpperCase() + f.slice(1));
                 setFaecherListe(formatierteFaecher);
 
-                // 3. Lade nun alle im Array gelisteten JSON-Dateien
                 const fetchPromises = faecherNamen.map(async (fach) => {
                   try {
                     const res = await fetch(`${fach}.json`);
                     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
                     const data = await res.json();
-                    
-                    // Wir überschreiben/setzen hier das "fach" dynamisch anhand des Dateinamens
                     const formatiertesFach = fach.charAt(0).toUpperCase() + fach.slice(1);
                     return data.map(entry => ({...entry, fach: formatiertesFach}));
                   } catch (err) {
@@ -209,7 +185,6 @@
                 } else {
                   setFileError(false);
                 }
-
                 setEntries(allData);
               } catch (error) {
                 console.error("Genereller Fehler beim Laden der Daten:", error);
@@ -220,47 +195,30 @@
                 setLoading(false);
               }
             };
-
             loadData();
           }, []);
 
-          // --- DEEP-LINKING (Direktlink beim Start auswerten) ---
           useEffect(() => {
             if (entries.length > 0) {
               const params = new URLSearchParams(window.location.search);
               const promptId = params.get('prompt');
-              
               if (promptId) {
-                // 1. Alle Filter zurücksetzen, damit die Karte sicher sichtbar ist
                 setFilters({ fach: [], stufe: [], funktion: [], tags: [] });
                 setSearchTerm('');
                 setShowFavoritesOnly(false);
-                
-                // HIER IST DIE ÄNDERUNG: Filterleiste ausblenden, damit nichts verdeckt wird
                 setShowFilters(false);
-                
-                // 2. Die verlinkte Karte aufklappen
-                setExpandedCards(prev => {
-                  const newSet = new Set(prev);
-                  newSet.add(promptId);
-                  return newSet;
-                });
+                setExpandedCards(prev => new Set(prev).add(promptId));
 
-                // 3. Zur Karte scrollen und sie kurz hervorheben (Verzögerung für Rendering)
                 setTimeout(() => {
                   const element = document.getElementById(`prompt-${promptId}`);
                   if (element && scrollContainerRef.current) {
-                    // Scroll-Position berechnen
                     const containerTop = scrollContainerRef.current.getBoundingClientRect().top;
                     const elementTop = element.getBoundingClientRect().top;
                     const scrollTop = scrollContainerRef.current.scrollTop;
-                    // Etwas Abstand nach oben lassen
                     scrollContainerRef.current.scrollTo({
                       top: scrollTop + elementTop - containerTop - 100, 
                       behavior: 'smooth'
                     });
-
-                    // Kurzes Aufleuchten der Karte
                     element.classList.add('ring-4', 'ring-blue-500', 'ring-opacity-50', 'transition-all', 'duration-1000');
                     setTimeout(() => {
                       element.classList.remove('ring-4', 'ring-blue-500', 'ring-opacity-50');
@@ -269,15 +227,13 @@
                 }, 300);
               }
             }
-          }, [entries.length]); // Startet sobald die Einträge geladen sind
+          }, [entries.length]);
 
-          // --- ANIMATION FÜR DAS HOCHZÄHLEN DER PROMPTS ---
           useEffect(() => {
             if (entries.length === 0) {
               setAnimatedCount(0);
               return;
             }
-
             let startTimestamp = null;
             const duration = 2000; 
             const targetCount = entries.length;
@@ -288,26 +244,19 @@
             const step = (timestamp) => {
               if (!startTimestamp) startTimestamp = timestamp;
               const progress = timestamp - startTimestamp;
-              
               const ratio = Math.min(progress / duration, 1);
               const easedRatio = easeOutQuart(ratio);
-              
               setAnimatedCount(Math.round(easedRatio * targetCount));
-
               if (progress < duration) {
                 animationFrameId = window.requestAnimationFrame(step);
               } else {
                 setAnimatedCount(targetCount); 
               }
             };
-
             animationFrameId = window.requestAnimationFrame(step);
-
             return () => window.cancelAnimationFrame(animationFrameId);
           }, [entries.length]);
-          // --------------------------------------------------
 
-          // Scroll Handler
           const handleScroll = (e) => {
             if (e.target.scrollTop > 400) {
               setShowScrollTop(true);
@@ -317,15 +266,10 @@
           };
 
           const scrollToTop = () => {
-            scrollContainerRef.current?.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            });
+            scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
           };
 
-          const handlePrint = () => {
-            window.print();
-          };
+          const handlePrint = () => { window.print(); };
 
           const toggleFilter = (category, value) => {
             setFilters(prev => {
@@ -341,11 +285,11 @@
           const resetFilters = () => {
             setFilters({ fach: [], stufe: [], funktion: [], tags: [] });
             setSearchTerm('');
-            setShowFavoritesOnly(false); // Auch den Favoriten-Filter zurücksetzen
+            setShowFavoritesOnly(false);
           };
 
           const toggleFavorite = (e, id) => {
-            e.stopPropagation(); // Verhindert das Aufklappen der Karte
+            e.stopPropagation();
             setFavorites(prev => {
               if (prev.includes(id)) {
                 return prev.filter(f => f !== id);
@@ -372,19 +316,14 @@
               const entryStufen = Array.isArray(entry.stufe) ? entry.stufe : [entry.stufe];
               const matchStufe = filters.stufe.length === 0 || entryStufen.some(s => filters.stufe.includes(s));
               const matchFunktion = filters.funktion.length === 0 || filters.funktion.includes(entry.funktion);
-              
               const entryTags = entry.tags || [];
               const matchTags = filters.tags.length === 0 || entryTags.some(t => filters.tags.includes(t));
-
               const searchLower = searchTerm.toLowerCase();
               const matchSearch = searchTerm === '' || 
                 entry.titel.toLowerCase().includes(searchLower) ||
                 entry.kurzbeschreibung.toLowerCase().includes(searchLower) ||
                 entry.prompt.toLowerCase().includes(searchLower);
-
-              // Favoriten-Filter Logik
               const matchFavorites = !showFavoritesOnly || favorites.includes(entry.id);
-
               return matchFach && matchStufe && matchFunktion && matchTags && matchSearch && matchFavorites;
             });
           }, [entries, filters, searchTerm, showFavoritesOnly, favorites]);
@@ -396,11 +335,8 @@
           const toggleCard = (id) => {
             setExpandedCards(prev => {
               const newSet = new Set(prev);
-              if (newSet.has(id)) {
-                newSet.delete(id);
-              } else {
-                newSet.add(id);
-              }
+              if (newSet.has(id)) newSet.delete(id);
+              else newSet.add(id);
               return newSet;
             });
           };
@@ -413,12 +349,8 @@
               textArea.value = text;
               document.body.appendChild(textArea);
               textArea.select();
-              try {
-                document.execCommand('copy');
-                alert("Prompt in die Zwischenablage kopiert!");
-              } catch (e) {
-                console.error("Kopieren fehlgeschlagen", e);
-              }
+              try { document.execCommand('copy'); alert("Prompt in die Zwischenablage kopiert!"); } 
+              catch (e) { console.error("Kopieren fehlgeschlagen", e); }
               document.body.removeChild(textArea);
             });
           };
@@ -428,7 +360,7 @@
           return (
             <div className="min-h-screen text-slate-800 dark:text-slate-200 font-sans relative flex overflow-hidden print:h-auto print:overflow-visible print:bg-white print:text-black">
               
-              {/* --- HAUPTINHALT (Wird beim Drucken ausgeblendet: print:hidden) --- */}
+              {/* --- HAUPTINHALT --- */}
               <div 
                 ref={scrollContainerRef}
                 onScroll={handleScroll}
@@ -439,14 +371,9 @@
                 <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 pt-6 pb-8 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
                   <div className="max-w-5xl mx-auto">
                     
-                    {/* Titel und Buttons Container */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
                       <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-900 dark:text-blue-400 leading-tight">telli in Thüringen</h1>
-                      
-                      {/* Navigations-Buttons */}
                       <div className="flex flex-wrap items-center gap-2">
-                        
-                        {/* Dark Mode Toggle */}
                         <button 
                           onClick={toggleDarkMode}
                           className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
@@ -455,7 +382,6 @@
                           {isDarkMode ? <SunIcon className="w-4 h-4 text-amber-400" /> : <MoonIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
                           <span className="hidden sm:inline">{isDarkMode ? 'Hell' : 'Dunkel'}</span>
                         </button>
-                        
                         <button 
                           onClick={() => setShowImpressum(true)}
                           className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
@@ -466,7 +392,6 @@
                       </div>
                     </div>
 
-                    {/* ANIMIERTE ZAHL */}
                     <h2 className="text-lg sm:text-xl text-blue-700 dark:text-blue-300 font-medium mb-8">
                       <span 
                         className="inline-block text-right tabular-nums text-2xl font-black text-emerald-600 dark:text-emerald-400 mr-1" 
@@ -484,38 +409,27 @@
                     )}
 
                     <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/20 rounded-2xl p-6 sm:p-8 border border-blue-200/60 dark:border-blue-800/60 shadow-md mb-8 transition-all duration-300 hover:shadow-lg">
-                      {/* Dekoratives Hintergrundelement */}
                       <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-2xl pointer-events-none"></div>
-                      
                       <div className="relative z-10 flex flex-col gap-5 text-slate-700 dark:text-slate-300 leading-relaxed">
                         <p className="text-lg">
                           <strong className="font-extrabold text-blue-900 dark:text-blue-300 tracking-wide">telli</strong> ist der DSGVO-konforme KI-Chatbot für Schulen in Thüringen, betrieben vom <a href="https://fwu.de" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline underline-offset-4 decoration-blue-300/50 hover:decoration-blue-500 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">fwu</a>.
                         </p>
-                        
-                        {/* Link-Buttons anstelle von reinem Text */}
                         <div className="flex flex-col sm:flex-row gap-3 mt-1">
                           <a href="https://www.schulportal-thueringen.de/digitale_werkzeuge/telli" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">
-                            <BookOpenIcon className="w-4 h-4" />
-                            telli-Zugang über das Thüringer Schulportal
+                            <BookOpenIcon className="w-4 h-4" /> telli-Zugang über das Thüringer Schulportal
                           </a>
                           <a href="https://www.schulportal-thueringen.de/digitale_werkzeuge/telli/unterstuetzungsangebot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700 text-sm font-medium rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">
-                            <InfoIcon className="w-4 h-4" />
-                            Unterstützungsangebote für telli durch das ThILLM
+                            <InfoIcon className="w-4 h-4" /> Unterstützungsangebote für telli durch das ThILLM
                           </a>
                         </div>
-
-                        {/* Abgesetzter Footer-Text für die Box */}
                         <div className="mt-2 pt-4 border-t border-blue-200/50 dark:border-blue-800/50">
-                          <p className="text-lg">
-                            Diese Seite zeigt Einsatzideen für telli für verschiedene Fächer, gegliedert nach telli-Funktionen und Schulstufen. Die Beispiele sind als Anregung zur Erstellung eigener telli-Funktionen gedacht.
-                          </p>
+                          <p className="text-lg">Diese Seite zeigt Einsatzideen für telli für verschiedene Fächer, gegliedert nach telli-Funktionen und Schulstufen. Die Beispiele sind als Anregung zur Erstellung eigener telli-Funktionen gedacht.</p>
                         </div>
                       </div>
                     </div>
 
                     <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center">
-                      <InfoIcon className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
-                      Diese Funktionen stellt telli bereit:
+                      <InfoIcon className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" /> Diese Funktionen stellt telli bereit:
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="bg-white dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm transition-colors duration-200">
@@ -542,13 +456,68 @@
                   </div>
                 </header>
 
-                {/* STICKY FILTER BEREICH */}
+                {/* STICKY FILTER BEREICH (OPTION 4 - KORRIGIERT) */}
                 <div className="sticky top-0 z-20 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 shadow-sm py-3 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
                   <div className="max-w-5xl mx-auto flex flex-col gap-4">
                     
-                    <div className="flex justify-between items-center">
-                      <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center">
-                        Filter für die unten angezeigten Prompts:
+                    {/* IMMER SICHTBAR: Suche, Favoriten & Filter-Reset */}
+                    <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
+                      <div className="w-full md:w-auto flex flex-col sm:flex-row gap-3">
+                        <div className="relative w-full sm:w-80">
+                          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
+                            <SearchIcon />
+                          </div>
+                          <input 
+                            type="text" 
+                            className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 shadow-sm transition-shadow placeholder-slate-400 dark:placeholder-slate-500" 
+                            placeholder="Stichwort suchen..." 
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                          />
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          {/* Favoriten Toggle Button */}
+                          <button
+                            onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                            className={`flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
+                              showFavoritesOnly 
+                              ? 'bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700' 
+                              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700'
+                            }`}
+                          >
+                            <StarIcon className="w-4 h-4" filled={showFavoritesOnly} />
+                            <span className="hidden sm:inline">Favoriten</span> {favorites.length > 0 && `(${favorites.length})`}
+                          </button>
+
+                          {/* Druck-Button (nur anzeigen wenn es Favoriten gibt) */}
+                          {favorites.length > 0 && (
+                            <button
+                              onClick={handlePrint}
+                              className="flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
+                              title="Markierte Favoriten als PDF speichern oder drucken"
+                            >
+                              <PrinterIcon className="w-4 h-4" />
+                              <span className="hidden sm:inline">Favoriten Drucken / PDF</span>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {hasActiveFilters && (
+                        <button 
+                          onClick={resetFilters}
+                          className="w-full md:w-auto text-sm px-4 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800"
+                        >
+                          Filter zurücksetzen
+                        </button>
+                      )}
+                    </div>
+
+                    {/* FILTER-KOPFZEILE (Erweiterte Kategorien) */}
+                    <div className="flex justify-between items-center border-t border-slate-200 dark:border-slate-700 pt-3">
+                      <h3 className="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-100 flex items-center">
+                        Erweiterte Filter (Fach, Funktion, Stufe):
                       </h3>
                       
                       <button 
@@ -560,6 +529,7 @@
                       </button>
                     </div>
 
+                    {/* EIN-/AUSKLAPPBARER BEREICH (nur noch Kategorien) */}
                     <div className={`${showFilters ? 'flex' : 'hidden'} flex-col gap-4`}>
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         
@@ -664,60 +634,6 @@
                         </div>
 
                       </div>
-
-                      {/* Suche, Favoriten-Filter & Reset & Drucken */}
-                      <div className="flex flex-col md:flex-row gap-3 items-center justify-between border-t border-slate-200 dark:border-slate-700 pt-3">
-                        <div className="w-full md:w-auto flex flex-col sm:flex-row gap-3">
-                          <div className="relative w-full sm:w-80">
-                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
-                              <SearchIcon />
-                            </div>
-                            <input 
-                              type="text" 
-                              className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 shadow-sm transition-shadow placeholder-slate-400 dark:placeholder-slate-500" 
-                              placeholder="Stichwort suchen..." 
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                          </div>
-                          
-                          <div className="flex gap-2">
-                            {/* Favoriten Toggle Button */}
-                            <button
-                              onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-                              className={`flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
-                                showFavoritesOnly 
-                                ? 'bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700' 
-                                : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700'
-                              }`}
-                            >
-                              <StarIcon className="w-4 h-4" filled={showFavoritesOnly} />
-                              <span className="hidden sm:inline">Favoriten</span> {favorites.length > 0 && `(${favorites.length})`}
-                            </button>
-
-                            {/* Druck-Button (nur anzeigen wenn es Favoriten gibt) */}
-                            {favorites.length > 0 && (
-                              <button
-                                onClick={handlePrint}
-                                className="flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
-                                title="Markierte Favoriten als PDF speichern oder drucken"
-                              >
-                                <PrinterIcon className="w-4 h-4" />
-                                <span className="hidden sm:inline">Favoriten Drucken / PDF</span>
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                        
-                        {hasActiveFilters && (
-                          <button 
-                            onClick={resetFilters}
-                            className="w-full md:w-auto text-sm px-4 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800"
-                          >
-                            Filter zurücksetzen
-                          </button>
-                        )}
-                      </div>
                     </div>
 
                   </div>
@@ -787,6 +703,19 @@
                                   </div>
                                   
                                   <div className="flex items-center gap-1 mt-4 sm:mt-0">
+                                    {/* QR Code Button */}
+                                    <button 
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        const url = `${window.location.origin}${window.location.pathname}?prompt=${entry.id}`;
+                                        setQrModal({ isOpen: true, url: url, titel: entry.titel });
+                                      }}
+                                      className="p-2 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                                      title="QR-Code anzeigen"
+                                    >
+                                      <QrCodeIcon className="w-5 h-5" />
+                                    </button>
+
                                     {/* Link Teilen Button */}
                                     <button 
                                       onClick={(e) => copyDeepLink(e, entry.id)}
@@ -796,7 +725,7 @@
                                       <LinkIcon className="w-5 h-5" />
                                     </button>
 
-                                    {/* Der Editor-Button (nur sichtbar, wenn Modus aktiv) */}
+                                    {/* Der Editor-Button */}
                                     {showEditorMode && (
                                       <a 
                                         href={`prompt-editor.html?file=${entry.fach.toLowerCase()}.json&id=${entry.id}`}
@@ -894,35 +823,54 @@
                   <p>Es wurden keine Favoriten markiert.</p>
                 ) : (
                   <div className="space-y-8">
-                    {favoriteEntriesToPrint.map((entry) => (
-                      <div key={entry.id} className="break-inside-avoid border border-slate-300 rounded-lg p-6">
-                        <div className="flex items-center gap-3 mb-3">
-                          <span className="bg-slate-200 text-slate-800 text-xs font-bold px-2 py-1 rounded">
-                            #{entry.id}
-                          </span>
-                          <h2 className="text-xl font-bold text-slate-900">{entry.titel}</h2>
-                        </div>
-                        
-                        <div className="flex flex-wrap gap-2 mb-4 text-sm">
-                          <span className="font-semibold">{entry.fach}</span>
-                          <span className="text-slate-400">•</span>
-                          <span>{entry.funktion}</span>
-                          <span className="text-slate-400">•</span>
-                          <span>{Array.isArray(entry.stufe) ? entry.stufe.join(', ') : entry.stufe}</span>
-                        </div>
-                        
-                        <p className="text-slate-700 italic mb-4">
-                          {entry.kurzbeschreibung}
-                        </p>
-                        
-                        <div className="mt-4">
-                          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wide mb-2">Prompt / Eingabe:</h3>
-                          <div className="bg-slate-50 border border-slate-200 rounded p-4 font-mono text-sm text-slate-900 whitespace-pre-wrap">
-                            {entry.prompt}
+                    {favoriteEntriesToPrint.map((entry) => {
+                      // Dynamischer Link für den QR Code im Druck
+                      const qrUrl = `${window.location.origin}${window.location.pathname}?prompt=${entry.id}`;
+                      
+                      return (
+                        <div key={entry.id} className="break-inside-avoid border border-slate-300 rounded-lg p-6">
+                          <div className="flex justify-between items-start gap-4 mb-4">
+                            <div>
+                              <div className="flex items-center gap-3 mb-3">
+                                <span className="bg-slate-200 text-slate-800 text-xs font-bold px-2 py-1 rounded">
+                                  #{entry.id}
+                                </span>
+                                <h2 className="text-xl font-bold text-slate-900">{entry.titel}</h2>
+                              </div>
+                              
+                              <div className="flex flex-wrap gap-2 text-sm">
+                                <span className="font-semibold">{entry.fach}</span>
+                                <span className="text-slate-400">•</span>
+                                <span>{entry.funktion}</span>
+                                <span className="text-slate-400">•</span>
+                                <span>{Array.isArray(entry.stufe) ? entry.stufe.join(', ') : entry.stufe}</span>
+                              </div>
+                            </div>
+
+                            {/* Der QR-Code für den Ausdruck (NEU) */}
+                            <div className="flex flex-col items-center flex-shrink-0">
+                              <img 
+                                src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(qrUrl)}`} 
+                                alt="QR Code" 
+                                className="w-20 h-20 border border-slate-200 p-1" 
+                              />
+                              <span className="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">Direktlink</span>
+                            </div>
+                          </div>
+                          
+                          <p className="text-slate-700 italic mb-4">
+                            {entry.kurzbeschreibung}
+                          </p>
+                          
+                          <div className="mt-4">
+                            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wide mb-2">Prompt / Eingabe:</h3>
+                            <div className="bg-slate-50 border border-slate-200 rounded p-4 font-mono text-sm text-slate-900 whitespace-pre-wrap">
+                              {entry.prompt}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 )}
                 <div className="mt-12 pt-4 border-t border-slate-300 text-center text-xs text-slate-500">
@@ -932,6 +880,25 @@
 
               {/* MODALS */}
               
+              {/* QR Code Modal */}
+              {qrModal.isOpen && (
+                <div className="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 z-50 flex items-center justify-center p-4 print:hidden" onClick={() => setQrModal({ isOpen: false, url: '', titel: '' })}>
+                  <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-sm w-full p-6 text-center" onClick={e => e.stopPropagation()}>
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 truncate pr-4">{qrModal.titel}</h3>
+                      <button onClick={() => setQrModal({ isOpen: false, url: '', titel: '' })} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"><CloseIcon className="w-6 h-6"/></button>
+                    </div>
+                    <div className="flex justify-center bg-white p-4 rounded-lg border border-slate-200 dark:border-slate-700 mb-4">
+                      <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrModal.url)}`} alt="QR Code" className="w-48 h-48" />
+                    </div>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4 break-all">
+                      {qrModal.url}
+                    </p>
+                    <button onClick={() => setQrModal({ isOpen: false, url: '', titel: '' })} className="w-full px-4 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">Schließen</button>
+                  </div>
+                </div>
+              )}
+
               {/* Impressum Modal */}
               {showImpressum && (
                 <div className="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 z-50 flex items-center justify-center p-4 print:hidden">
