@@ -46,9 +46,6 @@ Neue Funktionen im Vergleich zur hessischen Vorlage:
 III.PROMPT-DATENFORMAT DOKUMENTATION
 ===========================================================================
 
-Dieses Dokument beschreibt die Struktur zur Speicherung von KI-Prompts 
-und Lernszenarien im Bildungskontext.
-
 1. DATEISTRUKTUR & ORGANISATION
 ---------------------------------------------------------------------------
 * DATEINAMEN: Fachname als Dateiname (z. B. deutsch.json, mathe.json).
