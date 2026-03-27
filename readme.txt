@@ -29,11 +29,18 @@ https://mgkurz.github.io/-telli-deutsch-ideen/
 
 Neue Funktionen im Vergleich zur hessischen Vorlage:
 ---------------------------------------------------------------------------
-- Erweiterung der Prompt-Datenbank um die Ebene Fächer
-- Promptssammlung in json-Dateien ausgelagert (eine json-Datei pro Fach)
-- Dynamisches Einlesen der Fächer via Inhaltsverzeichnis (faecher.json)
-- Möglichkeit zum gefilterten Datenexport als json-Datei
+- Trennung von Prompt-"Datenbank" und Anzeige
+- Promptssammlung in json-Dateien ausgelagert (1x json-Datei / Fach)
+- Erweiterung der Prompts um die Filterebenen "Fächer" und "Tags"
+- dynamisches Einlesen der Fächer via Inhaltsverzeichnis (faecher.json)
+- dynamisches Einlesen der Tags via Inhaltsverzeichnis (tags.json)
 - Darkmode ergänzt
+- "Scroll-to-Top"-Button ergänzt
+- Favoritensystem ergänzt
+- Funktion, um Favoriten auszudrucken / als PDF zu speichern, ergänzt
+- direkte Verlinkung per QR-Code oder per "Link kopieren" ergänzt
+- QR-Codes beim Ausdrucken ergänzt
+- thüringenspezifische Anpassungen
 
 ===========================================================================
 III.PROMPT-DATENFORMAT DOKUMENTATION
