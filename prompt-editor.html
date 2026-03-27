@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prompteditor</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
     <style>
         /* Custom Scrollbar for textareas */
         textarea::-webkit-scrollbar {
@@ -21,61 +26,77 @@
         textarea::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+        /* Darkmode Scrollbar */
+        .dark textarea::-webkit-scrollbar-track {
+            background: #1e293b; 
+        }
+        .dark textarea::-webkit-scrollbar-thumb {
+            background: #475569; 
+        }
+        .dark textarea::-webkit-scrollbar-thumb:hover {
+            background: #64748b; 
+        }
         /* Smooth transitions for highlight effect */
         .highlight-card {
             transition: all 0.5s ease-in-out;
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 font-sans min-h-screen flex flex-col transition-colors duration-200">
 
-    <header class="bg-white shadow-sm sticky top-0 z-20">
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-transparent dark:border-slate-700 sticky top-0 z-20 transition-colors duration-200">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex flex-col gap-4">
             
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 
                 <div class="flex items-center gap-3 md:w-1/3 justify-center md:justify-start">
-                    <div class="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center flex-shrink-0 border border-indigo-100">
-                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    <div class="w-10 h-10 bg-indigo-50 dark:bg-indigo-900/50 rounded-lg flex items-center justify-center flex-shrink-0 border border-indigo-100 dark:border-indigo-800">
+                        <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                     </div>
-                    <h1 class="text-xl font-bold text-slate-800 leading-tight">Prompteditor</h1>
+                    <h1 class="text-xl font-bold text-slate-800 dark:text-slate-100 leading-tight">Prompteditor</h1>
                 </div>
                 
                 <div class="flex justify-center md:w-1/3">
-                    <div class="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-lg border border-slate-200 shadow-inner max-w-full">
-                        <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        <span id="file-name-display" class="text-sm font-medium text-slate-500 truncate transition-colors max-w-[200px] sm:max-w-[250px]" title="Aktuelle Datei">Keine Datei geladen</span>
+                    <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-inner max-w-full">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span id="file-name-display" class="text-sm font-medium text-slate-500 dark:text-slate-400 truncate transition-colors max-w-[200px] sm:max-w-[250px]" title="Aktuelle Datei">Keine Datei geladen</span>
                     </div>
                 </div>
                 
-                <div class="flex justify-center md:justify-end md:w-1/3">
-                    <button onclick="openHelpModal()" class="flex items-center justify-center gap-2 bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap" title="Hilfe & Anleitung">
-                        <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div class="flex justify-center md:justify-end md:w-1/3 gap-2">
+                    
+                    <button id="theme-toggle" class="flex items-center justify-center p-2 bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg transition-all shadow-sm focus:outline-none" title="Darkmode umschalten">
+                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    </button>
+
+                    <button onclick="openHelpModal()" class="flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap" title="Hilfe & Anleitung">
+                        <svg class="w-4 h-4 text-indigo-500 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         Hilfe
                     </button>
                 </div>
                 
             </div>
             
-            <div class="flex flex-wrap items-center justify-center lg:justify-end gap-2 sm:gap-3 w-full">
+            <div class="flex flex-wrap items-center justify-center lg:justify-end gap-2 sm:gap-3 w-full mt-2 lg:mt-0">
                 
-                <select id="server-file-select" onchange="handleDropdownChange(this)" class="w-full sm:w-[220px] bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 px-3 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm truncate">
+                <select id="server-file-select" onchange="handleDropdownChange(this)" class="w-full sm:w-[220px] bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 px-3 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm truncate">
                     <option value="">📋 Fach aus Liste laden...</option>
                 </select>
 
-                <button onclick="document.getElementById('file-upload').click()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
-                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                <button onclick="document.getElementById('file-upload').click()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
+                    <svg class="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                     Lokale Promptliste laden
                 </button>
                 <input type="file" id="file-upload" class="hidden" accept=".json" onchange="handleFileUpload(event)">
 
-                <button onclick="saveJSON()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
+                <button onclick="saveJSON()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
                     Promptliste speichern
                 </button>
 
-                <button onclick="requestNewFile()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap" title="Erstellt eine neue, leere Promptliste">
-                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                <button onclick="requestNewFile()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap" title="Erstellt eine neue, leere Promptliste">
+                    <svg class="w-4 h-4 text-slate-400 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Neue Promptliste erstellen
                 </button>
 
@@ -85,11 +106,11 @@
 
     <main class="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 py-8">
         
-        <div id="global-header" class="mb-6 hidden bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all">
-            <h2 class="text-lg font-semibold text-slate-700 whitespace-nowrap">Einträge (<span id="entry-count">0</span>)</h2>
+        <div id="global-header" class="mb-6 hidden bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all">
+            <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-200 whitespace-nowrap">Einträge (<span id="entry-count">0</span>)</h2>
             
-            <div class="flex items-center gap-3 w-full md:w-auto bg-slate-50 p-2 md:p-0 md:bg-transparent rounded-lg border border-slate-200 md:border-none">
-                <label class="text-sm font-bold text-slate-600 uppercase tracking-wider pl-2 md:pl-0">Fach:</label>
+            <div class="flex items-center gap-3 w-full md:w-auto bg-slate-50 dark:bg-slate-900/50 p-2 md:p-0 md:bg-transparent rounded-lg border border-slate-200 dark:border-slate-700 md:border-none">
+                <label class="text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider pl-2 md:pl-0">Fach:</label>
                 <div id="global-fach-ui" class="flex-grow md:flex-grow-0">
                     </div>
             </div>
@@ -97,16 +118,16 @@
 
         <div id="entries-container" class="space-y-6"></div>
 
-        <div id="empty-state" class="hidden text-center py-16 bg-white rounded-xl border border-dashed border-slate-300 shadow-sm mt-6">
-            <svg class="w-12 h-12 text-slate-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-            <h3 class="text-lg font-medium text-slate-900">Keine Einträge vorhanden</h3>
-            <p class="text-slate-500 mt-1 mb-6">Lade eine bestehende Promptliste oder erstelle einen neuen Eintrag.</p>
+        <div id="empty-state" class="hidden text-center py-16 bg-white dark:bg-slate-800 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 shadow-sm mt-6">
+            <svg class="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <h3 class="text-lg font-medium text-slate-900 dark:text-slate-100">Keine Einträge vorhanden</h3>
+            <p class="text-slate-500 dark:text-slate-400 mt-1 mb-6">Lade eine bestehende Promptliste oder erstelle einen neuen Eintrag.</p>
             <div class="flex justify-center flex-wrap gap-3">
-                <button onclick="addNewEntry()" class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 px-5 py-2.5 rounded-lg text-sm font-medium transition-all shadow-sm">
+                <button onclick="addNewEntry()" class="inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 px-5 py-2.5 rounded-lg text-sm font-medium transition-all shadow-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Neuen leeren Eintrag erstellen
                 </button>
-                <button onclick="addSampleEntry()" class="inline-flex items-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-lg text-sm font-medium transition-all shadow-sm">
+                <button onclick="addSampleEntry()" class="inline-flex items-center gap-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-5 py-2.5 rounded-lg text-sm font-medium transition-all shadow-sm">
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     Neuen Mustereintrag erstellen
                 </button>
@@ -115,11 +136,11 @@
 
         <div id="add-bottom-container" class="mt-8 text-center hidden">
             <div class="flex flex-wrap justify-center gap-4">
-                <button onclick="addNewEntry()" class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 px-6 py-3 rounded-xl text-sm font-medium transition-all shadow-sm">
+                <button onclick="addNewEntry()" class="inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 px-6 py-3 rounded-xl text-sm font-medium transition-all shadow-sm">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Neuen leeren Eintrag erstellen
                 </button>
-                <button onclick="addSampleEntry()" class="inline-flex items-center gap-2 bg-white text-indigo-700 border border-indigo-200 hover:bg-indigo-50 px-6 py-3 rounded-xl text-sm font-medium transition-all shadow-sm">
+                <button onclick="addSampleEntry()" class="inline-flex items-center gap-2 bg-white dark:bg-slate-700 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-50 dark:hover:bg-slate-600 px-6 py-3 rounded-xl text-sm font-medium transition-all shadow-sm">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     Neuen Mustereintrag erstellen
                 </button>
@@ -127,40 +148,40 @@
         </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 mt-auto py-6">
+    <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 mt-auto py-6 transition-colors duration-200">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-            <p class="text-sm font-medium text-slate-600">
+            <p class="text-sm font-medium text-slate-600 dark:text-slate-400">
                 Erstellt 2026 von Tobias Lochner, Dr. Sulzberger-Gymnasium Bad Salzungen
             </p>
-            <p class="text-xs text-slate-500 mt-1.5">
+            <p class="text-xs text-slate-500 dark:text-slate-500 mt-1.5">
                 Dieses Werk ist lizenziert unter einer 
-                <a href="https://creativecommons.org/licenses/by/4.0/deed.de" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">Creative Commons Namensnennung 4.0 International (CC BY 4.0) Lizenz</a>.
+                <a href="https://creativecommons.org/licenses/by/4.0/deed.de" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline transition-colors">Creative Commons Namensnennung 4.0 International (CC BY 4.0) Lizenz</a>.
             </p>
         </div>
     </footer>
 
     <div id="help-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
-        <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeHelpModal()"></div>
-        <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full mx-4 relative z-10 p-6 md:p-8 max-h-[90vh] overflow-y-auto">
+        <div class="fixed inset-0 bg-slate-900/40 dark:bg-slate-900/80 backdrop-blur-sm" onclick="closeHelpModal()"></div>
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-2xl w-full mx-4 relative z-10 p-6 md:p-8 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-start mb-5">
-                <h3 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                    <div class="bg-indigo-100 text-indigo-600 p-2 rounded-lg">
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+                    <div class="bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 p-2 rounded-lg">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
                     So funktioniert der Editor
                 </h3>
-                <button onclick="closeHelpModal()" class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 p-1.5 rounded-lg transition-colors">
+                <button onclick="closeHelpModal()" class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 p-1.5 rounded-lg transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
             
-            <div class="text-slate-700 space-y-5 leading-relaxed">
+            <div class="text-slate-700 dark:text-slate-300 space-y-5 leading-relaxed">
                 <p>Mit diesem Editor können Sie ganz einfach Sammlungen von Arbeitsanweisungen (sogenannte "Prompts") für KI-Modelle erstellen, anpassen und verwalten. Die Bedienung ist unkompliziert und erfordert keine Programmierkenntnisse.</p>
 
                 <div>
-                    <h4 class="font-bold text-slate-900 text-base mb-2">1. Listen laden oder neu erstellen</h4>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">1. Listen laden oder neu erstellen</h4>
                     <p class="mb-2">Sie haben drei Möglichkeiten, um zu starten:</p>
-                    <ul class="list-disc pl-5 space-y-1.5 marker:text-indigo-400">
+                    <ul class="list-disc pl-5 space-y-1.5 marker:text-indigo-400 dark:marker:text-indigo-500">
                         <li><strong>Fach aus Liste laden:</strong> Wählen Sie eine bereits bestehende Promptliste aus dem Dropdown-Menü aus, um sie anzusehen oder zu bearbeiten.</li>
                         <li><strong>Lokale Promptliste laden:</strong> Öffnen Sie eine Prompt-Datei (Endung <code>.json</code>), die Sie zuvor auf Ihrem eigenen Computer gespeichert haben.</li>
                         <li><strong>Neue Promptliste erstellen:</strong> Beginnen Sie mit einem komplett leeren Dokument, für das Sie selbst ein Fach festlegen können.</li>
@@ -168,29 +189,29 @@
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-slate-900 text-base mb-2">2. Prompts bearbeiten</h4>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">2. Prompts bearbeiten</h4>
                     <p>Sobald eine Liste geöffnet ist, können Sie die einzelnen "Kärtchen" bearbeiten. Sie können Titel, Zielgruppe (Stufe) und Tags anpassen oder den eigentlichen Text des Prompts verändern. Über die Buttons am unteren Bildschirmrand lassen sich jederzeit neue, leere Kärtchen oder vorgefertigte Mustereinträge hinzufügen.</p>
                 </div>
 
-                <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 mt-6 shadow-sm">
-                    <h4 class="font-bold text-amber-900 text-base flex items-center gap-2 mb-3">
-                        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-xl p-5 mt-6 shadow-sm">
+                    <h4 class="font-bold text-amber-900 dark:text-amber-400 text-base flex items-center gap-2 mb-3">
+                        <svg class="w-5 h-5 text-amber-600 dark:text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                         WICHTIGER HINWEIS zum Speichern
                     </h4>
-                    <p class="text-amber-800 text-sm mb-3">Dieser Editor arbeitet zu Ihrem Schutz und für höchste Datensicherheit <strong>ausschließlich lokal</strong> in Ihrem Internetbrowser. Das bedeutet:</p>
-                    <ul class="list-disc pl-5 space-y-1.5 text-amber-800 text-sm marker:text-amber-500">
+                    <p class="text-amber-800 dark:text-amber-200 text-sm mb-3">Dieser Editor arbeitet zu Ihrem Schutz und für höchste Datensicherheit <strong>ausschließlich lokal</strong> in Ihrem Internetbrowser. Das bedeutet:</p>
+                    <ul class="list-disc pl-5 space-y-1.5 text-amber-800 dark:text-amber-200 text-sm marker:text-amber-500 dark:marker:text-amber-400">
                         <li>Wenn Sie auf <strong>"Promptliste speichern"</strong> klicken, wird Ihre Arbeit als Datei direkt <strong>auf Ihren Computer heruntergeladen</strong> (in der Regel in Ihren "Downloads"-Ordner).</li>
                         <li>Es findet <strong>keine automatische Speicherung im Internet</strong> oder auf dieser Webseite statt.</li>
                         <li>Ihre Änderungen sind für andere Nutzer erst sichtbar, wenn Sie Ihre gespeicherte Datei an den Webseiten-Administrator weiterleiten, damit dieser die neuen Daten in das System einpflegt.</li>
                     </ul>
-                    <p class="text-amber-900 font-semibold mt-4 text-sm bg-amber-200/50 p-3 rounded-lg">
+                    <p class="text-amber-900 dark:text-amber-100 font-semibold mt-4 text-sm bg-amber-200/50 dark:bg-amber-800/50 p-3 rounded-lg">
                         Bitte denken Sie also immer daran, Ihre fertige Arbeit über den Speichern-Button auf Ihrem eigenen PC zu sichern, bevor Sie das Browserfenster schließen!
                     </p>
                 </div>
             </div>
             
             <div class="flex justify-end mt-8">
-                <button onclick="closeHelpModal()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-medium transition-all shadow-sm focus:ring-4 focus:ring-indigo-100">
+                <button onclick="closeHelpModal()" class="px-6 py-2.5 bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-lg text-white font-medium transition-all shadow-sm focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900">
                     Schließen
                 </button>
             </div>
@@ -198,35 +219,79 @@
     </div>
 
     <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
-        <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="bg-white rounded-xl shadow-xl max-w-lg w-full mx-4 relative z-10 p-6">
+        <div class="fixed inset-0 bg-slate-900/40 dark:bg-slate-900/80 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full mx-4 relative z-10 p-6">
             <div class="flex items-start gap-4 mb-2">
                 <div id="modal-icon-container" class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center mt-1">
                     </div>
                 <div class="w-full">
-                    <h3 id="modal-title" class="text-lg font-bold text-slate-900 leading-tight">Bestätigen</h3>
-                    <p id="modal-message" class="text-slate-600 text-sm mt-2 leading-relaxed">Möchten Sie diese Aktion wirklich ausführen?</p>
+                    <h3 id="modal-title" class="text-lg font-bold text-slate-900 dark:text-white leading-tight">Bestätigen</h3>
+                    <p id="modal-message" class="text-slate-600 dark:text-slate-300 text-sm mt-2 leading-relaxed">Möchten Sie diese Aktion wirklich ausführen?</p>
                     
                     <div id="modal-input-wrapper" class="hidden mt-4">
-                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Dateiname</label>
-                        <input type="text" id="modal-input-field" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all text-slate-900 font-medium">
+                        <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Dateiname</label>
+                        <input type="text" id="modal-input-field" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100 font-medium">
                     </div>
                 </div>
             </div>
             <div class="flex flex-col sm:flex-row justify-end items-center gap-3 mt-8">
-                <button id="modal-alt-btn" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-red-600 font-medium hover:bg-red-50 transition-all hidden w-full sm:w-auto sm:mr-auto">Verwerfen</button>
-                <button id="modal-cancel-btn" onclick="closeModal()" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-all w-full sm:w-auto">Abbrechen</button>
+                <button id="modal-alt-btn" class="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-red-600 dark:text-red-400 font-medium hover:bg-red-50 dark:hover:bg-slate-600 transition-all hidden w-full sm:w-auto sm:mr-auto">Verwerfen</button>
+                <button id="modal-cancel-btn" onclick="closeModal()" class="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-50 dark:hover:bg-slate-600 transition-all w-full sm:w-auto">Abbrechen</button>
                 <button id="modal-confirm-btn" class="px-4 py-2 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto">Bestätigen</button>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-4 right-4 bg-slate-800 text-white px-4 py-3 rounded-lg shadow-lg transform transition-all translate-y-20 opacity-0 z-50 flex items-center gap-3">
+    <div id="toast" class="fixed bottom-4 right-4 bg-slate-800 dark:bg-slate-700 text-white px-4 py-3 rounded-lg shadow-lg transform transition-all translate-y-20 opacity-0 z-50 flex items-center gap-3 border dark:border-slate-600">
         <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
         <span id="toast-message" class="font-medium text-sm">Aktion erfolgreich.</span>
     </div>
 
     <script>
+        // --- THEME / DARKMODE LOGIK ---
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        function initTheme() {
+            // Check local storage or system preference
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                themeToggleLightIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeToggleDarkIcon.classList.remove('hidden');
+            }
+        }
+
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            // Toggle icons
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+
+            // If set via local storage previously
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                // If not set, check document class
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+
+        // Initialize Theme on load
+        initTheme();
+
         // Haupt-Datenstruktur
         let promptsData = [];
         let currentFileName = '';
@@ -267,12 +332,12 @@
             const displayEl = document.getElementById('file-name-display');
             if (currentFileName) {
                 displayEl.innerText = currentFileName;
-                displayEl.classList.add('text-indigo-600');
-                displayEl.classList.remove('text-slate-500');
+                displayEl.classList.add('text-indigo-600', 'dark:text-indigo-400');
+                displayEl.classList.remove('text-slate-500', 'dark:text-slate-400');
             } else {
                 displayEl.innerText = 'Keine Datei geladen';
-                displayEl.classList.add('text-slate-500');
-                displayEl.classList.remove('text-indigo-600');
+                displayEl.classList.add('text-slate-500', 'dark:text-slate-400');
+                displayEl.classList.remove('text-indigo-600', 'dark:text-indigo-400');
             }
         }
 
@@ -716,18 +781,18 @@
                                value="${escapeHTML(globalFach)}" 
                                oninput="handleGlobalFachInput(this)" 
                                placeholder="z.B. Mathematik" 
-                               class="w-full md:w-64 bg-white border border-slate-300 hover:border-indigo-400 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all font-medium text-slate-700 shadow-sm">
-                        <span class="text-[11px] text-slate-500 mt-1 font-medium ml-1">Hinweis: Fachname ohne Leerzeichen eingeben</span>
+                               class="w-full md:w-64 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 hover:border-indigo-400 dark:hover:border-indigo-500 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all font-medium text-slate-700 dark:text-slate-100 shadow-sm">
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 font-medium ml-1">Hinweis: Fachname ohne Leerzeichen eingeben</span>
                     </div>
                 `;
             } else {
                 globalFachUi.innerHTML = `
                     <div class="flex items-center">
-                        <span class="inline-flex items-center px-3 py-1.5 rounded-md bg-slate-100 border border-slate-200 text-sm font-semibold text-slate-700 shadow-inner" title="Wird durch den Dateinamen festgelegt">
-                            <svg class="w-4 h-4 mr-1.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        <span class="inline-flex items-center px-3 py-1.5 rounded-md bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-inner" title="Wird durch den Dateinamen festgelegt">
+                            <svg class="w-4 h-4 mr-1.5 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             ${escapeHTML(globalFach || 'Kein Fach')}
                         </span>
-                        <span class="text-xs text-slate-400 ml-3 hidden md:inline-block">Festgelegt durch Dateinamen</span>
+                        <span class="text-xs text-slate-400 dark:text-slate-500 ml-3 hidden md:inline-block">Festgelegt durch Dateinamen</span>
                     </div>
                 `;
             }
@@ -736,35 +801,35 @@
             
             promptsData.forEach((item, index) => {
                 htmlString += `
-                <div id="prompt-entry-${escapeHTML(item.id)}" class="highlight-card bg-white p-5 md:p-6 rounded-xl shadow-sm border border-slate-200 relative group hover:border-indigo-300">
+                <div id="prompt-entry-${escapeHTML(item.id)}" class="highlight-card bg-white dark:bg-slate-800 p-5 md:p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 relative group hover:border-indigo-300 dark:hover:border-indigo-500">
                     
                     <div class="absolute top-4 right-4">
-                        <button onclick="deleteEntry(${index})" title="Eintrag löschen" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all focus:outline-none">
+                        <button onclick="deleteEntry(${index})" title="Eintrag löschen" class="p-2 text-slate-400 dark:text-slate-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-slate-700 rounded-lg transition-all focus:outline-none">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-5 mb-5 pr-10">
                         <div class="md:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">ID</label>
-                            <input type="text" oninput="updateData(${index}, 'id', this.value)" value="${escapeHTML(item.id)}" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all">
+                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">ID</label>
+                            <input type="text" oninput="updateData(${index}, 'id', this.value)" value="${escapeHTML(item.id)}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100">
                         </div>
                         
                         <div class="md:col-span-10">
-                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Titel</label>
-                            <input type="text" oninput="updateData(${index}, 'titel', this.value)" value="${escapeHTML(item.titel)}" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all font-medium text-slate-900">
+                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Titel</label>
+                            <input type="text" oninput="updateData(${index}, 'titel', this.value)" value="${escapeHTML(item.titel)}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all font-medium text-slate-900 dark:text-slate-100">
                         </div>
 
                         <div class="md:col-span-4">
-                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Fach (Global)</label>
-                            <div class="w-full bg-slate-100 border border-slate-200 rounded-md px-3 py-2 text-sm text-slate-500 cursor-not-allowed truncate transition-all global-fach-display" title="Wird zentral festgelegt">
+                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Fach (Global)</label>
+                            <div class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md px-3 py-2 text-sm text-slate-500 dark:text-slate-400 cursor-not-allowed truncate transition-all global-fach-display" title="Wird zentral festgelegt">
                                 ${escapeHTML(item.fach || 'Noch nicht festgelegt')}
                             </div>
                         </div>
 
                         <div class="md:col-span-4">
-                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Funktion</label>
-                            <select onchange="updateData(${index}, 'funktion', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all">
+                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Funktion</label>
+                            <select onchange="updateData(${index}, 'funktion', this.value)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100">
                                 <option value="">-- Bitte wählen --</option>
                                 ${(() => {
                                     const functions = ['Prompt', 'Bildgenerierung', 'Assistent', 'Lernszenarium', 'Dialogpartner'];
@@ -782,8 +847,8 @@
                         </div>
 
                         <div class="md:col-span-4">
-                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Stufe</label>
-                            <select onchange="updateData(${index}, 'stufe', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all">
+                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Stufe</label>
+                            <select onchange="updateData(${index}, 'stufe', this.value)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100">
                                 <option value="">-- Bitte wählen --</option>
                                 ${(() => {
                                     const levels = ['Primarstufe', 'Sekundarstufe 1', 'Sekundarstufe 2'];
@@ -802,12 +867,12 @@
 
                         <div class="md:col-span-12">
                             <div class="flex justify-between items-end mb-1">
-                                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Tags (Mehrfachauswahl mit Strg/Cmd)</label>
-                                <button type="button" onclick="clearTags(${index})" class="text-xs font-medium text-indigo-500 hover:text-indigo-700 transition-all focus:outline-none" title="Alle gewählten Tags entfernen">
+                                <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tags (Mehrfachauswahl mit Strg/Cmd)</label>
+                                <button type="button" onclick="clearTags(${index})" class="text-xs font-medium text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-all focus:outline-none" title="Alle gewählten Tags entfernen">
                                     Alle abwählen
                                 </button>
                             </div>
-                            <select multiple size="3" onchange="updateTagsFromSelect(${index}, this)" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all">
+                            <select multiple size="3" onchange="updateTagsFromSelect(${index}, this)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100">
                                 ${(() => {
                                     let options = '';
                                     const itemTags = Array.isArray(item.tags) ? item.tags.map(t => String(t).toLowerCase()) : [];
@@ -828,14 +893,14 @@
                         </div>
 
                         <div class="md:col-span-12">
-                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Kurzbeschreibung</label>
-                            <input type="text" oninput="updateData(${index}, 'kurzbeschreibung', this.value)" value="${escapeHTML(item.kurzbeschreibung)}" class="w-full bg-slate-50 border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all">
+                            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Kurzbeschreibung</label>
+                            <input type="text" oninput="updateData(${index}, 'kurzbeschreibung', this.value)" value="${escapeHTML(item.kurzbeschreibung)}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-1">Prompt</label>
-                        <textarea oninput="updateData(${index}, 'prompt', this.value)" rows="5" class="w-full bg-indigo-50/30 border border-indigo-200 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all resize-y text-slate-800 leading-relaxed">${escapeHTML(item.prompt)}</textarea>
+                        <label class="block text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-1">Prompt</label>
+                        <textarea oninput="updateData(${index}, 'prompt', this.value)" rows="5" class="w-full bg-indigo-50/30 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all resize-y text-slate-800 dark:text-slate-200 leading-relaxed">${escapeHTML(item.prompt)}</textarea>
                     </div>
                 </div>
                 `;
@@ -884,25 +949,25 @@
             }
 
             if (type === 'danger') {
-                btnEl.className = 'px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
+                btnEl.className = 'px-4 py-2 bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
                 btnEl.innerText = 'Löschen';
-                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-red-100 text-red-600 mt-1';
+                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 mt-1';
                 iconContainer.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
             } else if (type === 'warning') {
-                btnEl.className = 'px-4 py-2 bg-amber-500 hover:bg-amber-600 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
+                btnEl.className = 'px-4 py-2 bg-amber-500 hover:bg-amber-600 dark:bg-amber-500 dark:hover:bg-amber-400 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
                 btnEl.innerText = 'Fortfahren';
-                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 text-amber-600 mt-1';
+                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 mt-1';
                 iconContainer.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
             } else if (type === 'warning_save') {
-                btnEl.className = 'px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
+                btnEl.className = 'px-4 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
                 btnEl.innerText = 'Liste speichern';
-                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 text-amber-600 mt-1';
+                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 mt-1';
                 iconContainer.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>';
             } else if (type === 'error') {
-                btnEl.className = 'px-4 py-2 bg-slate-800 hover:bg-slate-900 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
+                btnEl.className = 'px-4 py-2 bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
                 btnEl.innerText = 'Verstanden';
                 cancelBtn.classList.add('hidden');
-                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-red-100 text-red-600 mt-1';
+                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 mt-1';
                 iconContainer.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
                 if(!onConfirm) currentConfirmCallback = () => {};
             }
@@ -933,10 +998,10 @@
             // Bei reiner Texteingabe keinen "Verwerfen" Button anzeigen
             document.getElementById('modal-alt-btn').classList.add('hidden');
 
-            btnEl.className = 'px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
+            btnEl.className = 'px-4 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
             btnEl.innerText = 'Speichern';
             
-            iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-indigo-100 text-indigo-600 mt-1';
+            iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 mt-1';
             iconContainer.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>';
 
             currentConfirmCallback = () => {
@@ -967,18 +1032,10 @@
         function showToast(message, isError = false) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-message').innerText = message;
-            toast.className = `fixed bottom-4 right-4 ${isError ? 'bg-red-600' : 'bg-slate-800'} text-white px-4 py-3 rounded-lg shadow-lg transform transition-all z-50 flex items-center gap-3`;
+            toast.className = `fixed bottom-4 right-4 ${isError ? 'bg-red-600' : 'bg-slate-800 dark:bg-slate-700'} text-white px-4 py-3 rounded-lg shadow-lg transform transition-all z-50 flex items-center gap-3 border dark:border-slate-600`;
             clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
         }
-
-        // Init
-        document.addEventListener('DOMContentLoaded', () => {
-            loadFileFromUrl();
-            loadFaecherList();
-        });
-        updateFileNameDisplay();
-        renderAll();
 
     </script>
 </body>
