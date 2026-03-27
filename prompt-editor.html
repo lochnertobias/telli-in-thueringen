@@ -81,7 +81,7 @@
             <div class="flex flex-wrap items-center justify-center lg:justify-end gap-2 sm:gap-3 w-full mt-2 lg:mt-0">
                 
                 <select id="server-file-select" onchange="handleDropdownChange(this)" class="w-full sm:w-[220px] bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 px-3 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm truncate">
-                    <option value="">📋 Fach aus Liste laden...</option>
+                    <option value="">⏳ Lade Fächer...</option>
                 </select>
 
                 <button onclick="document.getElementById('file-upload').click()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
@@ -413,6 +413,9 @@
                 })
                 .catch(error => {
                     console.log("Hinweis: faecher.json konnte nicht geladen werden.", error);
+                    // Falls die Datei nicht geladen werden kann, wird eine Meldung im Dropdown angezeigt
+                    const select = document.getElementById('server-file-select');
+                    select.innerHTML = '<option value="">⚠️ faecher.json nicht gefunden</option>';
                 });
         }
 
@@ -1036,6 +1039,15 @@
             clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
         }
+
+        // --- INIT BLOCK ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFileFromUrl();
+            loadFaecherList();
+        });
+        
+        updateFileNameDisplay();
+        renderAll();
 
     </script>
 </body>
