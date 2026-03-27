@@ -30,48 +30,55 @@
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
 
     <header class="bg-white shadow-sm sticky top-0 z-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-4">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex flex-col gap-4">
             
-            <div class="flex items-center gap-3 flex-shrink min-w-0">
-                <div class="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center flex-shrink-0 border border-indigo-100">
-                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                
+                <div class="flex items-center gap-3 md:w-1/3 justify-center md:justify-start">
+                    <div class="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center flex-shrink-0 border border-indigo-100">
+                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    </div>
+                    <h1 class="text-xl font-bold text-slate-800 leading-tight">Prompteditor</h1>
                 </div>
-                <div class="flex flex-col min-w-0">
-                    <h1 class="text-xl font-bold text-slate-800 leading-tight truncate">Prompteditor</h1>
-                    <span id="file-name-display" class="text-xs font-medium text-slate-500 truncate transition-colors max-w-[200px] sm:max-w-[250px]" title="Aktuelle Datei">Keine Datei geladen</span>
+                
+                <div class="flex justify-center md:w-1/3">
+                    <div class="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-lg border border-slate-200 shadow-inner max-w-full">
+                        <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span id="file-name-display" class="text-sm font-medium text-slate-500 truncate transition-colors max-w-[200px] sm:max-w-[250px]" title="Aktuelle Datei">Keine Datei geladen</span>
+                    </div>
                 </div>
+                
+                <div class="flex justify-center md:justify-end md:w-1/3">
+                    <button onclick="openHelpModal()" class="flex items-center justify-center gap-2 bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap" title="Hilfe & Anleitung">
+                        <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Hilfe
+                    </button>
+                </div>
+                
             </div>
             
-            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+            <div class="flex flex-wrap items-center justify-center lg:justify-end gap-2 sm:gap-3 w-full">
                 
-                <select id="server-file-select" onchange="handleDropdownChange(this)" class="w-[200px] sm:w-[220px] bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 px-3 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm truncate">
+                <select id="server-file-select" onchange="handleDropdownChange(this)" class="w-full sm:w-[220px] bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 px-3 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm truncate">
                     <option value="">📋 Fach aus Liste laden...</option>
                 </select>
 
-                <div class="h-6 w-px bg-slate-300 mx-1 hidden lg:block"></div>
-
-                <button onclick="document.getElementById('file-upload').click()" class="flex items-center justify-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
+                <button onclick="document.getElementById('file-upload').click()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
                     <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                     Lokale Promptliste laden
                 </button>
                 <input type="file" id="file-upload" class="hidden" accept=".json" onchange="handleFileUpload(event)">
 
-                <button onclick="saveJSON()" class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
+                <button onclick="saveJSON()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
                     Promptliste speichern
                 </button>
 
-                <button onclick="requestNewFile()" class="flex items-center justify-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap" title="Erstellt eine neue, leere Promptliste">
+                <button onclick="requestNewFile()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap" title="Erstellt eine neue, leere Promptliste">
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Neue Promptliste erstellen
                 </button>
 
-                <div class="h-6 w-px bg-slate-300 mx-1 hidden lg:block"></div>
-
-                <button onclick="openHelpModal()" class="flex items-center justify-center gap-2 bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap" title="Hilfe & Anleitung">
-                    <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Hilfe
-                </button>
             </div>
         </div>
     </header>
@@ -121,7 +128,7 @@
     </main>
 
     <footer class="bg-white border-t border-slate-200 mt-auto py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
             <p class="text-sm font-medium text-slate-600">
                 Erstellt 2026 von Tobias Lochner, Dr. Sulzberger-Gymnasium Bad Salzungen
             </p>
