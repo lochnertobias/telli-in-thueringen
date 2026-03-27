@@ -30,37 +30,40 @@
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
 
     <header class="bg-white shadow-sm sticky top-0 z-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap gap-4 items-center justify-between">
-            <div class="flex items-center gap-2">
-                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-                <h1 class="text-xl font-bold text-slate-800 flex items-center gap-3">
-                    Prompteditor
-                    <span id="file-name-display" class="text-sm font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md hidden border border-slate-200 truncate max-w-[200px] md:max-w-xs" title="Aktuelle Datei"></span>
-                </h1>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-4">
+            
+            <div class="flex items-center gap-3 flex-shrink min-w-0">
+                <div class="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center flex-shrink-0 border border-indigo-100">
+                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                </div>
+                <div class="flex flex-col min-w-0">
+                    <h1 class="text-xl font-bold text-slate-800 leading-tight truncate">Prompteditor</h1>
+                    <span id="file-name-display" class="text-xs font-medium text-slate-500 truncate transition-colors max-w-[200px] sm:max-w-[250px]" title="Aktuelle Datei">Keine Datei geladen</span>
+                </div>
             </div>
             
-            <div class="flex flex-wrap items-center gap-3">
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                 
-                <select id="server-file-select" onchange="loadFromServer(this.value)" class="bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 px-3 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm">
+                <select id="server-file-select" onchange="loadFromServer(this.value)" class="w-[200px] sm:w-[220px] bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 px-3 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm truncate">
                     <option value="">📋 Fach aus Liste laden...</option>
                 </select>
 
-                <div class="h-6 w-px bg-slate-300 mx-1 hidden sm:block"></div>
+                <div class="h-6 w-px bg-slate-300 mx-1 hidden lg:block"></div>
 
-                <button onclick="document.getElementById('file-upload').click()" class="flex items-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                <button onclick="document.getElementById('file-upload').click()" class="flex items-center justify-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
+                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                     Lokale Promptliste laden
                 </button>
                 <input type="file" id="file-upload" class="hidden" accept=".json" onchange="handleFileUpload(event)">
 
-                <button onclick="saveJSON()" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                <button onclick="saveJSON()" class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
                     Promptliste speichern
                 </button>
 
-                <div class="h-6 w-px bg-slate-300 mx-1 hidden sm:block"></div>
+                <div class="h-6 w-px bg-slate-300 mx-1 hidden lg:block"></div>
 
-                <button onclick="requestNewFile()" class="flex items-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" title="Erstellt eine neue, leere Promptliste">
+                <button onclick="requestNewFile()" class="flex items-center justify-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap" title="Erstellt eine neue, leere Promptliste">
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Neue Promptliste erstellen
                 </button>
@@ -149,7 +152,6 @@
         let isNewFile = true;
         let globalFach = '';
         
-        let availableSubjects = ['Deutsch', 'Mathematik', 'Geografie', 'Informatik', 'Biologie'];
         let availableTags = ['Unterrichtsmaterial', 'Muster', 'Thüringen'];
         let currentConfirmCallback = null;
 
@@ -180,17 +182,35 @@
             const displayEl = document.getElementById('file-name-display');
             if (currentFileName) {
                 displayEl.innerText = currentFileName;
-                displayEl.classList.remove('hidden');
+                displayEl.classList.add('text-indigo-600');
+                displayEl.classList.remove('text-slate-500');
             } else {
-                displayEl.classList.add('hidden');
+                displayEl.innerText = 'Keine Datei geladen';
+                displayEl.classList.add('text-slate-500');
+                displayEl.classList.remove('text-indigo-600');
             }
         }
 
-        // Wird aufgerufen, wenn im "Neu"-Modus das Dropdown geändert wird
-        function handleGlobalFachChange(value) {
-            globalFach = value;
+        // --- Fach-Eingabe (Ohne Leerzeichen) ---
+        function handleGlobalFachInput(inputElement) {
+            // Alle Leerzeichen entfernen
+            let val = inputElement.value.replace(/\s+/g, '');
+            
+            // Textfeld aktualisieren, falls Leerzeichen getippt wurden
+            if (inputElement.value !== val) {
+                inputElement.value = val;
+            }
+            
+            globalFach = val;
+            
+            // Datenstruktur aktualisieren
             promptsData.forEach(item => item.fach = globalFach);
-            renderAll();
+            
+            // DOM in Echtzeit aktualisieren (ohne renderAll() aufzurufen, damit Fokus erhalten bleibt)
+            const fachDisplays = document.querySelectorAll('.global-fach-display');
+            fachDisplays.forEach(el => {
+                el.innerText = globalFach || 'Noch nicht festgelegt';
+            });
         }
 
         // --- JSON SERVER LOAD LOGIK ---
@@ -451,11 +471,14 @@
                 const ids = promptsData.map(item => parseInt(item.id) || 0);
                 nextId = (Math.max(...ids) + 1).toString();
             }
+            
+            // Falls das Feld bisher leer war, Fallback setzen:
+            if (!globalFach) globalFach = 'Deutsch';
 
             promptsData.push({
                 id: nextId,
                 titel: "Beispiel-Prompt: Text Zusammenfassung",
-                fach: globalFach || 'Deutsch',
+                fach: globalFach,
                 funktion: "Assistent",
                 stufe: "Sekundarstufe 1",
                 tags: ["Muster", "Unterrichtsmaterial"],
@@ -544,20 +567,19 @@
 
             // Global Fach UI aktualisieren
             if (isNewFile) {
-                let options = '<option value="">-- Fach auswählen --</option>';
-                availableSubjects.forEach(subject => {
-                    const isSelected = subject === globalFach;
-                    options += `<option value="${escapeHTML(subject)}" ${isSelected ? 'selected' : ''}>${escapeHTML(subject)}</option>`;
-                });
-                if (globalFach && !availableSubjects.includes(globalFach)) {
-                    options += `<option value="${escapeHTML(globalFach)}" selected>${escapeHTML(globalFach)} (Benutzerdefiniert)</option>`;
-                }
+                // Freitext-Eingabe statt Dropdown
                 globalFachUi.innerHTML = `
-                    <select onchange="handleGlobalFachChange(this.value)" class="w-full md:w-64 bg-white border border-slate-300 hover:border-indigo-400 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all font-medium text-slate-700 shadow-sm cursor-pointer">
-                        ${options}
-                    </select>
+                    <div class="flex flex-col">
+                        <input type="text" 
+                               value="${escapeHTML(globalFach)}" 
+                               oninput="handleGlobalFachInput(this)" 
+                               placeholder="z.B. Mathematik" 
+                               class="w-full md:w-64 bg-white border border-slate-300 hover:border-indigo-400 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all font-medium text-slate-700 shadow-sm">
+                        <span class="text-[11px] text-slate-500 mt-1 font-medium ml-1">Hinweis: Fachname ohne Leerzeichen eingeben</span>
+                    </div>
                 `;
             } else {
+                // Lese-Modus
                 globalFachUi.innerHTML = `
                     <div class="flex items-center">
                         <span class="inline-flex items-center px-3 py-1.5 rounded-md bg-slate-100 border border-slate-200 text-sm font-semibold text-slate-700 shadow-inner" title="Wird durch den Dateinamen festgelegt">
@@ -594,7 +616,7 @@
 
                         <div class="md:col-span-4">
                             <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Fach (Global)</label>
-                            <div class="w-full bg-slate-100 border border-slate-200 rounded-md px-3 py-2 text-sm text-slate-500 cursor-not-allowed truncate transition-all" title="Wird zentral festgelegt">
+                            <div class="w-full bg-slate-100 border border-slate-200 rounded-md px-3 py-2 text-sm text-slate-500 cursor-not-allowed truncate transition-all global-fach-display" title="Wird zentral festgelegt">
                                 ${escapeHTML(item.fach || 'Noch nicht festgelegt')}
                             </div>
                         </div>
