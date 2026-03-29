@@ -124,6 +124,10 @@
 
           useEffect(() => {
             localStorage.setItem('telli_favorites', JSON.stringify(favorites));
+            
+            if (favorites.length === 0) {
+                setShowFavoritesOnly(false);
+            }
           }, [favorites]);
 
           useEffect(() => {
@@ -168,7 +172,7 @@
                 }
                 setTagsListe(tagsNamen);
 
-                // 2. Fächer einlesen (nur noch das neue Format als Array von Objekten)
+                // 2. Fächer einlesen
                 let faecherData = [];
                 try {
                   const faecherRes = await fetch('faecher.json');
@@ -195,15 +199,15 @@
                     const formatiertesFach = fachObj.name.charAt(0).toUpperCase() + fachObj.name.slice(1);
                     
                     return data.map(entry => {
-                      // Neue ID generieren (2 Stellen Fach + 3 Stellen Prompt)
+                      // Neue ID generieren
                       const paddedFachId = String(fachObj.id).padStart(2, '0');
                       const paddedPromptId = String(entry.id).padStart(3, '0');
                       const newId = `${paddedFachId}${paddedPromptId}`;
                       
                       return {
                         ...entry, 
-                        originalId: entry.id, // Das echte ID-Feld für den Editor-Link merken
-                        id: newId,            // Die neue kombinierte ID zuweisen
+                        originalId: entry.id,
+                        id: newId,            
                         fach: formatiertesFach
                       };
                     });
@@ -235,6 +239,21 @@
             };
             loadData();
           }, []);
+
+          // Aufräum-Mechanismus für veraltete Favoriten
+          useEffect(() => {
+            if (!loading && entries.length > 0 && !fileError) {
+              setFavorites(prevFavorites => {
+                const validFavorites = prevFavorites.filter(favId => 
+                  entries.some(entry => entry.id === favId)
+                );
+                if (validFavorites.length !== prevFavorites.length) {
+                  return validFavorites;
+                }
+                return prevFavorites;
+              });
+            }
+          }, [entries, loading, fileError]);
 
           useEffect(() => {
             if (entries.length > 0) {
@@ -495,14 +514,17 @@
                   </div>
                 </header>
 
-                {/* STICKY FILTER BEREICH (OPTION 4 - KORRIGIERT) */}
+                {/* STICKY FILTER BEREICH */}
                 <div className="sticky top-0 z-20 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 shadow-sm py-3 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
                   <div className="max-w-5xl mx-auto flex flex-col gap-4">
                     
-                    {/* IMMER SICHTBAR: Suche, Favoriten & Filter-Reset */}
-                    <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
-                      <div className="w-full md:w-auto flex flex-col sm:flex-row gap-3">
-                        <div className="relative w-full sm:w-80">
+                    {/* Haupt-Steuerungszeile */}
+                    <div className="flex flex-col xl:flex-row gap-3 items-start xl:items-center justify-between">
+                      
+                      {/* LINKS: Suche, Favoriten, Drucken */}
+                      <div className="w-full xl:w-auto flex flex-col sm:flex-row flex-wrap items-center gap-3">
+                        {/* 1. Suchfeld */}
+                        <div className="relative w-full sm:w-64 md:w-80 flex-shrink-0">
                           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
                             <SearchIcon />
                           </div>
@@ -515,61 +537,65 @@
                           />
                         </div>
                         
-                        <div className="flex gap-2">
-                          {/* Favoriten Toggle Button */}
+                        <div className="flex w-full sm:w-auto gap-2">
+                          {/* 2. Favoriten */}
                           <button
                             onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-                            className={`flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
-                              showFavoritesOnly 
-                              ? 'bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700' 
-                              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700'
+                            disabled={favorites.length === 0}
+                            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
+                              favorites.length === 0
+                              ? 'opacity-50 cursor-not-allowed bg-slate-100 dark:bg-slate-800/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700'
+                              : showFavoritesOnly 
+                                ? 'bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700' 
+                                : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer'
                             }`}
+                            title={favorites.length === 0 ? "Keine Favoriten markiert" : "Nur Favoriten anzeigen"}
                           >
                             <StarIcon className="w-4 h-4" filled={showFavoritesOnly} />
                             <span className="hidden sm:inline">Favoriten</span> {favorites.length > 0 && `(${favorites.length})`}
                           </button>
 
-                          {/* Druck-Button (nur anzeigen wenn es Favoriten gibt) */}
-                          {favorites.length > 0 && (
-                            <button
-                              onClick={handlePrint}
-                              className="flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
-                              title="Markierte Favoriten als PDF speichern oder drucken"
-                            >
-                              <PrinterIcon className="w-4 h-4" />
-                              <span className="hidden sm:inline">Favoriten Drucken / PDF</span>
-                            </button>
-                          )}
+                          {/* 3. Druck-Button */}
+                          <button
+                            onClick={handlePrint}
+                            disabled={favorites.length === 0}
+                            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
+                              favorites.length === 0 
+                              ? 'opacity-50 cursor-not-allowed bg-slate-100 dark:bg-slate-800/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700' 
+                              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer'
+                            }`}
+                            title={favorites.length === 0 ? "Bitte zuerst Favoriten markieren" : "Markierte Favoriten als PDF speichern oder drucken"}
+                          >
+                            <PrinterIcon className="w-4 h-4" />
+                            <span className="hidden sm:inline">PDF / Drucken</span>
+                          </button>
                         </div>
                       </div>
                       
-                      {hasActiveFilters && (
+                      {/* RECHTS: Reset & Filter-Toggle */}
+                      <div className="w-full xl:w-auto flex flex-wrap items-center justify-end gap-3 mt-1 xl:mt-0">
+                        {hasActiveFilters && (
+                          <button 
+                            onClick={resetFilters}
+                            className="text-sm px-4 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800"
+                          >
+                            Filter zurücksetzen
+                          </button>
+                        )}
+                        
+                        {/* 4. Filterzeile einblenden / ausblenden */}
                         <button 
-                          onClick={resetFilters}
-                          className="w-full md:w-auto text-sm px-4 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800"
+                          onClick={() => setShowFilters(!showFilters)}
+                          className="flex items-center gap-2 text-sm px-4 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg transition-colors font-medium border border-slate-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
-                          Filter zurücksetzen
+                          <TagIcon className="w-4 h-4" />
+                          {showFilters ? 'Filterzeile ausblenden' : 'Filterzeile einblenden'}
                         </button>
-                      )}
+                      </div>
                     </div>
 
-                    {/* FILTER-KOPFZEILE (Erweiterte Kategorien) */}
-                    <div className="flex justify-between items-center border-t border-slate-200 dark:border-slate-700 pt-3">
-                      <h3 className="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-100 flex items-center">
-                        Erweiterte Filter (Fach, Funktion, Stufe):
-                      </h3>
-                      
-                      <button 
-                        onClick={() => setShowFilters(!showFilters)}
-                        className="flex items-center gap-2 text-sm px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg transition-colors font-medium border border-slate-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <TagIcon className="w-4 h-4" />
-                        {showFilters ? 'Ausblenden' : 'Anzeigen'}
-                      </button>
-                    </div>
-
-                    {/* EIN-/AUSKLAPPBARER BEREICH (nur noch Kategorien) */}
-                    <div className={`${showFilters ? 'flex' : 'hidden'} flex-col gap-4`}>
+                    {/* EIN-/AUSKLAPPBARER BEREICH */}
+                    <div className={`${showFilters ? 'flex' : 'hidden'} flex-col gap-4 pt-3 border-t border-slate-200 dark:border-slate-700`}>
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         
                         {/* Fach Filter */}
@@ -647,7 +673,7 @@
                           </div>
                         </div>
 
-                        {/* Tags Filter (DYNAMISCH) */}
+                        {/* Tags Filter */}
                         <div>
                           <div className="flex items-center gap-1 mb-1.5">
                             <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tags</label>
@@ -732,7 +758,6 @@
                                         <LayersIcon className="w-3 h-3" /> {Array.isArray(entry.stufe) ? entry.stufe.join(', ') : entry.stufe}
                                       </span>
                                       
-                                      {/* Optionale Tags rendern */}
                                       {(entry.tags || []).map(tag => (
                                         <span key={tag} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/50">
                                           <TagIcon className="w-3 h-3" /> {tag}
@@ -742,7 +767,20 @@
                                   </div>
                                   
                                   <div className="flex items-center gap-1 mt-4 sm:mt-0">
-                                    {/* QR Code Button */}
+                                    {/* Edit-Button wurde ganz nach links verschoben, ist rot und hat Abstand (mr-3) */}
+                                    {showEditorMode && (
+                                      <a 
+                                        href={`prompt-editor.html?file=${entry.fach.toLowerCase()}.json&id=${entry.originalId || entry.id}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-2 mr-3 text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 rounded"
+                                        title="Im Editor bearbeiten"
+                                        onClick={(e) => e.stopPropagation()}
+                                      >
+                                        <EditIcon className="w-5 h-5" />
+                                      </a>
+                                    )}
+
                                     <button 
                                       onClick={(e) => {
                                         e.stopPropagation();
@@ -754,22 +792,7 @@
                                     >
                                       <QrCodeIcon className="w-5 h-5" />
                                     </button>
-
-                                    {/* Der Editor-Button verwendet nun originalId */}
-                                    {showEditorMode && (
-                                      <a 
-                                        href={`prompt-editor.html?file=${entry.fach.toLowerCase()}.json&id=${entry.originalId || entry.id}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="p-2 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
-                                        title="Im Editor bearbeiten"
-                                        onClick={(e) => e.stopPropagation()}
-                                      >
-                                        <EditIcon className="w-5 h-5" />
-                                      </a>
-                                    )}
                                     
-                                    {/* Favoriten Button */}
                                     <button 
                                       onClick={(e) => toggleFavorite(e, entry.id)}
                                       className={`p-2 transition-colors rounded focus:outline-none focus:ring-2 focus:ring-amber-500 ${isFavorite ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 dark:text-slate-600 hover:text-amber-400'}`}
@@ -778,7 +801,6 @@
                                       <StarIcon className="w-6 h-6" filled={isFavorite} />
                                     </button>
 
-                                    {/* Der normale Aufklapp-Pfeil */}
                                     <div className="flex items-center justify-center p-2 text-slate-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-400">
                                       {isExpanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
                                     </div>
@@ -858,7 +880,7 @@
                 </footer>
               </div>
 
-              {/* === DRUCK-ANSICHT (Wird nur auf dem Drucker / im PDF angezeigt) === */}
+              {/* === DRUCK-ANSICHT === */}
               <div className="hidden print:block w-full max-w-4xl mx-auto p-8 bg-white text-black font-sans">
                 <div className="mb-10 border-b-2 border-slate-800 pb-4">
                   <h1 className="text-4xl font-extrabold text-slate-900 mb-2">Meine telli Favoriten</h1>
@@ -870,7 +892,6 @@
                 ) : (
                   <div className="space-y-8">
                     {favoriteEntriesToPrint.map((entry) => {
-                      // Dynamischer Link für den QR Code im Druck
                       const qrUrl = `${window.location.origin}${window.location.pathname}?prompt=${entry.id}`;
                       
                       return (
@@ -893,7 +914,6 @@
                               </div>
                             </div>
 
-                            {/* Der QR-Code für den Ausdruck */}
                             <div className="flex flex-col items-center flex-shrink-0">
                               <img 
                                 src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(qrUrl)}`} 
@@ -997,7 +1017,7 @@
                       <ul className="list-disc pl-5 mt-2 space-y-1">
                         <li><strong>Favoriten markieren:</strong> Klicken Sie auf das Stern-Symbol an einem Eintrag, um ihn sich als Favorit zu merken.</li>
                         <li><strong>Nur Favoriten anzeigen:</strong> Klicken Sie oben im Menü auf den Button „Favoriten“, um alle anderen Einträge auszublenden und nur Ihre gemerkten Beispiele zu sehen.</li>
-                        <li><strong>Drucken / als PDF speichern:</strong> Sobald Sie mindestens einen Favoriten markiert haben, erscheint oben der Button „Favoriten Drucken / PDF“. Damit wird eine saubere, druckoptimierte Ansicht generiert, die nur Ihre ausgewählten Einträge (inklusive praktischer QR-Codes) enthält.</li>
+                        <li><strong>Drucken / als PDF speichern:</strong> Sobald Sie mindestens einen Favoriten markiert haben, erscheint oben der Button „PDF / Drucken“. Damit wird eine saubere, druckoptimierte Ansicht generiert, die nur Ihre ausgewählten Einträge (inklusive praktischer QR-Codes) enthält.</li>
                       </ul>
 
                       <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base mt-6 border-b border-slate-200 dark:border-slate-700 pb-1">🔗 Teilen und Verlinken</h4>
@@ -1066,7 +1086,6 @@
                         </p>
                       </div>
 
-                      {/* CC BY 4.0 Hinweis im Modal */}
                       <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-700">
                         <p>
                           Dieses Werk ist lizenziert unter einer <br/>
