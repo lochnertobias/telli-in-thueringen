@@ -1,6 +1,6 @@
 [
   {
-    "id": "2001",
+    "id": "1",
     "titel": "Zeitzeugen-Interview: Antikes Rom",
     "fach": "Geschichte",
     "funktion": "Dialogpartner",
@@ -9,7 +9,7 @@
     "prompt": "Du bist Marcus, ein römischer Legionär am Limes im 2. Jahrhundert n. Chr. Antworte den Schülern authentisch auf Fragen zu deiner Ausrüstung, deinem Tagesablauf und deiner Motivation. Bleibe in der Ich-Perspektive und erkläre Fachbegriffe kindgerecht."
   },
   {
-    "id": "2002",
+    "id": "2",
     "titel": "KI-Bild-Rekonstruktion: Mittelalterliche Stadt",
     "fach": "Geschichte",
     "funktion": "Bildgenerierung",
@@ -18,7 +18,7 @@
     "prompt": "Generiere eine realistische Darstellung eines deutschen Marktplatzes im Jahr 1300. Achte auf Fachwerkhäuser, einen zentralen Brunnen, Menschen in zeitgenössischer Kleidung (Ständeordnung sichtbar) und keine modernen Elemente wie Stromleitungen."
   },
   {
-    "id": "2003",
+    "id": "3",
     "titel": "Quellenkritik-Assistent",
     "fach": "Geschichte",
     "funktion": "Assistent",
@@ -27,7 +27,7 @@
     "prompt": "Du bist ein Experte für Quellenkritik. Ich gebe dir einen historischen Text. Analysiere ihn nach dem Schema: Textart, Autor, Adressat, Intention und historischer Kontext. Weise auf mögliche Bias oder Manipulationen hin."
   },
   {
-    "id": "2004",
+    "id": "4",
     "titel": "Debatte: Weimarer Republik",
     "fach": "Geschichte",
     "funktion": "Lernszenarium",
@@ -36,7 +36,7 @@
     "prompt": "Wir simulieren eine Sitzung im Reichstag 1921. Du übernimmst die Rollen von Abgeordneten unterschiedlicher Parteien (SPD, DNVP, Zentrum). Präsentiere deren Argumente zum Versailler Vertrag in kurzen Statements, damit ich darauf reagieren kann."
   },
   {
-    "id": "2005",
+    "id": "5",
     "titel": "Zeitreise-Tagebuch: Industrialisierung",
     "fach": "Geschichte",
     "funktion": "Prompt",
@@ -45,7 +45,7 @@
     "prompt": "Schreibe einen Tagebucheintrag eines 12-jährigen Kindes, das 1840 in einer englischen Textilfabrik arbeitet. Beschreibe die Arbeitsbedingungen, die Gefühle und die Hoffnungen. Nutze historische Fakten zur sozialen Frage."
   },
   {
-    "id": "2006",
+    "id": "6",
     "titel": "Perspektivwechsel: Kolonialismus",
     "fach": "Geschichte",
     "funktion": "Dialogpartner",
@@ -54,7 +54,7 @@
     "prompt": "Du bist ein kritischer Beobachter der Berliner Afrika-Konferenz 1884. Diskutiere mit mir über die moralischen und politischen Folgen der Aufteilung Afrikas. Berücksichtige dabei die eurozentristische Sichtweise der Zeit und halte dagegen."
   },
   {
-    "id": "2007",
+    "id": "7",
     "titel": "Steinzeit-Abenteuer",
     "fach": "Geschichte",
     "funktion": "Lernszenarium",
@@ -63,7 +63,7 @@
     "prompt": "Erzähle eine interaktive Geschichte über ein Kind in der Jungsteinzeit. Lass mich an drei Stellen entscheiden, wie es weitergeht (z.B. Jagd, Sammeln oder Töpfern), und erkläre dabei, wie die Menschen damals lebten."
   },
   {
-    "id": "2008",
+    "id": "8",
     "titel": "Urteilshilfe: Französische Revolution",
     "fach": "Geschichte",
     "funktion": "Assistent",
@@ -72,7 +72,7 @@
     "prompt": "Erstelle eine Pro- und Contra-Tabelle zur Herrschaft Robespierres. Berücksichtige die Errungenschaften der Revolution einerseits und den 'Grand Terreur' andererseits, um mir bei der Vorbereitung eines Sachurteils zu helfen."
   },
   {
-    "id": "2009",
+    "id": "9",
     "titel": "Visualisierung: Griechische Akropolis",
     "fach": "Geschichte",
     "funktion": "Bildgenerierung",
@@ -81,7 +81,7 @@
     "prompt": "Erstelle ein Bild der Akropolis von Athen im 5. Jh. v. Chr. Wichtig: Zeige die Tempel nicht als weiße Ruinen, sondern in ihrer ursprünglichen bunten Bemalung (Blau, Rot, Gold) und mit unbeschädigten Statuen."
   },
   {
-    "id": "2010",
+    "id": "10",
     "titel": "Völkerwanderung-Simulator",
     "fach": "Geschichte",
     "funktion": "Lernszenarium",
@@ -90,7 +90,7 @@
     "prompt": "Du bist ein Stammesführer der Westgoten. Erkläre mir, warum dein Volk das römische Reich betreten möchte. Reagiere auf meine Versuche als römischer Grenzbeamter, dich abzuweisen oder anzusiedeln."
   },
   {
-    "id": "2011",
+    "id": "11",
     "titel": "Analyse von Wahlplakaten",
     "fach": "Geschichte",
     "funktion": "Assistent",
@@ -99,7 +99,7 @@
     "prompt": "Ich beschreibe dir ein Wahlplakat der NSDAP aus dem Jahr 1932. Analysiere die Bildsprache, die Symbolik und die psychologische Wirkung auf die damalige Wählerschaft. Erkläre die Mechanismen der Manipulation."
   },
   {
-    "id": "2012",
+    "id": "12",
     "titel": "Ritterburg-Entdecker",
     "fach": "Geschichte",
     "funktion": "Prompt",
@@ -108,7 +108,7 @@
     "prompt": "Erkläre mir die Teile einer Ritterburg (Bergfried, Palas, Zugbrücke) so, als wäre ich ein Knappe, der neu auf der Burg ist. Wofür brauche ich diese Gebäude im Falle einer Belagerung?"
   },
   {
-    "id": "2013",
+    "id": "13",
     "titel": "Kalter Krieg: Hotliner",
     "fach": "Geschichte",
     "funktion": "Dialogpartner",
@@ -117,16 +117,16 @@
     "prompt": "Wir befinden uns im Oktober 1962. Du bist John F. Kennedy und ich bin Nikita Chruschtschow. Wir kommunizieren über Depeschen. Ziel ist es, den Atomkrieg zu verhindern, ohne vor der Weltöffentlichkeit das Gesicht zu verlieren."
   },
   {
-    "id": "2014",
+    "id": "14",
     "titel": "Mode im Wandel der Zeit",
     "fach": "Geschichte",
     "funktion": "Bildgenerierung",
     "stufe": "Sekundarstufe 1",
     "kurzbeschreibung": "Vergleich von Kleidung verschiedener Epochen.",
-    "prompt": "Erstelle ein Bild, das eine Frau aus dem Barock (1700) und eine Frau aus den Goldenen Zwanzigern (1920) nebeneinander zeigt. Achte auf die typischen Silhouetten, Frisuren und Accessoires beider Epochen."
+    "prompt": "Erstelle ein Bild, das eine Frau aus dem Barock (1700) und eine Frau aus den Goldenen Zwanzigern (19) nebeneinander zeigt. Achte auf die typischen Silhouetten, Frisuren und Accessoires beider Epochen."
   },
   {
-    "id": "2015",
+    "id": "15",
     "titel": "Ägyptische Hieroglyphen-Werkstatt",
     "fach": "Geschichte",
     "funktion": "Assistent",
@@ -135,7 +135,7 @@
     "prompt": "Erkläre mir, wie Hieroglyphen funktionieren. Erstelle ein einfaches Rätsel, bei dem ich Symbole (die du beschreibst) kombinieren muss, um ein Wort wie 'Pharao' oder 'Nil' zu bilden."
   },
   {
-    "id": "2016",
+    "id": "16",
     "titel": "Strukturwandel im Ruhrgebiet",
     "fach": "Geschichte",
     "funktion": "Prompt",
@@ -144,7 +144,7 @@
     "prompt": "Erstelle eine Übersicht zum Strukturwandel im Ruhrgebiet. Gliedere in: Wiederaufbau, Kohlekrise der 60er, Stahlkrise der 70er und heutige Dienstleistungsgesellschaft. Nenne jeweils Ursachen und Folgen."
   },
   {
-    "id": "2017",
+    "id": "17",
     "titel": "Napoleon-Interview",
     "fach": "Geschichte",
     "funktion": "Dialogpartner",
@@ -153,7 +153,7 @@
     "prompt": "Du bist Napoleon Bonaparte auf dem Weg nach St. Helena. Ich bin ein Journalist. Ich stelle dir kritische Fragen zu deinen Kriegen, dem Code Civil und deiner Krönung zum Kaiser. Antworte überzeugt, aber reflektiere dein Scheitern."
   },
   {
-    "id": "2018",
+    "id": "18",
     "titel": "Die Hanse als Wirtschaftsmacht",
     "fach": "Geschichte",
     "funktion": "Lernszenarium",
@@ -162,7 +162,7 @@
     "prompt": "Du bist ein Kaufmann aus Lübeck im Jahr 1400. Ich bin ein Händler aus Visby. Verhandle mit mir über den Import von Pelzen und Wachs gegen Salz. Erkläre mir dabei die Vorteile der Hanse-Mitgliedschaft."
   },
   {
-    "id": "2019",
+    "id": "19",
     "titel": "Absolutismus verstehen",
     "fach": "Geschichte",
     "funktion": "Prompt",
@@ -171,7 +171,7 @@
     "prompt": "Erkläre das Prinzip 'L'état, c'est moi'. Wie sicherte Ludwig XIV. seine Macht durch das Schloss Versailles, das stehende Heer und den Merkantilismus? Erstelle eine Mindmap-Struktur in Textform."
   },
   {
-    "id": "2020",
+    "id": "20",
     "titel": "Alltag in der DDR",
     "fach": "Geschichte",
     "funktion": "Dialogpartner",
