@@ -48,12 +48,12 @@
         // Statische Filter-Optionen
         const FILTER_STUFE = ['Primarstufe', 'Sekundarstufe 1', 'Sekundarstufe 2'];
         const FILTER_FUNKTION = ['Prompt', 'Bildgenerierung', 'Assistent', 'Lernszenarium', 'Dialogpartner'];
-        const FILTER_TAGS = ['Thüringen'];
 
-        // Fallback-Daten
+        // Fallback-Daten mit neuer ID-Struktur
         const FALLBACK_DATA = [
           {
-            "id": "1",
+            "id": "01001",
+            "originalId": "1",
             "titel": "Differenzierte Lesetexte generieren",
             "fach": "Deutsch",
             "funktion": "Prompt",
@@ -75,7 +75,10 @@
           const [animatedCount, setAnimatedCount] = useState(0);
           const [showScrollTop, setShowScrollTop] = useState(false);
           const scrollContainerRef = useRef(null);
+          
+          // Dynamische Listen
           const [faecherListe, setFaecherListe] = useState([]);
+          const [tagsListe, setTagsListe] = useState([]);
           
           const [isDarkMode, setIsDarkMode] = useState(false);
           const [showEditorMode, setShowEditorMode] = useState(false);
@@ -107,7 +110,7 @@
             
             headerClickTimeoutRef.current = setTimeout(() => {
               headerClickCountRef.current = 0;
-            }, 1000); // Setzt den Zähler nach 1 Sekunde Pause zurück
+            }, 1000);
 
             if (headerClickCountRef.current >= 7) {
               setShowEditorMode(prev => {
@@ -152,11 +155,25 @@
             const loadData = async () => {
               try {
                 setLoading(true);
-                let faecherNamen = [];
+                
+                // 1. Tags einlesen
+                let tagsNamen = [];
+                try {
+                  const tagsRes = await fetch('tags.json');
+                  if (!tagsRes.ok) throw new Error("tags.json nicht gefunden");
+                  tagsNamen = await tagsRes.json();
+                } catch (e) {
+                  console.warn("Konnte tags.json nicht laden, nutze Fallback.", e);
+                  tagsNamen = ['Thüringen'];
+                }
+                setTagsListe(tagsNamen);
+
+                // 2. Fächer einlesen (nur noch das neue Format als Array von Objekten)
+                let faecherData = [];
                 try {
                   const faecherRes = await fetch('faecher.json');
                   if (!faecherRes.ok) throw new Error("faecher.json nicht gefunden");
-                  faecherNamen = await faecherRes.json();
+                  faecherData = await faecherRes.json();
                 } catch (e) {
                   console.warn("Konnte faecher.json nicht laden, nutze Fallback.", e);
                   setFileError(true);
@@ -166,18 +183,32 @@
                   return;
                 }
 
-                const formatierteFaecher = faecherNamen.map(f => f.charAt(0).toUpperCase() + f.slice(1));
+                const formatierteFaecher = faecherData.map(f => f.name.charAt(0).toUpperCase() + f.name.slice(1));
                 setFaecherListe(formatierteFaecher);
 
-                const fetchPromises = faecherNamen.map(async (fach) => {
+                // 3. Einträge der Fächer einlesen & IDs umbauen
+                const fetchPromises = faecherData.map(async (fachObj) => {
                   try {
-                    const res = await fetch(`${fach}.json`);
+                    const res = await fetch(`${fachObj.name}.json`);
                     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
                     const data = await res.json();
-                    const formatiertesFach = fach.charAt(0).toUpperCase() + fach.slice(1);
-                    return data.map(entry => ({...entry, fach: formatiertesFach}));
+                    const formatiertesFach = fachObj.name.charAt(0).toUpperCase() + fachObj.name.slice(1);
+                    
+                    return data.map(entry => {
+                      // Neue ID generieren (2 Stellen Fach + 3 Stellen Prompt)
+                      const paddedFachId = String(fachObj.id).padStart(2, '0');
+                      const paddedPromptId = String(entry.id).padStart(3, '0');
+                      const newId = `${paddedFachId}${paddedPromptId}`;
+                      
+                      return {
+                        ...entry, 
+                        originalId: entry.id, // Das echte ID-Feld für den Editor-Link merken
+                        id: newId,            // Die neue kombinierte ID zuweisen
+                        fach: formatiertesFach
+                      };
+                    });
                   } catch (err) {
-                    console.warn(`Warnung: Datei ${fach}.json konnte nicht geladen werden.`, err);
+                    console.warn(`Warnung: Datei ${fachObj.name}.json konnte nicht geladen werden.`, err);
                     return []; 
                   }
                 });
@@ -197,6 +228,7 @@
                 setFileError(true);
                 setEntries(FALLBACK_DATA);
                 setFaecherListe(['Deutsch']);
+                setTagsListe(['Thüringen']);
               } finally {
                 setLoading(false);
               }
@@ -615,13 +647,13 @@
                           </div>
                         </div>
 
-                        {/* Tags Filter */}
+                        {/* Tags Filter (DYNAMISCH) */}
                         <div>
                           <div className="flex items-center gap-1 mb-1.5">
                             <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tags</label>
                           </div>
                           <div className="flex flex-wrap gap-1.5">
-                            {FILTER_TAGS.map(opt => {
+                            {tagsListe.map(opt => {
                               const isActive = filters.tags.includes(opt);
                               return (
                                 <button 
@@ -723,10 +755,10 @@
                                       <QrCodeIcon className="w-5 h-5" />
                                     </button>
 
-                                    {/* Der Editor-Button */}
+                                    {/* Der Editor-Button verwendet nun originalId */}
                                     {showEditorMode && (
                                       <a 
-                                        href={`prompt-editor.html?file=${entry.fach.toLowerCase()}.json&id=${entry.id}`}
+                                        href={`prompt-editor.html?file=${entry.fach.toLowerCase()}.json&id=${entry.originalId || entry.id}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="p-2 text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
@@ -903,7 +935,6 @@
                       <button onClick={() => setQrModal({ isOpen: false, url: '', titel: '' })} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"><CloseIcon className="w-6 h-6"/></button>
                     </div>
                     
-                    {/* HIER WURDEN DIE BILD-KLASSEN GEÄNDERT */}
                     <div className="flex justify-center bg-white p-4 rounded-lg border border-slate-200 dark:border-slate-700 mb-4">
                       <img 
                         src={`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(qrModal.url)}`} 
@@ -1021,7 +1052,6 @@
                         </ul>
                       </div>
                       
-                      {/* NEUER GITHUB LINK BLOCK */}
                       <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-700">
                         <p>
                           <strong className="text-slate-900 dark:text-slate-200">Quellcode (GitHub):</strong><br/>
