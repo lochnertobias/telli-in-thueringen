@@ -1,6 +1,6 @@
 [
   {
-    "id": "4001",
+    "id": "1",
     "titel": "Demokratie vs. Diktatur",
     "fach": "Sozialkunde",
     "funktion": "Assistent",
@@ -9,7 +9,7 @@
     "prompt": "Du bist ein Politikexperte. Erstelle eine Tabelle, die die Unterschiede zwischen einer Demokratie und einer Diktatur in den Bereichen Pressefreiheit, Wahlen und Gewaltenteilung gegenüberstellt. Erkläre zudem an einem fiktiven Beispiel, wie sich das tägliche Leben eines Jugendlichen in beiden Systemen unterscheidet."
   },
   {
-    "id": "4002",
+    "id": "2",
     "titel": "Der Weg eines Gesetzes",
     "fach": "Sozialkunde",
     "funktion": "Lernszenarium",
@@ -18,7 +18,7 @@
     "prompt": "Wir simulieren den Weg eines Gesetzentwurfs zur 'Einführung eines kostenlosen ÖPNV'. Du übernimmst die Rolle des Bundesrats und der Opposition, ich bin die Bundesregierung. Führe mich durch die Stationen (Lesungen, Ausschüsse, Vermittlungsausschuss) und erkläre bei jedem Schritt, welche Hürden wir nehmen müssen."
   },
   {
-    "id": "4003",
+    "id": "3",
     "titel": "Kinderrechte-Entdecker",
     "fach": "Sozialkunde",
     "funktion": "Lernszenarium",
@@ -27,7 +27,7 @@
     "prompt": "Du bist ein freundlicher Botschafter der UN. Erkläre mir drei wichtige Kinderrechte (z.B. Recht auf Spiel, Bildung, Schutz vor Gewalt) in einfacher Sprache. Erzähle mir dann eine kurze Geschichte über ein Kind, dessen Recht verletzt wurde, und frage mich, wie wir ihm helfen können."
   },
   {
-    "id": "4004",
+    "id": "4",
     "titel": "Visualisierung: Gewaltenteilung",
     "fach": "Sozialkunde",
     "funktion": "Bildgenerierung",
@@ -36,7 +36,7 @@
     "prompt": "Generiere eine didaktische Grafik zur Gewaltenteilung in Deutschland. Nutze das Symbol einer Waage. Auf den Schalen und dem Sockel sollen Symbole für das Parlament (Bundestag), die Regierung und das Bundesverfassungsgericht zu sehen sein. Der Stil sollte klar und übersichtlich sein, wie in einem Schulbuch."
   },
   {
-    "id": "4005",
+    "id": "5",
     "titel": "Fake News Detektiv",
     "fach": "Sozialkunde",
     "funktion": "Dialogpartner",
@@ -45,7 +45,7 @@
     "prompt": "Du präsentierst mir drei fiktive Nachrichtenüberschriften zu einem aktuellen politischen Thema. Zwei davon enthalten typische Merkmale von Fake News (Clickbait, fehlende Quellen, emotionale Manipulation), eine ist seriös. Ich muss raten, welche wahr ist, und du erklärst mir danach die Checkliste zur Quellenprüfung."
   },
   {
-    "id": "4006",
+    "id": "6",
     "titel": "Wahl-O-Mat-Logik verstehen",
     "fach": "Sozialkunde",
     "funktion": "Assistent",
@@ -54,7 +54,7 @@
     "prompt": "Erkläre das politische Spektrum (Links, Mitte, Rechts) in Deutschland. Nenne zu jedem Bereich zwei typische Forderungen (z.B. Steuern, Umweltschutz, Sicherheit). Erstelle dann fünf Thesen, zu denen ich 'Zustimmen' oder 'Ablehnen' kann, und ordne meine Antworten einer politischen Grundströmung zu."
   },
   {
-    "id": "4007",
+    "id": "7",
     "titel": "Bürgermeister-Sprechstunde",
     "fach": "Sozialkunde",
     "funktion": "Dialogpartner",
@@ -63,7 +63,7 @@
     "prompt": "Du bist der Bürgermeister einer Kleinstadt. Ich bin ein Jugendlicher, der ein neues Jugendzentrum fordert. Du bist grundsätzlich dafür, hast aber kein Budget und Anwohner beschweren sich über Lärm. Lass uns eine Lösung finden, die einen Kompromiss darstellt. Erkläre mir dabei, wie Stadtratssitzungen funktionieren."
   },
   {
-    "id": "4008",
+    "id": "8",
     "titel": "EU-Institutionen-Memory",
     "fach": "Sozialkunde",
     "funktion": "Prompt",
@@ -72,7 +72,7 @@
     "prompt": "Erstelle eine übersichtliche Zusammenfassung der EU-Organe. Für jedes Organ (Kommission, Parlament, Rat der EU, Europäischer Rat) nenne: 1. Wer sitzt dort? 2. Was ist die Hauptaufgabe? 3. Werden sie direkt gewählt? Formuliere am Ende drei Verständnisfragen für einen Test."
   },
   {
-    "id": "4009",
+    "id": "9",
     "titel": "Grundgesetz-Artikelsuche",
     "fach": "Sozialkunde",
     "funktion": "Assistent",
@@ -81,7 +81,7 @@
     "prompt": "Ich nenne dir ein Szenario (z.B. 'Jemand darf seine Meinung nicht auf Facebook posten' oder 'Die Polizei durchsucht ohne Grund eine Wohnung'). Nenne mir den passenden Artikel aus dem Grundgesetz (Art. 1-19) und erkläre, ob das Grundrecht in diesem Fall geschützt ist oder eingeschränkt werden darf."
   },
   {
-    "id": "4010",
+    "id": "10",
     "titel": "Plakatentwurf: Klassensprecherwahl",
     "fach": "Sozialkunde",
     "funktion": "Bildgenerierung",
@@ -90,7 +90,7 @@
     "prompt": "Erstelle ein farbenfrohes Design für ein Wahlplakat zur Klassensprecherwahl. Das Plakat soll Platz für ein Foto lassen und Symbole wie Sprechblasen, eine helfende Hand und eine Glühbirne (für Ideen) enthalten. Der Text soll lauten: 'Deine Stimme zählt! Gemeinsam für unsere Klasse'."
   },
   {
-    "id": "4011",
+    "id": "11",
     "titel": "Soziale Marktwirtschaft",
     "fach": "Sozialkunde",
     "funktion": "Prompt",
@@ -99,7 +99,7 @@
     "prompt": "Du bist ein Wirtschaftsethiker. Erkläre das Prinzip der Sozialen Marktwirtschaft im Vergleich zum reinen Kapitalismus. Gehe besonders auf das 'Soziale Netz' ein (Versicherungen, Wohngeld). Diskutiere die aktuelle Frage: 'Wie viel Staat braucht der Markt?' aus Sicht von Arbeitgebern und Gewerkschaften."
   },
   {
-    "id": "4012",
+    "id": "12",
     "titel": "Lobbyismus-Check",
     "fach": "Sozialkunde",
     "funktion": "Assistent",
@@ -108,7 +108,7 @@
     "prompt": "Definiere den Begriff Lobbyismus. Erkläre den Unterschied zwischen legitimer Interessenvertretung und Korruption. Erstelle ein fiktives Beispiel, wie ein Umweltverband und ein Autokonzern versuchen, ein Gesetz zur Abgasnorm zu beeinflussen. Welche Instrumente nutzen sie?"
   },
   {
-    "id": "4013",
+    "id": "13",
     "titel": "Medien als 'Vierte Gewalt'",
     "fach": "Sozialkunde",
     "funktion": "Lernszenarium",
@@ -117,7 +117,7 @@
     "prompt": "Wir spielen eine Redaktionssitzung. Du bist der Chefredakteur einer großen Zeitung. Ich bin ein Reporter und habe einen Skandal über einen Politiker entdeckt. Diskutiere mit mir, warum es wichtig ist, diesen Bericht zu veröffentlichen, welche Verantwortung wir haben und was passieren würde, wenn es keine freien Medien gäbe."
   },
   {
-    "id": "4014",
+    "id": "14",
     "titel": "Pluralismus-Debatte",
     "fach": "Sozialkunde",
     "funktion": "Dialogpartner",
@@ -126,7 +126,7 @@
     "prompt": "Du vertrittst eine sehr konservative Meinung, ich eine sehr progressive zu einem Thema wie 'Tempolimit' oder 'Wahlalter ab 16'. Wir führen eine zivilisierte Debatte. Dein Ziel ist es, mir zu zeigen, wie man in einer Demokratie trotz gegensätzlicher Meinungen respektvoll argumentiert und nach Kompromissen sucht."
   },
   {
-    "id": "4015",
+    "id": "15",
     "titel": "UN-Sicherheitsrat: Krisenmanagement",
     "fach": "Sozialkunde",
     "funktion": "Lernszenarium",
@@ -135,7 +135,7 @@
     "prompt": "Wir befinden uns im UN-Sicherheitsrat. Ein fiktiver Konflikt zwischen zwei Staaten droht zu eskalieren. Du übernimmst die Rollen der Vetomächte (USA, China, Russland). Ich bin der UN-Generalsekretär. Erkläre mir, warum eine Resolution scheitern könnte und welche Interessen die Mächte jeweils verfolgen."
   },
   {
-    "id": "4016",
+    "id": "16",
     "titel": "Föderalismus-Puzzle",
     "fach": "Sozialkunde",
     "funktion": "Assistent",
@@ -144,7 +144,7 @@
     "prompt": "Ich nenne dir verschiedene Aufgaben des Staates (z.B. Schulpolitik, Verteidigung, Polizei, Autobahnbau). Du musst mir sagen, ob dafür der Bund oder die Bundesländer zuständig sind (oder beide). Erkläre kurz den Vorteil, warum in Deutschland nicht alles zentral von Berlin aus entschieden wird."
   },
   {
-    "id": "4017",
+    "id": "17",
     "titel": "Utopie-Werkstatt: Gerechte Welt",
     "fach": "Sozialkunde",
     "funktion": "Prompt",
@@ -153,7 +153,7 @@
     "prompt": "Stell dir vor, wir gründen eine neue Stadt auf dem Mars. Wie müssten wir die Regeln machen, damit es für alle fair ist? Wer darf entscheiden? Wie teilen wir das Essen auf? Schreibe eine kurze 'Mars-Verfassung' in fünf einfachen Sätzen, die Kinder verstehen."
   },
   {
-    "id": "4018",
+    "id": "18",
     "titel": "Zivilcourage-Coach",
     "fach": "Sozialkunde",
     "funktion": "Dialogpartner",
@@ -162,7 +162,7 @@
     "prompt": "Du bist ein Coach für Zivilcourage. Beschreibe mir eine Situation, in der jemand in der U-Bahn beleidigt wird. Frage mich, was ich tun würde. Gib mir dann Tipps, wie ich helfen kann, ohne mich selbst in Gefahr zu bringen (z.B. Zeugen ansprechen, Notruf, Distanz wahren)."
   },
   {
-    "id": "4019",
+    "id": "19",
     "titel": "Parteiprogramm-Designer",
     "fach": "Sozialkunde",
     "funktion": "Lernszenarium",
@@ -171,7 +171,7 @@
     "prompt": "Hilf mir, eine neue Partei für die Schule zu gründen. Wir brauchen einen Namen, ein Logo-Konzept und drei Hauptforderungen (z.B. Digitalisierung, Pausenhof-Gestaltung, Mensa-Essen). Erkläre mir, wie wir andere Schüler überzeugen können und was ein Wahlprogramm enthalten muss."
   },
   {
-    "id": "4020",
+    "id": "20",
     "titel": "Visualisierung: Politischer Kreislauf",
     "fach": "Sozialkunde",
     "funktion": "Bildgenerierung",

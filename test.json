@@ -1,0 +1,28 @@
+[
+  {
+    "id": "1",
+    "titel": "Mustereintrag 1",
+    "fach": "test",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 1",
+    "tags": [
+      "Muster",
+      "Unterrichtsmaterial"
+    ],
+    "kurzbeschreibung": "Ein einfacher Prompt, um lange Texte für Schüler zusammenzufassen.",
+    "prompt": "Du bist ein hilfreicher Lernassistent für Schüler der 8. Klasse. Fasse den folgenden Text in 3 einfachen, verständlichen Sätzen zusammen und erkläre das wichtigste Fachwort daraus.\n\n[Hier Text einfügen]"
+  },
+  {
+    "id": "2",
+    "titel": "Mustereintrag 2",
+    "fach": "test",
+    "funktion": "Assistent",
+    "stufe": "Sekundarstufe 1",
+    "tags": [
+      "Muster",
+      "Unterrichtsmaterial"
+    ],
+    "kurzbeschreibung": "Ein einfacher Prompt, um lange Texte für Schüler zusammenzufassen.",
+    "prompt": "Du bist ein hilfreicher Lernassistent für Schüler der 8. Klasse. Fasse den folgenden Text in 3 einfachen, verständlichen Sätzen zusammen und erkläre das wichtigste Fachwort daraus.\n\n[Hier Text einfügen]"
+  }
+]

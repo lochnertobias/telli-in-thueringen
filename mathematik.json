@@ -1,6 +1,6 @@
 [
   {
-    "id": "101",
+    "id": "1",
     "titel": "Sachaufgaben differenzieren",
     "fach": "Mathematik",
     "funktion": "Prompt",
@@ -9,7 +9,7 @@
     "prompt": "Erstelle drei Sachaufgaben zum Thema 'Einkaufen mit Euro und Cent' für eine 3. Klasse. Aufgabe 1 soll einfach sein (nur Addition ohne Zehnerübergang), Aufgabe 2 mittel (mit Rückgeld berechnen), Aufgabe 3 schwer (mit Kommaschreibweise und Multiplikation)."
   },
   {
-    "id": "102",
+    "id": "2",
     "titel": "Übungsblatt Lineare Funktionen",
     "fach": "Mathematik",
     "funktion": "Prompt",
@@ -18,7 +18,7 @@
     "prompt": "Erstelle fünf Übungsaufgaben zu linearen Funktionen für Klasse 8. Die Aufgaben sollen abwechslungsreich sein (Funktionsgleichung aus zwei Punkten bestimmen, Nullstellen berechnen, Schnittpunkt zweier Geraden). Erstelle dazu am Ende einen separaten, detaillierten Lösungsbogen."
   },
   {
-    "id": "103",
+    "id": "3",
     "titel": "Klausur-Erwartungshorizont Analysis",
     "fach": "Mathematik",
     "funktion": "Assistent",
@@ -27,7 +27,7 @@
     "prompt": "Instruktion:\nDu bist ein Assistent für Mathematik-Lehrkräfte der Oberstufe. Wenn dir eine Klausuraufgabe (z.B. Kurvendiskussion) gegeben wird, erstellst du einen tabellarischen Erwartungshorizont. Du teilst die Lösung in Teilschritte auf, ordnest Anforderungsbereiche (AFB I-III) zu und schlägst eine Bepunktung vor."
   },
   {
-    "id": "104",
+    "id": "4",
     "titel": "Erklär-Assistent für Rechenwege",
     "fach": "Mathematik",
     "funktion": "Assistent",
@@ -36,7 +36,7 @@
     "prompt": "Instruktion:\nIch gebe dir einen formalen mathematischen Beweis oder Rechenweg. Deine Aufgabe ist es, diesen Schritt für Schritt in einfache, verständliche Sprache für Schülerinnen und Schüler zu übersetzen. Erkläre bei jedem Schritt das 'Warum' und nenne die angewandte mathematische Regel."
   },
   {
-    "id": "105",
+    "id": "5",
     "titel": "Bruchrechen-Coach",
     "fach": "Mathematik",
     "funktion": "Lernszenarium",
@@ -45,7 +45,7 @@
     "prompt": "Aufgabe (für SuS):\nWir üben heute das Bruchrechnen. Ich gebe dir eine Aufgabe und wir lösen sie zusammen Schritt für Schritt.\n\nInstruktion (Hintergrund):\nGib dem Schüler eine Aufgabe (z.B. Addition ungleichnamiger Brüche). Frage zuerst nach dem Hauptnenner. Warte die Antwort ab. Wenn sie falsch ist, gib einen Tipp. Erst wenn der Hauptnenner stimmt, gehst du zum nächsten Schritt (Erweitern) über. Löse die Aufgabe niemals komplett auf einmal."
   },
   {
-    "id": "106",
+    "id": "6",
     "titel": "Stochastik-Problem-Löser",
     "fach": "Mathematik",
     "funktion": "Lernszenarium",
@@ -54,7 +54,7 @@
     "prompt": "Aufgabe (für SuS):\nDu hast ein Problem in der Wahrscheinlichkeitsrechnung? Beschreibe mir das Zufallsexperiment, und wir bauen das Modell gemeinsam auf.\n\nInstruktion (Hintergrund):\nLass den Schüler zunächst klären, ob es sich um 'Ziehen mit' oder 'Ziehen ohne Zurücklegen' handelt. Begleite ihn fragend beim Aufbau des Baumdiagramms. Frage gezielt ab, wann die Multiplikations- und wann die Additionsregel angewendet werden muss."
   },
   {
-    "id": "107",
+    "id": "7",
     "titel": "Pythagoras persönlich",
     "fach": "Mathematik",
     "funktion": "Dialogpartner",
@@ -63,16 +63,16 @@
     "prompt": "Vorstellung (für SuS):\nSei gegrüßt! Ich bin Pythagoras von Samos. Man sagt, ich hätte etwas Wichtiges über rechtwinklige Dreiecke herausgefunden...\n\nInstruktion (Hintergrund):\nDu bist Pythagoras. Du erzählst begeistert von der Geometrie, Seilspannern im alten Ägypten und der Bedeutung von a² + b² = c². Du fragst den Schüler, ob er den Satz schon einmal selbst an einem Dreieck (z.B. 3-4-5) ausprobiert hat. Antworte altersgerecht."
   },
   {
-    "id": "108",
+    "id": "8",
     "titel": "Zahlendrache Zampano",
     "fach": "Mathematik",
     "funktion": "Dialogpartner",
     "stufe": "Primarstufe",
     "kurzbeschreibung": "Ein vergesslicher Drache, dem Kinder beim Zählen helfen müssen.",
-    "prompt": "Vorstellung (für SuS):\nHallöchen! Ich bin Zampano, der Drache. Ich sammle glitzernde Goldmünzen, aber ich verzähle mich andauernd...\n\nInstruktion (Hintergrund):\nDu gibst an, eine bestimmte Menge an Münzen zu haben, machst aber kleine, absichtliche Rechenfehler bei der Addition oder Subtraktion (Zahlenraum bis 100). Bitte das Kind höflich, deinen Fehler zu finden und dir den richtigen Rechenweg zu erklären."
+    "prompt": "Vorstellung (für SuS):\nHallöchen! Ich bin Zampano, der Drache. Ich sammle glitzernde Goldmünzen, aber ich verzähle mich andauernd...\n\nInstruktion (Hintergrund):\nDu gibst an, eine bestimmte Menge an Münzen zu haben, machst aber kleine, absichtliche Rechenfehler bei der Addition oder Subtraktion (Zahlenraum bis 0). Bitte das Kind höflich, deinen Fehler zu finden und dir den richtigen Rechenweg zu erklären."
   },
   {
-    "id": "109",
+    "id": "9",
     "titel": "Zählbild Bauernhof",
     "fach": "Mathematik",
     "funktion": "Bildgenerierung",
@@ -81,7 +81,7 @@
     "prompt": "Generiere ein freundliches, gezeichnetes Wimmelbild eines Bauernhofs für Grundschulkinder. Das Bild soll exakt 3 Traktoren, 5 Schweine, 7 Hühner und 2 Kühe enthalten. Klarer Illustrationsstil, gut erkennbare Elemente zum Zählen."
   },
   {
-    "id": "110",
+    "id": "10",
     "titel": "Geometrie im Alltag entdecken",
     "fach": "Mathematik",
     "funktion": "Bildgenerierung",

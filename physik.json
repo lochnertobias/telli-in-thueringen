@@ -1,6 +1,6 @@
 [
   {
-    "id": "5001",
+    "id": "1",
     "titel": "Magnetismus für Kinder",
     "fach": "Physik",
     "funktion": "Prompt",
@@ -9,7 +9,7 @@
     "prompt": "Du bist ein freundlicher Physik-Erklärbär. Erkläre einem 8-jährigen Kind, warum ein Magnet an der Kühlschranktür haftet, aber nicht an einem Holztisch. Verwende einfache Wörter, kurze Sätze und ein leicht verständliches Alltagsbeispiel."
   },
   {
-    "id": "5002",
+    "id": "2",
     "titel": "Interview mit Isaac Newton",
     "fach": "Physik",
     "funktion": "Dialogpartner",
@@ -18,7 +18,7 @@
     "prompt": "Du übernimmst die Rolle von Sir Isaac Newton. Ein Schüler der 8. Klasse wird dir Fragen stellen. Erkläre deine Entdeckung der Schwerkraft und die drei Newtonschen Gesetze so, dass sie für einen 14-Jährigen spannend und verständlich sind. Antworte in der Ich-Perspektive und bleibe stets in deiner Rolle."
   },
   {
-    "id": "5003",
+    "id": "3",
     "titel": "Aufgabengenerator Quantenphysik",
     "fach": "Physik",
     "funktion": "Assistent",
@@ -27,7 +27,7 @@
     "prompt": "Du bist ein fachlicher Assistent für einen Physik-Oberstufenlehrer. Erstelle drei Textaufgaben mit unterschiedlichem Schwierigkeitsgrad zum photoelektrischen Effekt. Liefere zu jeder Aufgabe den vollständigen Lösungsweg inklusive der benötigten Formeln und physikalischen Konstanten."
   },
   {
-    "id": "5004",
+    "id": "4",
     "titel": "Mysterium der gebrochenen Gabel",
     "fach": "Physik",
     "funktion": "Lernszenarium",
@@ -36,7 +36,7 @@
     "prompt": "Starte ein interaktives Lernszenarium zum Thema Optik. Der Schüler sitzt in einem virtuellen Restaurant und bemerkt, dass sein Strohhalm im Wasserglas 'geknickt' aussieht. Führe den Schüler durch sokratisches Fragen (immer nur eine Frage auf einmal) dazu, das Konzept der Lichtbrechung und den Übergang zwischen optisch dünnen und dichten Medien selbst zu erarbeiten."
   },
   {
-    "id": "5005",
+    "id": "5",
     "titel": "Visualisierung des Sonnensystems",
     "fach": "Physik",
     "funktion": "Bildgenerierung",
@@ -45,7 +45,7 @@
     "prompt": "Generiere einen präzisen Prompt für ein Bildgenerierungs-Tool, um eine farbenfrohe, kindgerechte und beschriftete Illustration unseres Sonnensystems zu erstellen. Die Planeten sollen deutlich erkennbar sein und in der richtigen Reihenfolge um die Sonne kreisen."
   },
   {
-    "id": "5006",
+    "id": "6",
     "titel": "Zusammenfassung Spezielle Relativitätstheorie",
     "fach": "Physik",
     "funktion": "Prompt",
@@ -54,7 +54,7 @@
     "prompt": "Fasse die beiden Postulate der Speziellen Relativitätstheorie von Albert Einstein für Schüler der gymnasialen Oberstufe zusammen. Gehe kurz auf die Konzepte der Zeitdilatation und Längenkontraktion ein und nenne jeweils ein klassisches Gedankenexperiment zur Veranschaulichung."
   },
   {
-    "id": "5007",
+    "id": "7",
     "titel": "Alltagsbeispiele Hebelgesetz",
     "fach": "Physik",
     "funktion": "Assistent",
@@ -63,7 +63,7 @@
     "prompt": "Du bist ein Physik-Assistent. Erstelle eine Liste von fünf alltäglichen Gegenständen (z. B. Nussknacker, Schere), bei denen das Hebelgesetz angewendet wird. Erkläre bei jedem Gegenstand kurz, wo sich Drehpunkt, Kraftarm und Lastarm befinden, zielgruppengerecht für eine 7. Klasse."
   },
   {
-    "id": "5008",
+    "id": "8",
     "titel": "Diskussion mit Albert Einstein",
     "fach": "Physik",
     "funktion": "Dialogpartner",
@@ -72,7 +72,7 @@
     "prompt": "Du bist Albert Einstein. Ein Physik-Leistungskursschüler möchte mit dir über die Allgemeine Relativitätstheorie diskutieren. Antworte in der Ich-Form, nutze deinen typischen charmanten und leicht philosophischen Tonfall und erkläre die Raumzeitkrümmung am Beispiel eines Trampolins. Gehe auf die Fragen des Schülers interaktiv ein."
   },
   {
-    "id": "5009",
+    "id": "9",
     "titel": "Warum schwimmt das Schiff?",
     "fach": "Physik",
     "funktion": "Lernszenarium",
@@ -81,7 +81,7 @@
     "prompt": "Gestalte ein interaktives Lernspiel für Grundschüler. Du bist der Kapitän eines Papierschiffs. Lasse die Schüler raten, welche Gegenstände im Wasser schwimmen oder sinken (z. B. Stein, Plastikente). Erkläre nach jedem Versuch kindgerecht, warum das passiert ist, ohne den Begriff 'Dichte' direkt am Anfang vorauszusetzen."
   },
   {
-    "id": "5010",
+    "id": "10",
     "titel": "Schaltplan eines einfachen Stromkreises",
     "fach": "Physik",
     "funktion": "Bildgenerierung",
@@ -90,7 +90,7 @@
     "prompt": "Erstelle einen Prompt für eine Bild-KI, der einen klaren, physikalisch korrekten Schaltplan zeigt. Der Schaltplan soll eine Gleichspannungsquelle, einen geöffneten Schalter und eine Glühlampe in Reihenschaltung enthalten. Die Symbole sollen den gängigen Standards entsprechen, ideal für ein Arbeitsblatt der 8. Klasse."
   },
   {
-    "id": "5011",
+    "id": "11",
     "titel": "Korrekturassistent für Mechanik",
     "fach": "Physik",
     "funktion": "Assistent",
@@ -99,7 +99,7 @@
     "prompt": "Du bist ein Korrekturassistent für Physik. Ich werde dir gleich eine Schülerrechnung zum schiefen Wurf präsentieren. Bitte analysiere die Rechnung Schritt für Schritt, identifiziere eventuelle Vorzeichen- oder Formelfehler und formuliere ein konstruktives Feedback für den Schüler, das ihm hilft, den Fehler selbst zu finden."
   },
   {
-    "id": "5012",
+    "id": "12",
     "titel": "Reise des Lichtstrahls 'Luxi'",
     "fach": "Physik",
     "funktion": "Dialogpartner",
@@ -108,7 +108,7 @@
     "prompt": "Du bist 'Luxi', ein fröhlicher Lichtstrahl. Erzähle einem Grundschulkind von deiner 8-minütigen, spannenden Reise von der Sonne bis zur Erde. Das Kind kann dir Fragen stellen, wie schnell du bist oder warum du manchmal einen Regenbogen machst. Antworte kurz, bildhaft und sehr freundlich."
   },
   {
-    "id": "5013",
+    "id": "13",
     "titel": "Erklärung der Aggregatzustände",
     "fach": "Physik",
     "funktion": "Prompt",
@@ -117,7 +117,7 @@
     "prompt": "Erkläre die drei klassischen Aggregatzustände von Wasser (fest, flüssig, gasförmig) mithilfe des Teilchenmodells. Beschreibe anschaulich für eine 6. Klasse, wie sich die Anordnung und Bewegung der Wasserteilchen beim Schmelzen und Verdampfen verändert."
   },
   {
-    "id": "5014",
+    "id": "14",
     "titel": "Unfall im Kernkraftwerk (Simulation)",
     "fach": "Physik",
     "funktion": "Lernszenarium",
@@ -126,7 +126,7 @@
     "prompt": "Starte ein Lernszenarium für die Oberstufe: Der Schüler ist Einsatzleiter für den Strahlenschutz nach einem fiktiven Zwischenfall. Konfrontiere ihn mit Messwerten zu Alpha-, Beta- und Gammastrahlung. Der Schüler muss durch Fragen und Berechnungen entscheiden, welche Abschirmmaßnahmen für die Rettungskräfte notwendig sind."
   },
   {
-    "id": "5015",
+    "id": "15",
     "titel": "Gespräch mit Marie Curie",
     "fach": "Physik",
     "funktion": "Dialogpartner",
@@ -135,7 +135,7 @@
     "prompt": "Schlüpfe in die Rolle der Physikerin Marie Curie. Ein neugieriger Neuntklässler interviewt dich zu deiner Arbeit mit Radium. Erkläre deine Forschungen, die Schwierigkeiten als Frau in der damaligen Wissenschaft und die Gefahren der Strahlung, von denen du anfangs nichts wusstest. Bleibe authentisch im historischen Kontext."
   },
   {
-    "id": "5016",
+    "id": "16",
     "titel": "Experimente mit Luft",
     "fach": "Physik",
     "funktion": "Assistent",
@@ -144,7 +144,7 @@
     "prompt": "Du bist ein didaktischer Berater für Grundschullehrkräfte. Stelle drei einfache, sichere und faszinierende Experimente zum Thema 'Luft ist nicht nichts (Luftdruck)' zusammen. Zu jedem Experiment benötige ich: Materialliste (nur Alltagsgegenstände), Durchführung, Beobachtung und eine kindgerechte Erklärung."
   },
   {
-    "id": "5017",
+    "id": "17",
     "titel": "Visualisierung Interferenzmuster",
     "fach": "Physik",
     "funktion": "Bildgenerierung",
@@ -153,7 +153,7 @@
     "prompt": "Erstelle einen detaillierten Text-zu-Bild-Prompt für ein fotorealistisches 3D-Diagramm, das das Doppelspaltexperiment visualisiert. Man soll zwei kohärente Lichtwellen sehen, die durch zwei Spalte treten und auf einem Beobachtungsschirm ein klares Interferenzmuster aus hellen und dunklen Streifen (Maxima und Minima) erzeugen."
   },
   {
-    "id": "5018",
+    "id": "18",
     "titel": "Kräfte an der schiefen Ebene",
     "fach": "Physik",
     "funktion": "Lernszenarium",
@@ -162,7 +162,7 @@
     "prompt": "Führe ein textbasiertes Lernszenarium durch. Der Schüler hat die Aufgabe, eine schwere Kiste auf einen LKW zu laden und kann dafür Rampen mit verschiedenen Neigungswinkeln wählen. Stelle gezielte Fragen, um den Schüler den Zusammenhang zwischen Hangabtriebskraft, Normalkraft, Reibung und dem Neigungswinkel selbstständig entdecken zu lassen."
   },
   {
-    "id": "5019",
+    "id": "19",
     "titel": "Entropie im Alltag",
     "fach": "Physik",
     "funktion": "Prompt",
@@ -171,7 +171,7 @@
     "prompt": "Erkläre den Zweiten Hauptsatz der Thermodynamik und das Konzept der Entropie für Schüler der 11. Klasse. Verwende als zentrale Analogie das Phänomen, warum ein unaufgeräumtes Zimmer wahrscheinlicher ist als ein aufgeräumtes. Gehe dabei auch auf den Unterschied zwischen mikroskopischen Zuständen und makroskopischer Ordnung ein."
   },
   {
-    "id": "5020",
+    "id": "20",
     "titel": "Schall als Welle",
     "fach": "Physik",
     "funktion": "Prompt",
