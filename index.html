@@ -44,6 +44,9 @@
         const PrinterIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>;
         const LinkIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>;
         const QrCodeIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="15" y1="15" x2="15.01" y2="15"></line><line x1="9" y1="15" x2="9.01" y2="15"></line></svg>;
+        // Neue Icons für Reset und Filter
+        const ResetIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>;
+        const FilterIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>;
 
         // Statische Filter-Optionen
         const FILTER_STUFE = ['Primarstufe', 'Sekundarstufe 1', 'Sekundarstufe 2'];
@@ -516,81 +519,94 @@
 
                 {/* STICKY FILTER BEREICH */}
                 <div className="sticky top-0 z-20 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 shadow-sm py-3 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
-                  <div className="max-w-5xl mx-auto flex flex-col gap-4">
+                  <div className="max-w-5xl mx-auto flex flex-col gap-3">
                     
                     {/* Haupt-Steuerungszeile */}
-                    <div className="flex flex-col xl:flex-row gap-3 items-start xl:items-center justify-between">
+                    <div className="flex flex-col md:flex-row gap-3 items-start md:items-center justify-between w-full">
                       
-                      {/* LINKS: Suche, Favoriten, Drucken */}
-                      <div className="w-full xl:w-auto flex flex-col sm:flex-row flex-wrap items-center gap-3">
-                        {/* 1. Suchfeld */}
-                        <div className="relative w-full sm:w-64 md:w-80 flex-shrink-0">
-                          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
-                            <SearchIcon />
-                          </div>
-                          <input 
-                            type="text" 
-                            className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 shadow-sm transition-shadow placeholder-slate-400 dark:placeholder-slate-500" 
-                            placeholder="Stichwort suchen..." 
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                          />
+                      {/* 1. Suchfeld (Volle Breite auf Mobile) */}
+                      <div className="relative w-full md:w-80 flex-shrink-0">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
+                          <SearchIcon />
                         </div>
-                        
-                        <div className="flex w-full sm:w-auto gap-2">
-                          {/* 2. Favoriten */}
-                          <button
-                            onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-                            disabled={favorites.length === 0}
-                            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
-                              favorites.length === 0
-                              ? 'opacity-50 cursor-not-allowed bg-slate-100 dark:bg-slate-800/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700'
-                              : showFavoritesOnly 
-                                ? 'bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700' 
-                                : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer'
-                            }`}
-                            title={favorites.length === 0 ? "Keine Favoriten markiert" : "Nur Favoriten anzeigen"}
-                          >
-                            <StarIcon className="w-4 h-4" filled={showFavoritesOnly} />
-                            <span className="hidden sm:inline">Favoriten</span> {favorites.length > 0 && `(${favorites.length})`}
-                          </button>
-
-                          {/* 3. Druck-Button */}
-                          <button
-                            onClick={handlePrint}
-                            disabled={favorites.length === 0}
-                            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
-                              favorites.length === 0 
-                              ? 'opacity-50 cursor-not-allowed bg-slate-100 dark:bg-slate-800/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700' 
-                              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer'
-                            }`}
-                            title={favorites.length === 0 ? "Bitte zuerst Favoriten markieren" : "Markierte Favoriten als PDF speichern oder drucken"}
-                          >
-                            <PrinterIcon className="w-4 h-4" />
-                            <span className="hidden sm:inline">PDF / Drucken</span>
-                          </button>
-                        </div>
+                        <input 
+                          type="text" 
+                          className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 shadow-sm transition-shadow placeholder-slate-400 dark:placeholder-slate-500" 
+                          placeholder="Stichwort suchen..." 
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                       </div>
                       
-                      {/* RECHTS: Reset & Filter-Toggle */}
-                      <div className="w-full xl:w-auto flex flex-wrap items-center justify-end gap-3 mt-1 xl:mt-0">
+                      {/* 2. Aktions-Buttons: Auf Mobile in EINER Zeile, Text versteckt */}
+                      <div className="flex flex-row w-full md:w-auto items-center gap-2 justify-between">
+                        
+                        {/* Favoriten */}
+                        <button
+                          onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                          disabled={favorites.length === 0}
+                          className={`flex-1 md:flex-none flex items-center justify-center gap-2 text-sm py-2.5 px-2 sm:px-4 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
+                            favorites.length === 0
+                            ? 'opacity-50 cursor-not-allowed bg-slate-100 dark:bg-slate-800/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700'
+                            : showFavoritesOnly 
+                              ? 'bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700' 
+                              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer'
+                          }`}
+                          title={favorites.length === 0 ? "Keine Favoriten markiert" : "Nur Favoriten anzeigen"}
+                        >
+                          <div className="relative flex items-center justify-center">
+                            <StarIcon className="w-5 h-5 sm:w-4 sm:h-4" filled={showFavoritesOnly} />
+                            {/* Kleiner Zähler-Badge auf dem Smartphone, wenn Text ausgeblendet ist */}
+                            {favorites.length > 0 && (
+                              <span className="absolute -top-2 -right-2.5 sm:hidden bg-amber-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center border border-white dark:border-slate-800">
+                                {favorites.length}
+                              </span>
+                            )}
+                          </div>
+                          <span className="hidden sm:inline">Favoriten {favorites.length > 0 && `(${favorites.length})`}</span>
+                        </button>
+
+                        {/* Druck-Button */}
+                        <button
+                          onClick={handlePrint}
+                          disabled={favorites.length === 0}
+                          className={`flex-1 md:flex-none flex items-center justify-center gap-2 text-sm py-2.5 px-2 sm:px-4 rounded-lg font-medium transition-colors border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 ${
+                            favorites.length === 0 
+                            ? 'opacity-50 cursor-not-allowed bg-slate-100 dark:bg-slate-800/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700' 
+                            : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer'
+                          }`}
+                          title={favorites.length === 0 ? "Bitte zuerst Favoriten markieren" : "Markierte Favoriten als PDF speichern oder drucken"}
+                        >
+                          <PrinterIcon className="w-5 h-5 sm:w-4 sm:h-4" />
+                          <span className="hidden sm:inline">PDF / Drucken</span>
+                        </button>
+
+                        {/* Filter zurücksetzen */}
                         {hasActiveFilters && (
                           <button 
                             onClick={resetFilters}
-                            className="text-sm px-4 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800"
+                            className="flex-1 md:flex-none flex items-center justify-center gap-2 text-sm py-2.5 px-2 sm:px-4 rounded-lg text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/20 hover:bg-rose-100 dark:hover:bg-rose-900/40 border border-rose-200 dark:border-rose-800/50 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 shadow-sm"
+                            title="Filter zurücksetzen"
                           >
-                            Filter zurücksetzen
+                            <ResetIcon className="w-5 h-5 sm:w-4 sm:h-4 sm:hidden" />
+                            <span className="hidden sm:inline">Filter zurücksetzen</span>
                           </button>
                         )}
                         
-                        {/* 4. Filterzeile einblenden / ausblenden */}
+                        {/* Filterzeile einblenden / ausblenden */}
                         <button 
                           onClick={() => setShowFilters(!showFilters)}
-                          className="flex items-center gap-2 text-sm px-4 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg transition-colors font-medium border border-slate-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className={`flex-1 md:flex-none flex items-center justify-center gap-2 text-sm py-2.5 px-2 sm:px-4 rounded-lg transition-colors font-medium border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                            showFilters 
+                            ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700' 
+                            : 'bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-600'
+                          }`}
+                          title={showFilters ? 'Filterzeile ausblenden' : 'Filterzeile einblenden'}
                         >
-                          <TagIcon className="w-4 h-4" />
-                          {showFilters ? 'Filterzeile ausblenden' : 'Filterzeile einblenden'}
+                          <FilterIcon className="w-5 h-5 sm:w-4 sm:h-4" />
+                          <span className="hidden sm:inline">{showFilters ? 'Filter ausblenden' : 'Filter einblenden'}</span>
                         </button>
+
                       </div>
                     </div>
 
@@ -767,7 +783,6 @@
                                   </div>
                                   
                                   <div className="flex items-center gap-1 mt-4 sm:mt-0">
-                                    {/* Edit-Button wurde ganz nach links verschoben, ist rot und hat Abstand (mr-3) */}
                                     {showEditorMode && (
                                       <a 
                                         href={`prompt-editor.html?file=${entry.fach.toLowerCase()}.json&id=${entry.originalId || entry.id}`}
