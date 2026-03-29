@@ -1,11 +1,12 @@
 [
-  "deutsch",
-  "mathematik",
-  "englisch",
-  "geografie",
-  "geschichte",
-  "sozialkunde",
-  "biologie",
-  "physik",
-  "übergreifend"
+  { "name": "deutsch", "id": "01" },
+  { "name": "mathematik", "id": "02" },
+  { "name": "englisch", "id": "03" },
+  { "name": "geografie", "id": "04" },
+  { "name": "geschichte", "id": "05" },
+  { "name": "sozialkunde", "id": "06" },
+  { "name": "biologie", "id": "07" },
+  { "name": "physik", "id": "08" },
+  { "name": "übergreifend", "id": "88" },
+  { "name": "test", "id": "99" }
 ]
