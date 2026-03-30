@@ -648,7 +648,11 @@
                     })
                     .then(text => {
                         processFileContent(text.trim(), fileName);
-                        if (targetId) scrollToEntry(targetId);
+                        // Falls eine ID übergeben wurde, springen wir dorthin
+                        if (targetId) {
+                            // Timeout stellt sicher, dass das Rendering fertig ist
+                            setTimeout(() => scrollToEntry(targetId), 150);
+                        }
                     })
                     .catch(error => {
                         console.error("Fehler beim Laden der Datei:", error);
@@ -663,10 +667,19 @@
             if (!targetId) return;
             const cleanId = targetId.trim();
             let attempts = 0;
-            const maxAttempts = 20; 
+            const maxAttempts = 30; 
             
             const checkExist = setInterval(function() {
-                const element = document.getElementById(`prompt-entry-${cleanId}`);
+                // Suchen der transformierten ID im aktuellen Datensatz
+                const paddedSearch = cleanId.padStart(3, '0');
+                const matchedEntry = promptsData.find(e => 
+                    String(e.id) === cleanId || 
+                    String(e.id).endsWith(paddedSearch)
+                );
+                
+                const finalSearchId = matchedEntry ? matchedEntry.id : cleanId;
+                const element = document.getElementById(`prompt-entry-${finalSearchId}`);
+                
                 if (element) {
                     clearInterval(checkExist);
                     setTimeout(() => {
