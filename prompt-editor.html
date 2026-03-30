@@ -120,9 +120,9 @@
                     </div>
                 </div>
 
-                <!-- SPEICHERN BUTTON (Jetzt direkt Vorschau) -->
+                <!-- SPEICHERN BUTTON -->
                 <div class="inline-block text-left">
-                    <button onclick="showJSONPreview()" class="flex items-center gap-2 px-3 py-2 text-slate-600 dark:text-slate-300 bg-transparent hover:bg-blue-100 hover:text-blue-700 active:bg-blue-700 active:text-white dark:hover:bg-blue-900/50 dark:hover:text-blue-300 dark:active:bg-blue-600 dark:active:text-white rounded-lg transition-all focus:outline-none group" title="Speichern & Vorschau">
+                    <button onclick="showJSONPreview()" class="flex items-center gap-2 px-3 py-2 text-slate-600 dark:text-slate-300 bg-transparent hover:bg-blue-100 hover:text-blue-700 active:bg-blue-700 active:text-white dark:hover:bg-blue-900/50 dark:hover:text-blue-300 dark:active:bg-blue-600 dark:active:text-white rounded-lg transition-all focus:outline-none group" title="Vorschau & Speichern">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
                         <span class="text-sm font-bold uppercase tracking-wide">Speichern</span>
                     </button>
@@ -940,7 +940,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-5 mb-5 pr-10">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-5 mb-5 pr-10 text-left">
                         <div class="md:col-span-2"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">ID</label><input type="text" oninput="updateData(${index}, 'id', this.value, this)" value="${escapeHTML(item.id)}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100 id-input-field"></div>
                         <div class="md:col-span-10"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Titel <span class="text-red-500" title="Pflichtfeld">*</span></label><input type="text" oninput="updateData(${index}, 'titel', this.value, this)" value="${escapeHTML(item.titel)}" class="w-full ${isTitelEmpty ? 'bg-red-50 dark:bg-red-900/10 border-red-300 dark:border-red-800' : 'bg-slate-50 dark:bg-slate-900 border-slate-300 dark:border-slate-600'} rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all font-medium text-slate-900 dark:text-slate-100"></div>
                         <div class="md:col-span-4"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Fach (Global)</label><div class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md px-3 py-2 text-sm text-slate-500 dark:text-slate-400 cursor-not-allowed truncate transition-all global-fach-display" title="Wird zentral festgelegt">${escapeHTML(item.fach || 'Noch nicht festgelegt')}</div></div>
@@ -959,7 +959,7 @@
                         </div>
                         <div class="md:col-span-12"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Kurzbeschreibung <span class="text-red-500" title="Pflichtfeld">*</span></label><input type="text" oninput="updateData(${index}, 'kurzbeschreibung', this.value, this)" value="${escapeHTML(item.kurzbeschreibung)}" class="w-full ${isKurzbeschreibungEmpty ? 'bg-red-50 dark:bg-red-900/10 border-red-300 dark:border-red-800' : 'bg-slate-50 dark:bg-slate-900 border-slate-300 dark:border-slate-600'} rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100"></div>
                     </div>
-                    <div class="pr-10">
+                    <div class="pr-10 text-left">
                         <div class="flex justify-between items-end mb-1">
                             <label class="block text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Prompt <span class="text-red-500" title="Pflichtfeld">*</span></label>
                             <div class="flex items-center gap-2 mb-1">
@@ -988,7 +988,7 @@
             const iconContainer = document.getElementById('modal-icon-container');
 
             // Grundzustand zurücksetzen
-            modalBody.classList.remove('max-w-3xl');
+            modalBody.classList.remove('max-w-3xl', 'max-w-4xl');
             modalBody.classList.add('max-w-lg');
             document.getElementById('modal-input-wrapper').classList.add('hidden');
             cancelBtn.classList.remove('hidden');
@@ -1104,7 +1104,7 @@
 
         function closeModal() {
             const modalBody = document.querySelector('#custom-modal > div:nth-child(2)');
-            modalBody.classList.remove('max-w-3xl');
+            modalBody.classList.remove('max-w-3xl', 'max-w-4xl');
             modalBody.classList.add('max-w-lg');
             
             document.getElementById('custom-modal').classList.add('hidden');
@@ -1129,10 +1129,6 @@
 
             const jsonString = JSON.stringify(promptsData, null, 2);
             
-            const modalBody = document.querySelector('#custom-modal > div:nth-child(2)');
-            modalBody.classList.remove('max-w-lg');
-            modalBody.classList.add('max-w-3xl');
-
             const previewHtml = `
                 <div class="mt-4 w-full text-left">
                     <p class="text-sm text-slate-600 dark:text-slate-400 mb-3 font-medium">Vorschau der Export-Datei (JSON):</p>
@@ -1161,6 +1157,11 @@
                 },
                 'Text in Zwischenablage kopieren'
             );
+
+            // BREITE ANPASSEN: Erst nach dem showModal Aufruf, damit die Reset-Logik nicht dazwischenfunkt
+            const modalBody = document.querySelector('#custom-modal > div:nth-child(2)');
+            modalBody.classList.remove('max-w-lg');
+            modalBody.classList.add('max-w-4xl');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
