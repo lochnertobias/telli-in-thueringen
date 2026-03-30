@@ -120,20 +120,12 @@
                     </div>
                 </div>
 
-                <!-- SPEICHERN BUTTON -->
-                <div class="dropdown-container relative inline-block text-left">
-                    <button onclick="toggleDropdown('dropdown-save')" class="flex items-center gap-2 px-3 py-2 text-slate-600 dark:text-slate-300 bg-transparent hover:bg-blue-100 hover:text-blue-700 active:bg-blue-700 active:text-white dark:hover:bg-blue-900/50 dark:hover:text-blue-300 dark:active:bg-blue-600 dark:active:text-white rounded-lg transition-all focus:outline-none group" title="Speichern">
+                <!-- SPEICHERN BUTTON (Jetzt direkt Vorschau) -->
+                <div class="inline-block text-left">
+                    <button onclick="showJSONPreview()" class="flex items-center gap-2 px-3 py-2 text-slate-600 dark:text-slate-300 bg-transparent hover:bg-blue-100 hover:text-blue-700 active:bg-blue-700 active:text-white dark:hover:bg-blue-900/50 dark:hover:text-blue-300 dark:active:bg-blue-600 dark:active:text-white rounded-lg transition-all focus:outline-none group" title="Speichern & Vorschau">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
                         <span class="text-sm font-bold uppercase tracking-wide">Speichern</span>
                     </button>
-                    <div id="dropdown-save" class="hidden absolute left-0 mt-2 w-60 rounded-xl shadow-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 overflow-hidden">
-                        <div class="py-1">
-                            <a href="#" onclick="saveJSON(); closeAllDropdowns(); return false;" class="flex items-center gap-2 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-indigo-900/50 transition-colors font-medium">
-                                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-                                Aktuelle Liste speichern
-                            </a>
-                        </div>
-                    </div>
                 </div>
 
             </div>
@@ -255,22 +247,22 @@
 
     <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
         <div class="fixed inset-0 bg-slate-900/40 dark:bg-slate-900/80 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full mx-4 relative z-10 p-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full mx-4 relative z-10 p-6 transition-all duration-300">
             <div class="flex items-start gap-4 mb-2">
                 <div id="modal-icon-container" class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center mt-1">
                     </div>
                 <div class="w-full">
                     <h3 id="modal-title" class="text-lg font-bold text-slate-900 dark:text-white leading-tight">Bestätigen</h3>
-                    <p id="modal-message" class="text-slate-600 dark:text-slate-300 text-sm mt-2 leading-relaxed">Möchten Sie diese Aktion wirklich ausführen?</p>
+                    <div id="modal-message" class="text-slate-600 dark:text-slate-300 text-sm mt-2 leading-relaxed text-left whitespace-normal">Möchten Sie diese Aktion wirklich ausführen?</div>
                     
                     <div id="modal-input-wrapper" class="hidden mt-4">
-                        <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Dateiname</label>
+                        <label id="modal-input-label" class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 text-left">Dateiname</label>
                         <input type="text" id="modal-input-field" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100 font-medium">
                     </div>
                 </div>
             </div>
             <div class="flex flex-col sm:flex-row justify-end items-center gap-3 mt-8">
-                <button id="modal-alt-btn" class="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-red-600 dark:text-red-400 font-medium hover:bg-red-50 dark:hover:bg-slate-600 transition-all hidden w-full sm:w-auto sm:mr-auto">Verwerfen</button>
+                <button id="modal-alt-btn" class="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-50 dark:hover:bg-slate-600 transition-all hidden w-full sm:w-auto sm:mr-auto">Alternativ</button>
                 <button id="modal-cancel-btn" onclick="closeModal()" class="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-50 dark:hover:bg-slate-600 transition-all w-full sm:w-auto">Abbrechen</button>
                 <button id="modal-confirm-btn" class="px-4 py-2 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto">Bestätigen</button>
             </div>
@@ -332,7 +324,7 @@
         }
 
         function closeAllDropdowns() {
-            ['dropdown-new', 'dropdown-load', 'dropdown-save'].forEach(id => {
+            ['dropdown-new', 'dropdown-load'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
@@ -764,6 +756,10 @@
                 `Möchten Sie den Eintrag "${escapeHTML(promptsData[index].titel) || 'Ohne Titel'}" löschen?`, 
                 () => {
                     promptsData.splice(index, 1);
+                    // IDs neu vergeben ab 1
+                    promptsData.forEach((item, i) => {
+                        item.id = String(i + 1);
+                    });
                     renderAll();
                     showToast("Eintrag gelöscht.");
                 },
@@ -772,25 +768,129 @@
         }
 
         function requestNewFile() {
-            const createNew = () => {
-                promptsData = [];
-                currentFileName = 'neue_liste.json';
-                isNewFile = true;
-                globalFach = ''; 
-                updateFileNameDisplay();
-                renderAll();
-                showToast("Neue, leere Promptliste erstellt.");
+            const startNewFileProcess = () => {
+                showInputModal(
+                    'Neue Promptliste erstellen',
+                    'Für welches Fach soll die Liste erstellt werden?',
+                    '',
+                    (fachName) => {
+                        if (!fachName || fachName.trim() === '') {
+                            showToast("Kein Fach angegeben. Vorgang abgebrochen.", true);
+                            return;
+                        }
+                        promptsData = [];
+                        globalFach = fachName.trim();
+                        currentFileName = globalFach + '.json';
+                        isNewFile = true;
+                        updateFileNameDisplay();
+                        renderAll();
+                        showToast(`Neue Liste für "${globalFach}" erstellt.`);
+                    },
+                    'Erstellen',
+                    'Fach'
+                );
             };
 
             if (promptsData.length > 0) {
-                showModal('Neue Liste beginnen?', 'Möchten Sie Ihre bisherige Liste vorher abspeichern?', () => { saveJSON(createNew); }, 'warning_save', createNew, 'Verwerfen & Neu');
+                showModal(
+                    'Neue Liste beginnen?', 
+                    'Möchten Sie Ihre bisherige Liste vorher abspeichern?', 
+                    () => { saveJSON(startNewFileProcess); }, 
+                    'warning_save', 
+                    startNewFileProcess, 
+                    'Verwerfen & Neu'
+                );
             } else {
-                createNew();
+                startNewFileProcess();
             }
         }
 
-        function updateData(index, field, value) {
+        function updateData(index, field, value, el) {
             if (promptsData[index]) promptsData[index][field] = value;
+            if (!el) return;
+
+            const isEmpty = !value || value.trim() === "";
+            const isPrompt = field === 'prompt';
+
+            if (['titel', 'kurzbeschreibung', 'prompt'].includes(field)) {
+                if (isEmpty) {
+                    el.classList.add('bg-red-50', 'dark:bg-red-900/10', 'border-red-300', 'dark:border-red-800');
+                    el.classList.remove('bg-slate-50', 'dark:bg-slate-900', 'border-slate-300', 'dark:border-slate-600', 'bg-indigo-50/30', 'dark:bg-indigo-900/20', 'border-indigo-200', 'dark:border-indigo-800');
+                } else {
+                    el.classList.remove('bg-red-50', 'dark:bg-red-900/10', 'border-red-300', 'dark:border-red-800');
+                    if (isPrompt) {
+                        el.classList.add('bg-indigo-50/30', 'dark:bg-indigo-900/20', 'border-indigo-200', 'dark:border-indigo-800');
+                    } else {
+                        el.classList.add('bg-slate-50', 'dark:bg-slate-900', 'border-slate-300', 'dark:border-slate-600');
+                    }
+                }
+            }
+        }
+
+        function insertTemplate(index, type) {
+            let template = "";
+            if (type === 'KRAFT+') {
+                template = "KONTEXT: [Beschreibe die Ausgangssituation...]\nROLLE: [Wer soll die KI sein? Z.B. Experte für...]\nAUFGABE: [Was genau soll getan werden?]\nFORMAT: [Wie soll das Ergebnis aussehen? Z.B. Tabelle, Liste...]\nTONFALL: [Z.B. motivierend, sachlich, schülerorientiert...]\nPLUS: [Zusätzliche Bedingungen oder Beispiele...]";
+            } else if (type === 'ROLE') {
+                template = "ROLE: [Rolle festlegen]\nOBJECTIVE: [Ziel der Aufgabe]\nLIMITS: [Einschränkungen/Regeln]\nEXECUTION: [Format der Ausgabe]";
+            }
+
+            const currentVal = promptsData[index].prompt;
+            const apply = () => {
+                promptsData[index].prompt = template;
+                const textarea = document.getElementById(`textarea-prompt-${index}`);
+                if (textarea) {
+                    textarea.value = template;
+                    updateData(index, 'prompt', template, textarea);
+                }
+                showToast(`${type}-Template eingefügt.`);
+            };
+
+            if (currentVal && currentVal.trim() !== "") {
+                showModal(
+                    'Template einfügen?',
+                    `Dein aktueller Prompt-Text wird durch das ${type}-Template ersetzt. Möchten Sie fortfahren?`,
+                    apply,
+                    'warning'
+                );
+            } else {
+                apply();
+            }
+        }
+
+        function showPromptFrameworkHelp() {
+            const helpContent = `
+                <div class="space-y-6 text-sm text-left">
+                    <div>
+                        <h4 class="font-bold text-indigo-600 dark:text-indigo-400 text-base mb-1">KRAFT+ Modell</h4>
+                        <p class="mb-2">Ein präzises Modell für den Bildungskontext:</p>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-slate-300">
+                            <li><strong>K</strong>ontext: Hintergrund der Situation</li>
+                            <li><strong>R</strong>olle: Wer soll die KI sein?</li>
+                            <li><strong>A</strong>ufgabe: Was genau soll getan werden?</li>
+                            <li><strong>F</strong>ormat: Tabellen, Listen, Fließtext</li>
+                            <li><strong>T</strong>onfall: Sachlich, schülerorientiert, etc.</li>
+                            <li><strong>+</strong>: Zusätzliche Beispiele oder Regeln</li>
+                        </ul>
+                    </div>
+                    <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
+                        <h4 class="font-bold text-indigo-600 dark:text-indigo-400 text-base mb-1">ROLE Modell</h4>
+                        <p class="mb-2">Der bewährte Standard für klare Anweisungen:</p>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-slate-300">
+                            <li><strong>R</strong>ole: Persona der KI festlegen</li>
+                            <li><strong>O</strong>bjective: Das Ziel der Aufgabe</li>
+                            <li><strong>L</strong>imits: Grenzen und Einschränkungen</li>
+                            <li><strong>E</strong>xecution: Art der Ausführung/Ausgabe</li>
+                        </ul>
+                    </div>
+                    <div class="mt-4 p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg border border-indigo-100 dark:border-indigo-800">
+                        <p class="text-xs font-medium text-slate-700 dark:text-slate-200 mb-2">Weitere Informationen und Beispiele:</p>
+                        <a href="https://joschafalck.de/prompting-verstehen/" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline font-bold flex items-center gap-1">joschafalck.de: Prompting verstehen ↗</a>
+                    </div>
+                </div>
+            `;
+            
+            showModal('Prompt-Frameworks erklärt', helpContent, null, 'info');
         }
 
         function updateTagsFromSelect(index, selectElement) {
@@ -829,6 +929,10 @@
 
             let htmlString = '';
             promptsData.forEach((item, index) => {
+                const isTitelEmpty = !item.titel || item.titel.trim() === "";
+                const isKurzbeschreibungEmpty = !item.kurzbeschreibung || item.kurzbeschreibung.trim() === "";
+                const isPromptEmpty = !item.prompt || item.prompt.trim() === "";
+
                 htmlString += `
                 <div id="prompt-entry-${escapeHTML(item.id)}" class="highlight-card bg-white dark:bg-slate-800 p-5 md:p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 relative group hover:border-indigo-300 dark:hover:border-indigo-500">
                     <div class="absolute top-4 right-4">
@@ -837,14 +941,14 @@
                         </button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-5 mb-5 pr-10">
-                        <div class="md:col-span-2"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">ID</label><input type="text" oninput="updateData(${index}, 'id', this.value)" value="${escapeHTML(item.id)}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100 id-input-field"></div>
-                        <div class="md:col-span-10"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Titel</label><input type="text" oninput="updateData(${index}, 'titel', this.value)" value="${escapeHTML(item.titel)}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all font-medium text-slate-900 dark:text-slate-100"></div>
+                        <div class="md:col-span-2"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">ID</label><input type="text" oninput="updateData(${index}, 'id', this.value, this)" value="${escapeHTML(item.id)}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100 id-input-field"></div>
+                        <div class="md:col-span-10"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Titel <span class="text-red-500" title="Pflichtfeld">*</span></label><input type="text" oninput="updateData(${index}, 'titel', this.value, this)" value="${escapeHTML(item.titel)}" class="w-full ${isTitelEmpty ? 'bg-red-50 dark:bg-red-900/10 border-red-300 dark:border-red-800' : 'bg-slate-50 dark:bg-slate-900 border-slate-300 dark:border-slate-600'} rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all font-medium text-slate-900 dark:text-slate-100"></div>
                         <div class="md:col-span-4"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Fach (Global)</label><div class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md px-3 py-2 text-sm text-slate-500 dark:text-slate-400 cursor-not-allowed truncate transition-all global-fach-display" title="Wird zentral festgelegt">${escapeHTML(item.fach || 'Noch nicht festgelegt')}</div></div>
-                        <div class="md:col-span-4"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Funktion</label><select onchange="updateData(${index}, 'funktion', this.value)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100">
+                        <div class="md:col-span-4"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Funktion</label><select onchange="updateData(${index}, 'funktion', this.value, this)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100">
                             <option value="">-- Bitte wählen --</option>
                             ${['Prompt', 'Bildgenerierung', 'Assistent', 'Lernszenarium', 'Dialogpartner'].map(f => `<option value="${f}" ${item.funktion === f ? 'selected' : ''}>${f}</option>`).join('')}
                         </select></div>
-                        <div class="md:col-span-4"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Stufe</label><select onchange="updateData(${index}, 'stufe', this.value)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100">
+                        <div class="md:col-span-4"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Stufe</label><select onchange="updateData(${index}, 'stufe', this.value, this)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100">
                             <option value="">-- Bitte wählen --</option>
                             ${['Primarstufe', 'Sekundarstufe 1', 'Sekundarstufe 2'].map(s => `<option value="${s}" ${item.stufe === s ? 'selected' : ''}>${s}</option>`).join('')}
                         </select></div>
@@ -853,9 +957,21 @@
                                 ${availableTags.map(tag => `<option value="${tag}" ${(item.tags || []).includes(tag) ? 'selected' : ''}>${tag}</option>`).join('')}
                             </select>
                         </div>
-                        <div class="md:col-span-12"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Kurzbeschreibung</label><input type="text" oninput="updateData(${index}, 'kurzbeschreibung', this.value)" value="${escapeHTML(item.kurzbeschreibung)}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100"></div>
+                        <div class="md:col-span-12"><label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Kurzbeschreibung <span class="text-red-500" title="Pflichtfeld">*</span></label><input type="text" oninput="updateData(${index}, 'kurzbeschreibung', this.value, this)" value="${escapeHTML(item.kurzbeschreibung)}" class="w-full ${isKurzbeschreibungEmpty ? 'bg-red-50 dark:bg-red-900/10 border-red-300 dark:border-red-800' : 'bg-slate-50 dark:bg-slate-900 border-slate-300 dark:border-slate-600'} rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all text-slate-900 dark:text-slate-100"></div>
                     </div>
-                    <div><label class="block text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-1">Prompt</label><textarea oninput="updateData(${index}, 'prompt', this.value)" rows="5" class="w-full bg-indigo-50/30 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all resize-y text-slate-800 dark:text-slate-200 leading-relaxed">${escapeHTML(item.prompt)}</textarea></div>
+                    <div class="pr-10">
+                        <div class="flex justify-between items-end mb-1">
+                            <label class="block text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Prompt <span class="text-red-500" title="Pflichtfeld">*</span></label>
+                            <div class="flex items-center gap-2 mb-1">
+                                <button onclick="insertTemplate(${index}, 'KRAFT+')" class="text-[10px] font-bold px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-300 transition-all shadow-sm focus:outline-none">+ KRAFT+</button>
+                                <button onclick="insertTemplate(${index}, 'ROLE')" class="text-[10px] font-bold px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-300 transition-all shadow-sm focus:outline-none">+ ROLE</button>
+                                <button onclick="showPromptFrameworkHelp()" title="Was ist das?" class="text-slate-400 hover:text-indigo-500 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <textarea id="textarea-prompt-${index}" oninput="updateData(${index}, 'prompt', this.value, this)" rows="5" class="w-full ${isPromptEmpty ? 'bg-red-50 dark:bg-red-900/10 border-red-300 dark:border-red-800' : 'bg-indigo-50/30 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800'} rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:bg-slate-800 transition-all resize-y text-slate-800 dark:text-slate-200 leading-relaxed">${escapeHTML(item.prompt)}</textarea>
+                    </div>
                 </div>`;
             });
             container.innerHTML = htmlString;
@@ -865,31 +981,35 @@
         function closeHelpModal() { document.getElementById('help-modal').classList.add('hidden'); }
 
         function showModal(title, message, onConfirm, type = 'danger', onAlt = null, altText = '') {
-            document.getElementById('modal-title').innerText = title;
-            document.getElementById('modal-message').innerHTML = message.replace(/\n/g, '<br>');
-            
-            document.getElementById('modal-input-wrapper').classList.add('hidden');
-            
-            currentConfirmCallback = onConfirm;
-            currentAltCallback = onAlt;
-
+            const modalBody = document.querySelector('#custom-modal > div:nth-child(2)');
             const btnEl = document.getElementById('modal-confirm-btn');
             const cancelBtn = document.getElementById('modal-cancel-btn');
             const altBtn = document.getElementById('modal-alt-btn');
             const iconContainer = document.getElementById('modal-icon-container');
 
+            // Grundzustand zurücksetzen
+            modalBody.classList.remove('max-w-3xl');
+            modalBody.classList.add('max-w-lg');
+            document.getElementById('modal-input-wrapper').classList.add('hidden');
             cancelBtn.classList.remove('hidden');
+            cancelBtn.innerText = 'Abbrechen';
+            altBtn.classList.add('hidden');
+            altBtn.className = 'px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-50 dark:hover:bg-slate-600 transition-all w-full sm:w-auto sm:mr-auto';
+
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerHTML = message;
+            
+            currentConfirmCallback = onConfirm;
+            currentAltCallback = onAlt;
 
             if (onAlt) {
                 altBtn.classList.remove('hidden');
                 altBtn.innerText = altText;
                 altBtn.onclick = () => {
                     let cb = currentAltCallback;
-                    closeModal(); 
+                    if (type !== 'save-preview') closeModal(); 
                     if (cb) cb();
                 };
-            } else {
-                altBtn.classList.add('hidden');
             }
 
             if (type === 'danger') {
@@ -914,6 +1034,20 @@
                 iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 mt-1';
                 iconContainer.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
                 if(!onConfirm) currentConfirmCallback = () => {};
+            } else if (type === 'info') {
+                btnEl.className = 'px-4 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
+                btnEl.innerText = 'Verstanden';
+                cancelBtn.classList.add('hidden');
+                altBtn.classList.add('hidden');
+                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 mt-1';
+                iconContainer.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                if(!onConfirm) currentConfirmCallback = () => {};
+            } else if (type === 'save-preview') {
+                btnEl.className = 'px-4 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
+                btnEl.innerText = 'Lokal speichern';
+                cancelBtn.innerText = 'Abbrechen';
+                iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 mt-1';
+                iconContainer.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>';
             }
 
             btnEl.onclick = () => {
@@ -924,25 +1058,28 @@
             document.getElementById('custom-modal').classList.remove('hidden');
         }
 
-        function showInputModal(title, message, defaultText, onConfirm) {
+        function showInputModal(title, message, defaultText, onConfirm, confirmBtnText = 'Speichern', inputLabel = 'Dateiname') {
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-message').innerHTML = message;
             
             const inputWrapper = document.getElementById('modal-input-wrapper');
             const inputField = document.getElementById('modal-input-field');
+            const labelField = document.getElementById('modal-input-label');
             
             inputWrapper.classList.remove('hidden');
             inputField.value = defaultText;
+            labelField.innerText = inputLabel;
 
             const btnEl = document.getElementById('modal-confirm-btn');
             const cancelBtn = document.getElementById('modal-cancel-btn');
             const iconContainer = document.getElementById('modal-icon-container');
 
             cancelBtn.classList.remove('hidden');
+            cancelBtn.innerText = 'Abbrechen';
             document.getElementById('modal-alt-btn').classList.add('hidden');
 
             btnEl.className = 'px-4 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-lg text-white font-medium transition-all shadow-sm w-full sm:w-auto';
-            btnEl.innerText = 'Speichern';
+            btnEl.innerText = confirmBtnText;
             
             iconContainer.className = 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 mt-1';
             iconContainer.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>';
@@ -966,6 +1103,10 @@
         }
 
         function closeModal() {
+            const modalBody = document.querySelector('#custom-modal > div:nth-child(2)');
+            modalBody.classList.remove('max-w-3xl');
+            modalBody.classList.add('max-w-lg');
+            
             document.getElementById('custom-modal').classList.add('hidden');
             currentConfirmCallback = null;
             currentAltCallback = null;
@@ -978,6 +1119,48 @@
             toast.className = `fixed bottom-4 right-4 ${isError ? 'bg-red-600' : 'bg-slate-800 dark:bg-slate-700'} text-white px-4 py-3 rounded-lg shadow-lg transform transition-all z-50 flex items-center gap-3 border dark:border-slate-600`;
             clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+
+        function showJSONPreview() {
+            if (promptsData.length === 0) {
+                showToast("Keine Daten für eine Vorschau vorhanden.", true);
+                return;
+            }
+
+            const jsonString = JSON.stringify(promptsData, null, 2);
+            
+            const modalBody = document.querySelector('#custom-modal > div:nth-child(2)');
+            modalBody.classList.remove('max-w-lg');
+            modalBody.classList.add('max-w-3xl');
+
+            const previewHtml = `
+                <div class="mt-4 w-full text-left">
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mb-3 font-medium">Vorschau der Export-Datei (JSON):</p>
+                    <div class="relative group">
+                        <pre class="bg-slate-900 text-indigo-300 p-4 rounded-lg overflow-y-auto whitespace-pre-wrap break-all text-sm font-mono max-h-[60vh] border border-slate-700 shadow-inner custom-scrollbar leading-relaxed select-all">${escapeHTML(jsonString)}</pre>
+                        <div class="absolute top-2 right-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded border border-slate-600">
+                            Alles markieren
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            showModal(
+                'Speichern & Vorschau', 
+                previewHtml, 
+                () => { // "Bestätigen" = Lokal speichern
+                    saveJSON();
+                }, 
+                'save-preview',
+                () => { // "Alternativ" = Kopieren
+                    navigator.clipboard.writeText(jsonString).then(() => {
+                        showToast("JSON in die Zwischenablage kopiert!");
+                    }).catch(err => {
+                        showToast("Fehler beim Kopieren", true);
+                    });
+                },
+                'Text in Zwischenablage kopieren'
+            );
         }
 
         document.addEventListener('DOMContentLoaded', () => {
