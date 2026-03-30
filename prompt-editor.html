@@ -400,25 +400,8 @@
             }
             globalFach = val;
             
-            let fachKey = globalFach.toLowerCase();
-            let prefix = fachIdMapping[fachKey] || "00";
-            
-            const idInputs = document.querySelectorAll('.id-input-field');
-
-            promptsData.forEach((item, index) => {
-                item.class = globalFach;
-                
-                // ID in Echtzeit anpassen
-                let oldIdStr = String(item.id || "").trim();
-                let seqStr = oldIdStr.length >= 2 ? oldIdStr.substring(2) : oldIdStr;
-                seqStr = seqStr.padStart(3, '0');
-                
-                let newId = prefix + seqStr;
-                item.id = newId;
-
-                if (idInputs[index]) {
-                    idInputs[index].value = newId;
-                }
+            promptsData.forEach((item) => {
+                item.fach = globalFach;
             });
             
             const fachDisplays = document.querySelectorAll('.global-fach-display');
@@ -559,9 +542,6 @@
                 let derivedFach = filename.replace(/\.json$/i, '');
                 globalFach = derivedFach.length > 0 ? derivedFach.charAt(0).toUpperCase() + derivedFach.slice(1) : derivedFach;
                 isNewFile = false; 
-                
-                let fachKey = globalFach.toLowerCase();
-                let prefix = fachIdMapping[fachKey] || "00";
 
                 promptsData = dataArray.map((item, index) => {
                     let parsedTags = [];
@@ -571,22 +551,12 @@
                         else parsedTags = [safeString(item.tags)];
                     }
 
+                    // ID als einfache Zahl ohne führende Nullen
                     let itemId = item.id || item.ID || item.Id || '';
-                    let idStr = String(itemId).trim();
-                    
-                    let seqStr = "";
-                    if (idStr.length >= 5) {
-                        seqStr = idStr.slice(-3);
-                    } else if (idStr.length >= 2 && idStr.length <= 4) {
-                        seqStr = idStr.length > 3 ? idStr.slice(-3) : idStr;
-                    } else {
-                        seqStr = idStr || String(index + 1);
-                    }
-                    seqStr = seqStr.padStart(3, '0');
-                    let newId = prefix + seqStr;
+                    let cleanId = String(parseInt(itemId, 10) || (index + 1));
 
                     return {
-                        id: newId,
+                        id: cleanId,
                         titel: safeString(item.titel),
                         fach: globalFach,
                         funktion: safeString(item.funktion),
@@ -674,11 +644,8 @@
             const maxAttempts = 30; 
             
             const checkExist = setInterval(function() {
-                const paddedSearch = cleanId.padStart(3, '0');
-                const matchedEntry = promptsData.find(e => 
-                    String(e.id) === cleanId || 
-                    String(e.id).endsWith(paddedSearch)
-                );
+                // Suchen der exakten ID im aktuellen Datensatz
+                const matchedEntry = promptsData.find(e => String(e.id) === cleanId);
                 
                 const finalSearchId = matchedEntry ? matchedEntry.id : cleanId;
                 const element = document.getElementById(`prompt-entry-${finalSearchId}`);
@@ -753,9 +720,7 @@
         function getNextSequence() {
             let maxSeq = 0;
             promptsData.forEach(item => {
-                let idStr = String(item.id || "").trim();
-                let seqStr = idStr.length >= 2 ? idStr.substring(2) : idStr;
-                let seq = parseInt(seqStr, 10);
+                let seq = parseInt(item.id, 10);
                 if (!isNaN(seq) && seq > maxSeq) {
                     maxSeq = seq;
                 }
@@ -764,9 +729,7 @@
         }
 
         function addNewEntry() {
-            let nextSeq = getNextSequence() + 1;
-            let prefix = fachIdMapping[globalFach.toLowerCase()] || "00";
-            let nextId = prefix + String(nextSeq).padStart(3, '0');
+            let nextId = String(getNextSequence() + 1);
 
             promptsData.push({
                 id: nextId, titel: "", fach: globalFach, funktion: "", stufe: "", tags: [], kurzbeschreibung: "", prompt: ""
@@ -778,9 +741,7 @@
         function addSampleEntry() {
             if (!globalFach) globalFach = 'Deutsch';
             
-            let nextSeq = getNextSequence() + 1;
-            let prefix = fachIdMapping[globalFach.toLowerCase()] || "00";
-            let nextId = prefix + String(nextSeq).padStart(3, '0');
+            let nextId = String(getNextSequence() + 1);
 
             promptsData.push({
                 id: nextId,
