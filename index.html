@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>telli in Thüringen</title>
     
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.js"></script>
     
     <script>
       tailwind.config = {
@@ -44,9 +44,9 @@
         const PrinterIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>;
         const LinkIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>;
         const QrCodeIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="15" y1="15" x2="15.01" y2="15"></line><line x1="9" y1="15" x2="9.01" y2="15"></line></svg>;
-        // Neue Icons für Reset und Filter
         const ResetIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>;
         const FilterIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>;
+        const ShieldIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>;
 
         // Statische Filter-Optionen
         const FILTER_STUFE = ['Primarstufe', 'Sekundarstufe 1', 'Sekundarstufe 2'];
@@ -73,6 +73,7 @@
           const [fileError, setFileError] = useState(false);
           const [showImpressum, setShowImpressum] = useState(false);
           const [showHelp, setShowHelp] = useState(false);
+          const [showPrivacy, setShowPrivacy] = useState(false);
           const [qrModal, setQrModal] = useState({ isOpen: false, url: '', titel: '' });
           
           const [animatedCount, setAnimatedCount] = useState(0);
@@ -889,6 +890,13 @@
                         <InfoIcon className="w-4 h-4" />
                         Impressum
                       </button>
+                      <button 
+                        onClick={() => setShowPrivacy(true)}
+                        className="text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-400 transition-colors font-medium flex items-center justify-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-3 py-1 bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700"
+                      >
+                        <ShieldIcon className="w-4 h-4 text-emerald-500" />
+                        Datenschutz
+                      </button>
                     </div>
 
                   </div>
@@ -1114,10 +1122,75 @@
                           </a>.
                         </p>
                       </div>
+                      
+                      <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-700">
+                        <button 
+                            onClick={(e) => { e.stopPropagation(); setShowImpressum(false); setShowPrivacy(true); }}
+                            className="flex items-center gap-2 text-emerald-600 hover:text-emerald-700 dark:text-emerald-500 dark:hover:text-emerald-400 font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                        >
+                            <ShieldIcon className="w-5 h-5" />
+                            Zur Datenschutzerklärung
+                        </button>
+                      </div>
 
                     </div>
                     <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 flex justify-end">
                       <button onClick={() => setShowImpressum(false)} className="px-4 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">Schließen</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Datenschutzerklärung Modal */}
+              {showPrivacy && (
+                <div className="fixed inset-0 bg-slate-900/50 dark:bg-slate-900/80 z-50 flex items-center justify-center p-4 print:hidden" onClick={() => setShowPrivacy(false)}>
+                  <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                        <ShieldIcon className="w-6 h-6 text-emerald-500" />
+                        Datenschutzerklärung
+                      </h3>
+                      <button onClick={() => setShowPrivacy(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"><CloseIcon className="w-6 h-6"/></button>
+                    </div>
+                    <div className="text-sm text-slate-700 dark:text-slate-300 space-y-6 leading-relaxed">
+                      
+                      <section>
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base mb-2 border-b border-slate-200 dark:border-slate-700 pb-1">1. Allgemeine Hinweise</h4>
+                        <p>Der Schutz Ihrer persönlichen Daten ist uns ein wichtiges Anliegen. Diese Webseite dient der Bereitstellung von Praxisbeispielen für den KI-Chatbot „telli“. Wir verarbeiten Daten streng nach den Vorgaben der Datenschutz-Grundverordnung (DSGVO).</p>
+                      </section>
+
+                      <section>
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base mb-2 border-b border-slate-200 dark:border-slate-700 pb-1">2. Lokale Datenverarbeitung (Privacy by Design)</h4>
+                        <p>Diese Webseite ist nach dem Prinzip der Datensparsamkeit konzipiert. Die wesentlichen Funktionen arbeiten <strong>lokal</strong> in Ihrem Browser:</p>
+                        <ul className="list-disc pl-5 mt-2 space-y-1">
+                          <li><strong>Favoriten:</strong> Die von Ihnen markierten Stern-Einträge werden ausschließlich im <em>LocalStorage</em> Ihres eigenen Webbrowsers gespeichert. Diese Daten verlassen niemals Ihr Gerät.</li>
+                          <li><strong>Einstellungen:</strong> Informationen über Ihre Design-Wahl (Hell- oder Dunkelmodus) werden ebenfalls nur lokal gespeichert.</li>
+                          <li><strong>Keine Benutzerkonten:</strong> Es werden keine Namen, E-Mail-Adressen oder Profile erfasst oder auf einem Server gespeichert.</li>
+                        </ul>
+                      </section>
+
+                      <section>
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base mb-2 border-b border-slate-200 dark:border-slate-700 pb-1">3. Externe Dienste und Verbindungen</h4>
+                        <p>Um die Webseite stabil und mit aktuellen Funktionen (wie QR-Codes) bereitzustellen, werden Ressourcen von externen Servern geladen. Dabei wird technisch bedingt Ihre IP-Adresse an diese Anbieter übertragen:</p>
+                        <ul className="list-disc pl-5 mt-2 space-y-1">
+                          <li><strong>Bibliotheken (unpkg.com):</strong> Für die Ausführung der Programmoberfläche (React) werden Skripte von diesem Anbieter geladen.</li>
+                          <li><strong>QR-Code Generator (api.qrserver.com):</strong> Wenn Sie die QR-Code-Funktion nutzen oder die Druckansicht aufrufen, wird eine Anfrage an diesen Dienst gestellt, um den QR-Code zu generieren.</li>
+                        </ul>
+                      </section>
+
+                      <section>
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base mb-2 border-b border-slate-200 dark:border-slate-700 pb-1">4. Hosting und Server-Logs</h4>
+                        <p>Diese Seite wird über <strong>GitHub Pages</strong> bereitgestellt. Der Anbieter erhebt automatisch Informationen in sogenannten Server-Log-Files (z. B. IP-Adresse, Datum, Browsertyp), die Ihr Browser automatisch an GitHub übermittelt. Dies ist technisch notwendig, um die Webseite anzuzeigen und die Sicherheit zu gewährleisten.</p>
+                      </section>
+
+                      <section>
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base mb-2 border-b border-slate-200 dark:border-slate-700 pb-1">5. Ihre Rechte</h4>
+                        <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten. Da wir keine personenbezogenen Daten auf unseren Servern speichern, können Sie alle lokal gespeicherten Daten (Favoriten) jederzeit selbst löschen, indem Sie den Browser-Cache bzw. die Website-Daten in Ihren Browser-Einstellungen leeren.</p>
+                      </section>
+
+                    </div>
+                    <div className="mt-8 pt-4 border-t border-slate-200 dark:border-slate-700 flex justify-end">
+                      <button onClick={() => setShowPrivacy(false)} className="px-6 py-2 text-sm font-medium bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">Verstanden</button>
                     </div>
                   </div>
                 </div>
