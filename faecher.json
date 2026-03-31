@@ -7,6 +7,7 @@
   { "name": "sozialkunde", "id": "06" },
   { "name": "biologie", "id": "07" },
   { "name": "physik", "id": "08" },
+  { "name": "kunst", "id": "09" },
   { "name": "übergreifend", "id": "88" },
   { "name": "test", "id": "99" },
   { "name": "kimadu", "id": "98" }
