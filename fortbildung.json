@@ -5,7 +5,7 @@
     "fach": "fortbildung",
     "funktion": "Bildgenerierung",
     "stufe": "",
-    "tags": [],
+    "tags": ["Fortbildung"],
     "kurzbeschreibung": "Ein Close-up Porträt einer älteren Person in einem verregneten Neon-Setting.",
     "prompt": "\nExtrem detailreiches Close-up Porträt eines 80-jährigen Fischers mit tiefen Falten, trägt eine gelbe Regenjacke, steht nachts im strömenden Regen unter einer blauen Neonreklame. Wassertropfen perlen auf der Haut ab, hyperrealistisch, 8k, flache Tiefenschärfe, kinoreife Beleuchtung, Fokus auf die Augen.\n"
   },
@@ -15,7 +15,7 @@
     "fach": "fortbildung",
     "funktion": "Bildgenerierung",
     "stufe": "",
-    "tags": [],
+     "tags": ["Fortbildung"],
     "kurzbeschreibung": "Ein modernes Flat-Design-Poster für ein fiktives Event",
     "prompt": "\nEin minimalistisches Grafikdesign-Poster im Bauhaus-Stil für eine Konferenz. In der Mitte steht groß und deutlich der Text 'AI FUTURE 2026'. Geometrische Formen in Primärfarben (Rot, Blau, Gelb) auf beigefarbenem Papierhintergrund, klare Linien, Vektor-Stil, professionelles Layout.\n"
   },
@@ -25,7 +25,7 @@
     "fach": "fortbildung",
     "funktion": "Bildgenerierung",
     "stufe": "",
-    "tags": [],
+     "tags": ["Fortbildung"],
     "kurzbeschreibung": "Eine surreale Verschmelzung von Natur und Mechanik",
     "prompt": "Eine surreale Skulptur eines majestätischen Hirsches, dessen Geweih aus blühenden Kirschblütenzweigen und filigranen goldenen Uhrwerken besteht. Der Hirsch steht auf einem schwebenden Kristallfelsen über einem Wolkenmeer. Stil: Eine Mischung aus Salvador DalÃ­ und digitaler Konzeptfortbildung, traumhaft, pastellfarbene Ästhetik, weiches Licht."
   },
@@ -35,7 +35,7 @@
     "fach": "fortbildung",
     "funktion": "Bildgenerierung",
     "stufe": "",
-    "tags": [],
+     "tags": ["Fortbildung"],
     "kurzbeschreibung": "Ein futuristisches Uhrwerk im Inneren einer gläsernen Kugel, die in dunklem Honig versinkt",
     "prompt": "\nExtreme Makroaufnahme eines komplexen, goldenen Uhrwerks, das im Inneren einer transparenten Glaskugel eingeschlossen ist. Die Kugel liegt halb eingetaucht in zähflüssigem, goldenem Honig. Überall sind kleine Luftblasen im Honig zu sehen. Fokus auf die scharfen Kanten der Zahnräder, während das Glas das Licht bricht. Warme, goldene Beleuchtung, schwarzer Hintergrund, extrem hoher Detailgrad, 8k Auflösung, Raytracing-Effekte.\n"
   },
@@ -45,7 +45,7 @@
     "fach": "fortbildung",
     "funktion": "Bildgenerierung",
     "stufe": "",
-    "tags": [],
+     "tags": ["Fortbildung"],
     "kurzbeschreibung": "Eine Hand, die vorsichtig ein Kartenhaus aus Spielkarten baut",
     "prompt": "\nExtreme Nahaufnahme einer menschlichen Hand, die die letzte Karte auf ein komplexes, fünfstöckiges Kartenhaus legt. Fokus auf die Fingerspitzen, die die Karte halten. Realistische Hauttextur, natürliches Tageslicht von der Seite, weicher Schattenwurf. Die Karten müssen perfekt ausbalanciert wirken, 8k, photorealistisch.\n"
   },
@@ -55,7 +55,7 @@
     "fach": "fortbildung",
     "funktion": "Bildgenerierung",
     "stufe": "",
-    "tags": [],
+     "tags": ["Fortbildung"],
     "kurzbeschreibung": "Die Innenansicht einer futuristischen, streng symmetrischen Kathedrale aus Glas und weißem Beton",
     "prompt": "Zentralperspektive des Innenraums einer modernen Kathedrale. Futuristisches Design mit hohen weißen Betonpfeilern und einer Decke aus geometrischen Glassegmenten. Strenge Symmetrie, weiches diffuses Licht, das von oben einfällt. Keine Menschen, minimalistisch, ultraweitwinkel, architektonische Fotografie.\n"
   },
@@ -65,7 +65,7 @@
     "fach": "fortbildung",
     "funktion": "Bildgenerierung",
     "stufe": "",
-    "tags": [],
+     "tags": ["Fortbildung"],
     "kurzbeschreibung": "Eine Straßenszene in Berlin der 1920er Jahre bei Nacht",
     "prompt": "Authentische Straßenszene in Berlin, Jahr 1925, Nachtaufnahme. Historische Automobile, Menschen in zeitgenössischer Kleidung (Mantel, Hut), nasse Kopfsteinpflasterstraßen, die das Licht der Gaslaternen reflektieren. Stil einer alten Leica-Fotografie, Schwarz-Weiß mit leichtem Filmkorn, hoher Kontrast, atmosphärisch.\n"
   },
@@ -75,7 +75,7 @@
     "fach": "fortbildung",
     "funktion": "Bildgenerierung",
     "stufe": "",
-    "tags": [],
+     "tags": ["Fortbildung"],
     "kurzbeschreibung": "",
     "prompt": "Isometrisches 3D-Diorama eines Cyberpunk-Hacker-Space auf einer quadratischen Plattform. Viele leuchtende Monitore, Kabelsalat, eine Neon-Pflanze in der Ecke, ein futuristischer Stuhl. Transparenter Hintergrund, weiches Ambient Occlusion Lighting, 3D-Render-Stil (Octane Render), lebendige Farben, hohe Details.\n"
   }
