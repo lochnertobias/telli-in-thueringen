@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>telli in Thüringen</title>
+    <title>AIS.chat in Thüringen</title>
     
     <script src="tailwind.js"></script>
     
@@ -89,7 +89,7 @@
           const [showFilters, setShowFilters] = useState(window.innerWidth >= 768);
 
           const [favorites, setFavorites] = useState(() => {
-            const savedFavorites = localStorage.getItem('telli_favorites');
+            const savedFavorites = localStorage.getItem('aischat_favorites');
             return savedFavorites ? JSON.parse(savedFavorites) : [];
           });
           const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
@@ -127,7 +127,7 @@
           };
 
           useEffect(() => {
-            localStorage.setItem('telli_favorites', JSON.stringify(favorites));
+            localStorage.setItem('aischat_favorites', JSON.stringify(favorites));
             
             if (favorites.length === 0) {
                 setShowFavoritesOnly(false);
@@ -426,7 +426,7 @@
                         onClick={handleHeaderClick}
                         className="text-3xl sm:text-4xl font-extrabold text-blue-900 dark:text-blue-400 leading-tight cursor-pointer select-none"
                       >
-                        telli in Thüringen
+                        AIS.chat in Thüringen
                       </h1>
                       <div className="flex flex-wrap items-center gap-2">
                         <button 
@@ -460,7 +460,7 @@
                         style={{ minWidth: `${Math.max(1, entries.length.toString().length)}ch` }}
                       >
                         {animatedCount}
-                      </span> Praxisbeispiele für den Einsatz von telli im schulischen Kontext
+                      </span> Praxisbeispiele für den Einsatz von AIS.chat im schulischen Kontext
                     </h2>
                     
                     {fileError && (
@@ -474,33 +474,33 @@
                       <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-2xl pointer-events-none"></div>
                       <div className="relative z-10 flex flex-col gap-5 text-slate-700 dark:text-slate-300 leading-relaxed">
                         <p className="text-lg">
-                          <strong className="font-extrabold text-blue-900 dark:text-blue-300 tracking-wide">telli</strong> ist der DSGVO-konforme KI-Chatbot für Schulen in Thüringen, betrieben vom <a href="https://fwu.de" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline underline-offset-4 decoration-blue-300/50 hover:decoration-blue-500 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">fwu</a>.
+                          <strong className="font-extrabold text-blue-900 dark:text-blue-300 tracking-wide">AIS.chat</strong> ist der DSGVO-konforme KI-Chatbot für Schulen in Thüringen, betrieben vom <a href="https://fwu.de" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline underline-offset-4 decoration-blue-300/50 hover:decoration-blue-500 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">fwu</a>.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3 mt-1">
-                          <a href="https://www.schulportal-thueringen.de/digitale_werkzeuge/telli" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">
-                            <BookOpenIcon className="w-4 h-4" /> telli-Zugang über das Thüringer Schulportal
+                          <a href="https://www.schulportal-thueringen.de/digitale_werkzeuge/AIS.chat" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">
+                            <BookOpenIcon className="w-4 h-4" /> AIS.chat-Zugang über das Thüringer Schulportal
                           </a>
-                          <a href="https://www.schulportal-thueringen.de/digitale_werkzeuge/telli/unterstuetzungsangebot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700 text-sm font-medium rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">
-                            <InfoIcon className="w-4 h-4" /> Unterstützungsangebote für telli durch das ThILLM
+                          <a href="https://www.schulportal-thueringen.de/digitale_werkzeuge/AIS.chat/unterstuetzungsangebot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700 text-sm font-medium rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800">
+                            <InfoIcon className="w-4 h-4" /> Unterstützungsangebote für AIS.chat durch das ThILLM
                           </a>
                         </div>
                         <div className="mt-2 pt-4 border-t border-blue-200/50 dark:border-blue-800/50">
-                          <p className="text-lg">Diese Seite zeigt Einsatzideen für telli für verschiedene Fächer, gegliedert nach telli-Funktionen und Schulstufen. Die Beispiele sind als Anregung zur Erstellung eigener telli-Funktionen gedacht.</p>
+                          <p className="text-lg">Diese Seite zeigt Einsatzideen für AIS.chat für verschiedene Fächer, gegliedert nach AIS.chat-Funktionen und Schulstufen. Die Beispiele sind als Anregung zur Erstellung eigener AIS.chat-Funktionen gedacht.</p>
                         </div>
                       </div>
                     </div>
 
                     <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center">
-                      <InfoIcon className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" /> Diese Funktionen stellt telli bereit:
+                      <InfoIcon className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" /> Diese Funktionen stellt AIS.chat bereit:
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="bg-white dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm transition-colors duration-200">
                         <h4 className="font-bold text-blue-800 dark:text-blue-300 flex items-center mb-2"><ZapIcon className="w-4 h-4 mr-2" /> Prompts für Lehrkräfte</h4>
-                        <p className="text-sm text-slate-600 dark:text-slate-300">Direkte Eingaben an telli für Lehrkräfte. Die Lehrkraft tippt, telli liefert Material, Aufgaben oder Ideen.</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-300">Direkte Eingaben an AIS.chat für Lehrkräfte. Die Lehrkraft tippt, AIS.chat liefert Material, Aufgaben oder Ideen.</p>
                       </div>
                       <div className="bg-white dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm transition-colors duration-200">
                         <h4 className="font-bold text-blue-800 dark:text-blue-300 flex items-center mb-2"><ImageIcon className="w-4 h-4 mr-2" /> Bildgenerierung</h4>
-                        <p className="text-sm text-slate-600 dark:text-slate-300">telli erzeugt Bilder als Schreibanlass, Visualisierung oder Gegenstand für Medienkritik.</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-300">AIS.chat erzeugt Bilder als Schreibanlass, Visualisierung oder Gegenstand für Medienkritik.</p>
                       </div>
                       <div className="bg-white dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm transition-colors duration-200">
                         <h4 className="font-bold text-blue-800 dark:text-blue-300 flex items-center mb-2"><LayersIcon className="w-4 h-4 mr-2" /> Assistenten</h4>
@@ -906,8 +906,8 @@
               {/* === DRUCK-ANSICHT === */}
               <div className="hidden print:block w-full max-w-4xl mx-auto p-8 bg-white text-black font-sans">
                 <div className="mb-10 border-b-2 border-slate-800 pb-4">
-                  <h1 className="text-4xl font-extrabold text-slate-900 mb-2">Meine telli-Favoriten</h1>
-                  <p className="text-lg text-slate-600">telli in Thüringen – https://lochnertobias.github.io/telli-in-thueringen/</p>
+                  <h1 className="text-4xl font-extrabold text-slate-900 mb-2">Meine AIS.chat-Favoriten</h1>
+                  <p className="text-lg text-slate-600">AIS.chat in Thüringen – https://lochnertobias.github.io/aischat-in-thueringen/</p>
                 </div>
 
                 {favoriteEntriesToPrint.length === 0 ? (
@@ -1021,7 +1021,7 @@
                       <button onClick={() => setShowHelp(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"><CloseIcon className="w-6 h-6"/></button>
                     </div>
                     <div className="text-sm text-slate-700 dark:text-slate-300 space-y-4">
-                      <p>Willkommen auf der Übersichtsseite für Praxisbeispiele zum KI-Chatbot <strong>telli</strong>. Diese Seite hilft Ihnen dabei, vorgefertigte Eingaben (Prompts), Lernszenarien und Assistenten für Ihren Unterricht zu finden, zu organisieren und zu teilen.</p>
+                      <p>Willkommen auf der Übersichtsseite für Praxisbeispiele zum KI-Chatbot <strong>AIS.chat</strong>. Diese Seite hilft Ihnen dabei, vorgefertigte Eingaben (Prompts), Lernszenarien und Assistenten für Ihren Unterricht zu finden, zu organisieren und zu teilen.</p>
 
                       <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base mt-6 border-b border-slate-200 dark:border-slate-700 pb-1">🔍 Suchen und Finden</h4>
                       <ul className="list-disc pl-5 mt-2 space-y-1">
@@ -1033,7 +1033,7 @@
                       <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base mt-6 border-b border-slate-200 dark:border-slate-700 pb-1">💡 Einträge ansehen und kopieren</h4>
                       <ul className="list-disc pl-5 mt-2 space-y-1">
                         <li><strong>Aufklappen:</strong> Klicken Sie auf einen beliebigen Eintrag (die "Karte"), um ihn aufzuklappen und den vollständigen Text (den eigentlichen Prompt) zu lesen.</li>
-                        <li><strong>In die Zwischenablage kopieren:</strong> Im aufgeklappten Bereich finden Sie rechts den Button „Kopieren“. Damit wird der Text direkt in Ihre Zwischenablage gespeichert, sodass Sie ihn bequem in telli einfügen können.</li>
+                        <li><strong>In die Zwischenablage kopieren:</strong> Im aufgeklappten Bereich finden Sie rechts den Button „Kopieren“. Damit wird der Text direkt in Ihre Zwischenablage gespeichert, sodass Sie ihn bequem in AIS.chat einfügen können.</li>
                       </ul>
 
                       <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base mt-6 border-b border-slate-200 dark:border-slate-700 pb-1">⭐ Favoriten & Druckfunktion</h4>
@@ -1071,9 +1071,9 @@
                     </div>
                     <div className="text-sm text-slate-700 dark:text-slate-300 space-y-4">
                       
-                      <p><strong className="dark:text-slate-200">telli in Thüringen</strong></p>
+                      <p><strong className="dark:text-slate-200">AIS.chat in Thüringen</strong></p>
                       <p>erstellt von Tobias Lochner, <br/>Dr. Sulzberger-Gymnasium, Bad Salzungen, 2026</p>
-                      <p>basierend auf einer Idee von <br/> Martin Kurz, Hessische Lehrkräfteakademie, 2026, <a href="https://mgkurz.github.io/-telli-deutsch-ideen/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"> https://mgkurz.github.io/-telli-deutsch-ideen/
+                      <p>basierend auf einer Idee von <br/> Martin Kurz, Hessische Lehrkräfteakademie, 2026, <a href="https://mgkurz.github.io/-AIS.chat-deutsch-ideen/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"> https://mgkurz.github.io/-AIS.chat-deutsch-ideen/
                         </a>
                       </p>
                       
@@ -1099,12 +1099,12 @@
                         <p>
                           <strong className="text-slate-900 dark:text-slate-200">Quellcode (GitHub):</strong><br/>
                           <a 
-                            href="https://github.com/lochnertobias/telli-in-thueringen" 
+                            href="https://github.com/lochnertobias/aischat-in-thueringen" 
                             target="_blank" 
                             rel="noopener noreferrer" 
                             className="text-blue-600 dark:text-blue-400 hover:underline font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 rounded break-all"
                           >
-                            https://github.com/lochnertobias/telli-in-thueringen
+                            https://github.com/lochnertobias/aischat-in-thueringen
                           </a>
                         </p>
                       </div>
@@ -1156,7 +1156,7 @@
                       
                       <section>
                         <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base mb-2 border-b border-slate-200 dark:border-slate-700 pb-1">1. Allgemeine Hinweise</h4>
-                        <p>Der Schutz Ihrer persönlichen Daten ist uns ein wichtiges Anliegen. Diese Webseite dient der Bereitstellung von Praxisbeispielen für den KI-Chatbot „telli“.</p>
+                        <p>Der Schutz Ihrer persönlichen Daten ist uns ein wichtiges Anliegen. Diese Webseite dient der Bereitstellung von Praxisbeispielen für den KI-Chatbot „AIS.chat“.</p>
                       </section>
 
                       <section>
